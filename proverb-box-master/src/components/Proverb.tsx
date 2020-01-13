@@ -19,18 +19,18 @@ import { heartEmpty } from 'ionicons/icons';
 import data from '../data/Proverbs.json';
 
 type IProverb = {
-  Content ?: string,
-  Chapter ?: number,
-  Verse ?: number,
-  Saved ?: boolean,
-  ID ?: number
+  Content : string,
+  Chapter : number,
+  Verse : number,
+  Saved : boolean,
+  ID : number
 }
 
 var ID = 1;
 
 const words = (data);
-
-let verses = words['verses'].map((word) => {
+//https://aboutreact.com/react-native-global-scope-variables/
+export let verses = words['verses'].map((word) => {
   //console.log(word.text)
   let verse: IProverb = {
   Content : word.text,
@@ -47,7 +47,7 @@ let verses = words['verses'].map((word) => {
 
 
 type ProverbProp ={
-  Proverb?: IProverb,
+  Proverb: IProverb,
   Save?:any,
   Unsave?:any
 }
@@ -60,12 +60,14 @@ class Proverb extends React.Component<ProverbProp, ProverbState> {
 
   constructor(props: ProverbProp) {
     super(props);
+    //this.props.Proverb = verses[0]
   }
 
   // Member functions?
 
   // Life 
   componentDidMount() {
+
   }
 
   componentWillUnmount() {
@@ -77,10 +79,16 @@ class Proverb extends React.Component<ProverbProp, ProverbState> {
         <IonCard>
           <IonGrid>
             <IonRow>
+              <h1>
+                {this.props.Proverb.Content}
+              </h1>
             </IonRow>
 
             <IonRow>
               <IonCol>
+                <h1>
+                  Proverbs {this.props.Proverb.Chapter}:{this.props.Proverb.Verse}
+                </h1>
               </IonCol>
 
               <IonCol>
