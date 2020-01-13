@@ -35,16 +35,12 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
- /* Parsing the Json */
+/* Data */
 import data from './data/Proverbs.json';
+import ProverbData from "./components/ProverbData";
 
-type IProverb = {
-  Content ?: string,
-  Chapter ?: number,
-  Verse ?: number,
-  Saved ?: boolean,
-  ID ?: number
-}
+/* Interface */
+import {IProverb} from "./components/ProverbInterface";
 
 var ID = 1;
 
@@ -73,9 +69,10 @@ let verses = words['verses'].map((word) => {
  }
 
  return verse;
-}
- );
+});
 
+const ProverbBox = new ProverbData();
+console.log(ProverbBox.GetAll());
 
 //const allProverbs = JSON.stringify(words['verses'])
 console.log(verses)

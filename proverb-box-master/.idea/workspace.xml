@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/Persist.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ProverbData.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ProverbInterface.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1WJcKnJZwx5AZU103psPSpoeq9p" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/scripts/serve-app.bat" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+    <property name="ts.external.directory.path" value="C:\Code4Christ\ProverbsBox\proverb-box-master\node_modules\typescript\lib" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Run Ionic" type="ShConfigurationType">
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/scripts/serve-app.bat" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INTERPRETER_PATH" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="" />
+      <created>1578871076421</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578871076421</updated>
+      <workItem from="1578871077759" duration="2401000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="225" y="72" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578871238608">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="225" y="72" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1578871238608" />
+    <state x="279" y="227" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1578873162314">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="279" y="227" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1578873162314" />
+    <state x="550" y="172" key="FileChooserDialogImpl" timestamp="1578871218616">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="550" y="172" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1578871218616" />
+    <state x="49" y="62" key="SettingsEditor" timestamp="1578872682932">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="49" y="62" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1578872682932" />
+    <state x="42" y="190" key="run.anything.popup" timestamp="1578871546370">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="42" y="190" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1578871546370" />
+  </component>
+</project>
