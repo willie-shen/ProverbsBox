@@ -35,7 +35,7 @@ type ILibraryProps = {
 const Library: React.FC<ILibraryProps> = (props: ILibraryProps) => {
   const [showPopover, setShowPopover] = useState(false);
 
-  let proverbDisplay :any = props.proverbs.map((prov:IProverb) =>{
+  let proverbDisplay :any = props.proverbs.slice(0, 30).map((prov:IProverb) =>{
     return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
   });
 
