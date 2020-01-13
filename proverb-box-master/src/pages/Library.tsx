@@ -36,9 +36,8 @@ const Library: React.FC<ILibraryProps> = (props: ILibraryProps) => {
   const [showPopover, setShowPopover] = useState(false);
 
   let proverbDisplay :any = props.proverbs.map((prov:IProverb) =>{
-    return (<Proverb Proverb={prov}></Proverb>);
+    return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
   });
-
 
   return (
     <IonPage>

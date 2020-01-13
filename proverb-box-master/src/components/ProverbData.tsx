@@ -17,7 +17,7 @@ export default class ProverbData {
                 Verse : word.verse,
                 Saved : false,
                 ID : ID++
-            }
+            };
             return verse;
         });
 
