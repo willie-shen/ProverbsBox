@@ -64,7 +64,7 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/library" component={() => <Library proverbs={ProverbBox.GetAll()}/>} exact={true} />
+          <Route path="/library" component={() => <Library proverbs={ProverbBox.GetOneLiners()}/>} exact={true} />
           <Route path="/bookmarked" component={Bookmarked} exact={true} />
           <Route path="/bookmarked/details" component={Details} />
           <Route path="/discover" component={Discover} />

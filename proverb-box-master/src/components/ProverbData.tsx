@@ -3,14 +3,13 @@ import data from '../data/Proverbs.json';
 import {IProverb} from './ProverbInterface';
 
 export default class ProverbData {
-    verses : Array<IProverb>;
-  /*  oneLineIDs : Array<number>; */
+    private verses : Array<IProverb>;
+    private oneLiners : Array<IProverb>;
 
     constructor()
     {
-        let ID = 1;
+        let ID = 0;
         this.verses = (data)['verses'].map((word) => {
-            //console.log(word.text)
             let verse: IProverb = {
                 Content : word.text,
                 Chapter : word.chapter,
@@ -21,15 +20,28 @@ export default class ProverbData {
             return verse;
         });
 
-     /*   this.oneLineIDs = this.verses.map((proverb: IProverb) => {
+        this.oneLiners = this.verses.filter((proverb: IProverb) => {
             let oneLine: boolean = true;
-            const verse : string = proverb.Content;
-            if (verse[0] == verse[0].toUpperCase())
+            let text : string = "";
+            if (typeof(proverb.Content) === "string")
             {
+                let text : string = proverb.Content;
 
+                if (text[0] != (text[0]).toUpperCase())
+                {
+                    oneLine = false;
+                }
+
+                if (text.slice(-1) != '.' && text.slice(-1) != '?') {
+                    oneLine = false;
+                }
+
+                return oneLine;
             }
 
-        });*/
+            // filter undefined text
+            return false;
+        });
     }
 
     // Getters
@@ -38,9 +50,21 @@ export default class ProverbData {
         return this.verses;
     }
 
-    //Get
+    GetOneLiners()
+    {
+        return this.oneLiners
+    }
 
+    // Setters
 
+    // Memory
+    Save(id : number)
+    {
 
+    }
 
+    Unsave(id : number)
+    {
+
+    }
 }
