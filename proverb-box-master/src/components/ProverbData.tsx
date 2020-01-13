@@ -1,16 +1,10 @@
 /* Parsing the Json */
 import data from '../data/Proverbs.json';
-
-type IProverb = {
-    Content ?: string,
-    Chapter ?: number,
-    Verse ?: number,
-    Saved ?: boolean,
-    ID ?: number
-}
+import {IProverb} from './ProverbInterface';
 
 export default class ProverbData {
     verses : Array<IProverb>;
+  /*  oneLineIDs : Array<number>; */
 
     constructor()
     {
@@ -26,6 +20,16 @@ export default class ProverbData {
             }
             return verse;
         });
+
+        /*this.oneLineIDs = this.verses.map((proverb: IProverb) => {
+            let oneLine: boolean = true;
+            const verse : string = proverb.Content;
+            if (verse[0] == verse[0].toUpperCase())
+            {
+
+            }
+
+        });*/
     }
 
     // Getters
@@ -33,6 +37,8 @@ export default class ProverbData {
     {
         return this.verses;
     }
+
+    //Get
 
 
 

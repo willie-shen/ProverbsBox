@@ -55,43 +55,18 @@ const words = (data);
 
 //https://errors.wtf/left-side-of-comma-operator-is-unused-and-has-no-side-effects/
 
-//console.log(words['verses'])
-
-let verses = words['verses'].map((word) => {
-  //console.log(word.text)
-  let verse: IProverb = {
-  Content : word.text,
-  Chapter : word.chapter,
-  Verse : word.verse,
-  Saved : false,
-  ID : ID++
-
- }
-
- return verse;
-});
 
 const ProverbBox = new ProverbData();
 console.log(ProverbBox.GetAll());
 
-//const allProverbs = JSON.stringify(words['verses'])
-console.log(verses)
-//alert(allProverbs)
-
-
-
-
-
-
 
 const App: React.FC = () => (
-
 
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/library" component={Library} exact={true} />
+          <Route path="/library" component={() => <Library proverbs={ProverbBox.GetAll()}/>} exact={true} />
           <Route path="/bookmarked" component={Bookmarked} exact={true} />
           <Route path="/bookmarked/details" component={Details} />
           <Route path="/discover" component={Discover} />
@@ -102,7 +77,7 @@ const App: React.FC = () => (
             <IonIcon icon={search} />
             <IonLabel>Library</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="bookmarked" href="/bookmarked">
+          <IonTabButton tab="bookmarked" href="/bookmarked" >
             <IonIcon icon={filing} />
             <IonLabel>Bookmarked</IonLabel>
           </IonTabButton>

@@ -17,14 +17,7 @@ import CSS from 'csstype'
 import { heartEmpty } from 'ionicons/icons';
 
 import data from '../data/Proverbs.json';
-
-type IProverb = {
-  Content : string,
-  Chapter : number,
-  Verse : number,
-  Saved : boolean,
-  ID : number
-}
+import {IProverb} from './ProverbInterface'
 
 var ID = 1;
 

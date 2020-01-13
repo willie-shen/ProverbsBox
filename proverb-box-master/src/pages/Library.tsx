@@ -25,8 +25,20 @@ import { book, build, colorFill, grid } from 'ionicons/icons';
 import React, {useState} from 'react';
 import './Library.css';
 
-const Library: React.FC = () => {
+import {IProverb} from "../components/ProverbInterface";
+import {Proverb} from "../components/Proverb";
+
+type ILibraryProps = {
+  proverbs: Array<IProverb>
+}
+
+const Library: React.FC<ILibraryProps> = (props: ILibraryProps) => {
   const [showPopover, setShowPopover] = useState(false);
+
+  let proverbDisplay :any = props.proverbs.map((prov:IProverb) =>{
+    return (<Proverb Proverb={prov}></Proverb>);
+  });
+
 
   return (
     <IonPage>
@@ -55,7 +67,7 @@ const Library: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        
+        {proverbDisplay}
       </IonContent>
     </IonPage>
   );

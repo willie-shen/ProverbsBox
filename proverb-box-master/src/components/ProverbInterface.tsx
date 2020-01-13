@@ -1,7 +1,7 @@
 export type IProverb = {
-    Content ?: string,
-    Chapter ?: number,
-    Verse ?: number,
-    Saved ?: boolean,
-    ID ?: number
+    Content : string,
+    Chapter : number,
+    Verse : number,
+    Saved : boolean,
+    ID : number
 }
