@@ -57,8 +57,6 @@ const words = (data);
 
 
 const ProverbBox = new ProverbData();
-console.log(ProverbBox.GetAll());
-
 
 const App: React.FC = () => (
 

@@ -21,7 +21,7 @@ export default class ProverbData {
             return verse;
         });
 
-        /*this.oneLineIDs = this.verses.map((proverb: IProverb) => {
+     /*   this.oneLineIDs = this.verses.map((proverb: IProverb) => {
             let oneLine: boolean = true;
             const verse : string = proverb.Content;
             if (verse[0] == verse[0].toUpperCase())
