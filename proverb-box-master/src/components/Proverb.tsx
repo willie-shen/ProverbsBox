@@ -6,14 +6,59 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonButton
+  IonButton,
+  IonIcon
 } from '@ionic/react';
+
+//import {IProverb} from './'
 import React from 'react';
 import CSS from 'csstype'
 
-class Proverb extends React.Component<{/*props*/}, {/*state*/}> {
+import { heartEmpty } from 'ionicons/icons';
 
-  constructor(props: {}) {
+import data from '../data/Proverbs.json';
+
+type IProverb = {
+  Content ?: string,
+  Chapter ?: number,
+  Verse ?: number,
+  Saved ?: boolean,
+  ID ?: number
+}
+
+var ID = 1;
+
+const words = (data);
+
+let verses = words['verses'].map((word) => {
+  //console.log(word.text)
+  let verse: IProverb = {
+  Content : word.text,
+  Chapter : word.chapter,
+  Verse : word.verse,
+  Saved : false,
+  ID : ID++
+
+ }
+
+ return verse;
+}
+ );
+
+
+type ProverbProp ={
+  Proverb?: IProverb,
+  Save?:any,
+  Unsave?:any
+}
+
+type ProverbState = {
+
+}
+
+class Proverb extends React.Component<ProverbProp, ProverbState> {
+
+  constructor(props: ProverbProp) {
     super(props);
   }
 
@@ -29,9 +74,26 @@ class Proverb extends React.Component<{/*props*/}, {/*state*/}> {
   render() {
 
     return (
-        <>
-          {/* TSX Here*/}
-        </>
+        <IonCard>
+          <IonGrid>
+            <IonRow>
+            </IonRow>
+
+            <IonRow>
+              <IonCol>
+              </IonCol>
+
+              <IonCol>
+                <IonButton>
+                  <IonIcon slot = "start" icon = {heartEmpty} />
+                </IonButton>
+              </IonCol>
+
+            </IonRow>
+          </IonGrid>
+
+
+        </IonCard>
       );
     }
 
