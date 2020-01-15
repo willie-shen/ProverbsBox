@@ -1,10 +1,12 @@
 /* Parsing the Json */
 import data from '../data/Proverbs.json';
-import {IProverb} from './ProverbInterface';
+import {IProverb, IFilter, IFilterMap} from './ProverbInterface';
+import {Filters} from './Filters';
 
 export default class ProverbData {
     private verses : Array<IProverb>;
     private oneLiners : Array<IProverb>;
+    private filterBank : IFilterMap = {};
 
     constructor()
     {
@@ -44,19 +46,48 @@ export default class ProverbData {
         });
     }
 
+    // Toggle Filters
+    AddFilter(name : string, filter : IFilter)
+    {
+        this.filterBank[name] = filter;
+    }
+
+    RemoveFilter(name : string)
+    {
+        delete this.filterBank[name];
+    }
+
+    ClearFilters()
+    {
+        this.filterBank = {};
+    }
+
+    RunFilters(collection:Array<IProverb>) : Array<IProverb>
+    {
+        Object.entries(this.filterBank).forEach(([_, filter]) => {
+            collection = collection.filter(filter);
+        });
+
+        return collection;
+    }
+
     // Getters
-    GetAll()
+    GetAll() : Array<IProverb>
     {
         return this.verses;
     }
 
-    GetOneLiners()
+    GetAllOneLiners() : Array<IProverb>
     {
-        return this.oneLiners
+        return this.oneLiners;
+    }
+
+    GetFilteredOneLiners() : Array<IProverb>
+    {
+        return this.RunFilters(this.oneLiners);
     }
 
     // Setters
-
     // Memory
     Save(id : number)
     {

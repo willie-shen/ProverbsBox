@@ -27,15 +27,17 @@ import './Library.css';
 
 import {IProverb} from "../components/ProverbInterface";
 import {Proverb} from "../components/Proverb";
+import ProverbData from "../components/ProverbData";
 
 type ILibraryProps = {
-  proverbs: Array<IProverb>
+  proverbProvider: ProverbData
 }
 
 const Library: React.FC<ILibraryProps> = (props: ILibraryProps) => {
   const [showPopover, setShowPopover] = useState(false);
 
-  let proverbDisplay :any = props.proverbs.slice(0, 30).map((prov:IProverb) =>{
+  let proverbs = props.proverbProvider.GetAllOneLiners();
+  let proverbDisplay :any = proverbs.slice(0, 30).map((prov:IProverb) =>{
     return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
   });
 

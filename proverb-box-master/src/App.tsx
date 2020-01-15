@@ -38,33 +38,33 @@ import './theme/variables.css';
 /* Data */
 import data from './data/Proverbs.json';
 import ProverbData from "./components/ProverbData";
+import {Filters} from "./components/Filters"
 
 /* Interface */
 import {IProverb} from "./components/ProverbInterface";
 
-var ID = 1;
+/* Resources */
+/*
+  https://alligator.io/js/json-parse-stringify/
+  https://github.com/chybie/ts-json/blob/master/app.ts
+  https://hackernoon.com/import-json-into-typescript-8d465beded79
+  https://reactjs.org/docs/lists-and-keys.html
+  https://errors.wtf/left-side-of-comma-operator-is-unused-and-has-no-side-effects/
+*/
 
-const words = (data);
-//console.log(word); // output 'testing'
+const pd = new ProverbData();
 
-//https://alligator.io/js/json-parse-stringify/
+/* Test filters */
 
-////https://github.com/chybie/ts-json/blob/master/app.ts
-//https://hackernoon.com/import-json-into-typescript-8d465beded79
-//https://reactjs.org/docs/lists-and-keys.html
-
-//https://errors.wtf/left-side-of-comma-operator-is-unused-and-has-no-side-effects/
-
-
-const ProverbBox = new ProverbData();
+pd.AddFilter(...Filters.ByChapter(3));
+pd.AddFilter(...Filters.ByContent("Wisdom"));
 
 const App: React.FC = () => (
-
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/library" component={() => <Library proverbs={ProverbBox.GetOneLiners()}/>} exact={true} />
+          <Route path="/library" component={() => <Library proverbProvider={pd}/>} exact={true} />
           <Route path="/bookmarked" component={Bookmarked} exact={true} />
           <Route path="/bookmarked/details" component={Details} />
           <Route path="/discover" component={Discover} />
