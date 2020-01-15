@@ -18,7 +18,7 @@ import CSS from 'csstype'
 import "./Proverb.scss"
 
 // Icons
-import { heartEmpty } from 'ionicons/icons';
+import { heart, heartEmpty } from 'ionicons/icons';
 
 import data from '../data/Proverbs.json';
 import {IProverb} from './ProverbInterface'
@@ -69,9 +69,17 @@ class Proverb extends React.Component<ProverbProp, ProverbState> {
               </IonCol>
 
               <IonCol id = {"buttons"}>
-                <IonButton>
-                  <IonIcon icon = {heartEmpty} />
-                </IonButton>
+
+              { this.props.Proverb.Saved 
+                  ? <IonButton>
+                      <IonIcon icon = {heart} />
+                    </IonButton>
+                  : <IonButton>
+                      <IonIcon icon = {heartEmpty} />
+                    </IonButton>
+                }
+
+                
               </IonCol>
 
             </IonRow>
