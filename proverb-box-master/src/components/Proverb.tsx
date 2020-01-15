@@ -14,30 +14,14 @@ import {
 import React from 'react';
 import CSS from 'csstype'
 
+// Styles
+import "./Proverb.scss"
+
+// Icons
 import { heartEmpty } from 'ionicons/icons';
 
 import data from '../data/Proverbs.json';
 import {IProverb} from './ProverbInterface'
-
-var ID = 1;
-
-const words = (data);
-//https://aboutreact.com/react-native-global-scope-variables/
-export let verses = words['verses'].map((word) => {
-  //console.log(word.text)
-  let verse: IProverb = {
-  Content : word.text,
-  Chapter : word.chapter,
-  Verse : word.verse,
-  Saved : false,
-  ID : ID++
-
- }
-
- return verse;
-}
- );
-
 
 type ProverbProp ={
   Proverb: IProverb,
@@ -69,7 +53,7 @@ class Proverb extends React.Component<ProverbProp, ProverbState> {
   render() {
 
     return (
-        <IonCard>
+        <IonCard id={"proverb"}>
           <IonGrid>
             <IonRow>
               <h1>
@@ -84,9 +68,9 @@ class Proverb extends React.Component<ProverbProp, ProverbState> {
                 </h1>
               </IonCol>
 
-              <IonCol>
+              <IonCol id = {"buttons"}>
                 <IonButton>
-                  <IonIcon slot = "start" icon = {heartEmpty} />
+                  <IonIcon icon = {heartEmpty} />
                 </IonButton>
               </IonCol>
 

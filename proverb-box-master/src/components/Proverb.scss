@@ -1,0 +1,16 @@
+#proverb {
+
+  ion-grid {
+    width: 90%;
+
+    ion-row {
+      justify-content: space-between;
+    }
+  }
+
+  #buttons {
+    display: flex;
+    align-self: end;
+    justify-content: flex-end;
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {IonFabButton, IonButton, IonIcon, IonHeader, IonToolbar, IonPage, IonTitle, IonContent, IonFab } from '@ionic/react';
 
-import {verses, Proverb} from '../components/Proverb'
+import {Proverb} from '../components/Proverb'
 
 
 const Discover: React.FC = () => {
@@ -13,8 +13,8 @@ const Discover: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <Proverb Proverb = {verses[0]}>
-      </Proverb>
+        {/*<Proverb Proverb = {null}>
+      </Proverb>*/}
 
       <IonFab vertical = "bottom" horizontal = "start">
           <IonFabButton>

@@ -16,10 +16,10 @@ import {
   IonListHeader,
   IonPage,
   IonTitle,
-  IonToolbar, 
+  IonToolbar,
   IonSearchbar,
   IonCol,
-  IonButton
+  IonButton, IonButtons
 } from '@ionic/react';
 import { book, build, colorFill, grid } from 'ionicons/icons';
 import React, {useState} from 'react';
@@ -45,25 +45,19 @@ const Library: React.FC<ILibraryProps> = (props: ILibraryProps) => {
         <p>This is popover content</p>
      </IonPopover>
       <IonHeader>
-       
-        <IonToolbar>
-          <IonGrid>
-            <IonRow>
-              <IonCol>
+
+          <IonToolbar>
+              <IonButtons slot={"start"}>
                 <IonButton onClick={() => setShowPopover(true)}>
-                  <IonIcon slot = "start" icon = {book} />
+                  <IonIcon slot = "icon-only" icon = {book} />
                 </IonButton>
-              </IonCol>
-              <IonCol>
-                <IonTitle>Library</IonTitle>
-              </IonCol>
-            </IonRow>
-           <IonRow>
-             <IonSearchbar></IonSearchbar>
-           </IonRow>
-         </IonGrid>
-          
-        </IonToolbar>
+              </IonButtons>
+
+              <IonTitle>Library</IonTitle>
+          </IonToolbar>
+          <IonToolbar>
+            <IonSearchbar></IonSearchbar>
+          </IonToolbar>
       </IonHeader>
       <IonContent>
         {proverbDisplay}
