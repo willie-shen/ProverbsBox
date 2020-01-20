@@ -35,7 +35,9 @@ type ILibraryProps = {
 
 type ILibraryState = {
     proverbs: Array<IProverb>,
-    searchContent: string
+    searchContent: string,
+    popClickEvent: any,
+    popOpen: boolean,
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
@@ -48,6 +50,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.state = {
             proverbs: this.props.proverbProvider.GetAllOneLiners(),
             searchContent: "",
+            popClickEvent: null,
+            popOpen: false,
         };
     }
 
@@ -68,16 +72,24 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
         });
 
+        let popoverFilter = (
+            <IonPopover event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e => ()=>{/*this.setShowPopover(false)*/}}>
+                <p>This is popover content</p>
+            </IonPopover>
+        );
+
         return (
             <IonPage>
-                <IonPopover isOpen={false} onDidDismiss={e => ()=>{/*this.setShowPopover(false)*/}}>
-                    <p>This is popover content</p>
-                </IonPopover>
-                <IonHeader>
 
+                <IonHeader>
+                    {popoverFilter}
                     <IonToolbar>
                         <IonButtons slot={"start"}>
-                            <IonButton onClick={() => {/*this.setShowPopover(true)*/}}>
+                            <IonButton onClick={(e) => {
+                                e.persist();
+                                this.setState({popClickEvent: e});
+                                this.setState({popOpen: true});
+                                /*this.setShowPopover(true)*/}}>
                                 <IonIcon slot = "icon-only" icon = {book} />
                             </IonButton>
                         </IonButtons>
