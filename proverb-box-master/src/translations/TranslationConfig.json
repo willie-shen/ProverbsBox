@@ -1,0 +1,7 @@
+{
+  "_comment": "Translation Configuration file (KJV-Loader not yet implemented)",
+  "KJV": {
+    "Data": "./translations/KJV-Proverbs.json",
+    "Loader": "./translations/KJV-Loader.tsx"
+  }
+}

@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/indexing/ProverbsStructure.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/indexing/Sayings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/indexing/Statements.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/translations/KJV-Proverbs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/translations/TranslationConfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Filters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Filters.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Library.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +83,7 @@
       <workItem from="1579054100968" duration="12966000" />
       <workItem from="1579119020662" duration="609000" />
       <workItem from="1579294256446" duration="9070000" />
-      <workItem from="1579571711172" duration="4595000" />
+      <workItem from="1579571711172" duration="8472000" />
     </task>
     <servers />
   </component>
