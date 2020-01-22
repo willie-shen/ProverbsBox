@@ -1,0 +1,22 @@
+{
+  "_comment": "Sayings outline",
+  "Sections": [
+    {
+
+      "Title": "Thirty Sayings of the Wise",
+      "Sayings": {
+        "1": {
+          "Start": {
+            "Ch": 22,
+            "Vs": 17
+          },
+          "End": {
+            "Ch": 22,
+            "Vs": 21
+          }
+        }
+      }
+
+    }
+  ]
+}

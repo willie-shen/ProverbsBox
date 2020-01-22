@@ -7,7 +7,12 @@
 
 import {IProverb, IFilter} from './ProverbInterface';
 
-export const Filters : {[name:string] : (input?: any) => [string, IFilter]} = {
+export interface IVerse {
+    Chapter: number,
+    Verse: number,
+}
+
+export const Filters : {[name:string] : (input1?: any, input2?: any) => [string, IFilter]} = {
     /*
         Example:
         FilterName :
@@ -18,6 +23,28 @@ export const Filters : {[name:string] : (input?: any) => [string, IFilter]} = {
                     Filter
                 ]
      */
+
+    BySpan : (start:IVerse, end:IVerse) => {
+        const filter : IFilter = (proverb : IProverb) => {
+            // chapter bounds
+            if (proverb.Chapter < start.Chapter || proverb.Chapter > end.Chapter)
+            {
+                return false;
+            }
+
+            // verse bounds
+            if (proverb.Chapter == start.Chapter && proverb.Verse < start.Verse
+                || proverb.Chapter == end.Chapter && proverb.Verse > end.Verse)
+            {
+                return false;
+            }
+
+            return true;
+        };
+        return [
+            "Span",
+            filter]
+    },
 
     ByChapter : (chapter : number) => {
             const filter : IFilter = (proverb : IProverb) => (chapter === proverb.Chapter);

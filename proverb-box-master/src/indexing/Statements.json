@@ -1,0 +1,31 @@
+{
+  "_comment": "Single verse proverb outline.",
+  "Range": [
+    {
+      "Title": "Proverbs of Solomon",
+      "Intro": {
+        "Ch": 25, "Vs": 1, "Part": true
+      },
+      "Start": {
+        "Ch": 10,
+        "Vs": 1
+      },
+      "End": {
+        "Ch": 22,
+        "Vs": 16
+      }
+    },
+    {
+      "Title": "More Proverbs of Solomon",
+      "Intro": {"Ch": 25, "Vs": 1, "Part": false},
+      "Start": {
+        "Ch": 25,
+        "Vs": 1
+      },
+      "End": {
+        "Ch": 29,
+        "Vs": 27
+      }
+    }
+  ]
+}

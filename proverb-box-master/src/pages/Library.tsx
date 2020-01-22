@@ -73,7 +73,9 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         });
 
         let popoverFilter = (
-            <IonPopover event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e => ()=>{/*this.setShowPopover(false)*/}}>
+            <IonPopover event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e =>
+                this.setState({popOpen: false, popClickEvent: null})
+            }>
                 <p>This is popover content</p>
             </IonPopover>
         );
@@ -87,9 +89,11 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         <IonButtons slot={"start"}>
                             <IonButton onClick={(e) => {
                                 e.persist();
-                                this.setState({popClickEvent: e});
-                                this.setState({popOpen: true});
-                                /*this.setShowPopover(true)*/}}>
+                                this.setState({
+                                    popClickEvent: e,
+                                    popOpen: true
+                                });
+                                }}>
                                 <IonIcon slot = "icon-only" icon = {book} />
                             </IonButton>
                         </IonButtons>
