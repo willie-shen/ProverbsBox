@@ -1,0 +1,8 @@
+{
+  "_comment": "Enable and disable various test scripts",
+  "test1": true,
+  "test2": true,
+  "test3": false,
+  "test4": true,
+  "test5": true
+}

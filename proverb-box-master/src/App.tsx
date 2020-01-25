@@ -43,6 +43,21 @@ import {Filters} from "./components/Filters"
 /* Interface */
 import {IProverb} from "./components/ProverbInterface";
 
+// Test API Functionality
+import TestScript1 from "./api/TestScript1"
+import TestScript2 from "./api/TestScript2"
+import TestScript3 from "./api/TestScript3"
+import TestScript4 from "./api/TestScript4"
+import TestScript5 from "./api/TestScript5"
+import conf from "./api/TestScriptConfig.json"
+
+// TestScript hook.
+if (conf.test1) {TestScript1()}
+if (conf.test2) {TestScript2()}
+if (conf.test3) {TestScript3()}
+if (conf.test4) {TestScript4()}
+if (conf.test5) {TestScript5()}
+
 /* Resources */
 /*
   https://alligator.io/js/json-parse-stringify/
