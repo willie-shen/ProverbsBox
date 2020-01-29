@@ -169,12 +169,12 @@ export default class Indexer {
                     const inRange: boolean = this.IsVerseBetween(verse, start, end);
 
                     // found range
-                    if (inRange) {return true}
+                    if (inRange) return ["Saying"];
                 }
             }
 
             // not found in records
-            return false;
+            return [];
         };
 
         const isStatement = () => {
@@ -190,13 +190,30 @@ export default class Indexer {
                 };
                 const inRange: boolean = this.IsVerseBetween(verse, start, end);
                 // found
-                if (inRange) { return true; }
+                if (inRange) {
+                    if (verse.Chapter === range.Intro.Ch
+                        && verse.VerseNumber === range.Intro.Vs)
+                    {
+                        // part
+                        if (range.Intro.Part)
+                        {
+                            return ["Intro", "Statement"];
+                        }
+                        else
+                        {
+                            return ["Intro"];
+                        }
+                    }
+                }
             }
-            return false;
+            return [];
         };
 
-        if (isSaying()) {return "Saying"}
-        if (isStatement()) {return "Statement"}
-        return "Article"
+        // return values
+        const sayingRes = isSaying();
+        if (sayingRes !== []) {return sayingRes;}
+        const statementRes = isStatement();
+        if (statementRes) {return statementRes;}
+        return ["Article"];
     }
 }

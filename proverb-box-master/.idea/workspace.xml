@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/api/Indexer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/Interfaces.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/TestScript1.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/TestScript2.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/TestScript3.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/TestScript4.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/TestScript5.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/TestScriptConfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indexing/Sayings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexing/Sayings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Indexer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/indexing/Statements.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexing/Statements.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +88,7 @@
       <workItem from="1579119020662" duration="609000" />
       <workItem from="1579294256446" duration="9070000" />
       <workItem from="1579571711172" duration="11189000" />
-      <workItem from="1579836749812" duration="13121000" />
+      <workItem from="1579836749812" duration="15838000" />
     </task>
     <servers />
   </component>
@@ -128,10 +120,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="42" y="190" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1578871546370" />
-    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1579849542805">
+    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1580265684983">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1229.-1080.1920.1040@0.0.1536.824" timestamp="1579849542805" />
+    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1229.-1080.1920.1040@0.0.1536.824" timestamp="1580265684983" />
     <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1579057071757" />
   </component>
 </project>
