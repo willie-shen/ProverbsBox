@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Indexer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/indexing/Statements.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexing/Statements.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,6 +15,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
+        <option value="tsconfig.json" />
       </list>
     </option>
   </component>
@@ -29,19 +33,20 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/translations" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/api" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
     <property name="ts.external.directory.path" value="C:\Code4Christ\ProverbsBox\proverb-box-master\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\translations" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\indexing" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\data" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\filterDataModels" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\api" />
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\translations" />
     </key>
   </component>
   <component name="RunManager">
@@ -83,6 +88,7 @@
       <workItem from="1579119020662" duration="609000" />
       <workItem from="1579294256446" duration="9070000" />
       <workItem from="1579571711172" duration="11189000" />
+      <workItem from="1579836749812" duration="15838000" />
     </task>
     <servers />
   </component>
@@ -114,9 +120,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="42" y="190" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1578871546370" />
-    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1579057071757">
+    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1580265684983">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1229.-1080.1920.1040@0.0.1536.824" timestamp="1580265684983" />
     <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1579057071757" />
   </component>
 </project>

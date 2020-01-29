@@ -2,7 +2,6 @@
   "_comment": "Sayings outline",
   "Sections": [
     {
-
       "Title": "Thirty Sayings of the Wise",
       "Sayings": {
         "1": {
@@ -16,7 +15,6 @@
           }
         }
       }
-
     }
   ]
 }
