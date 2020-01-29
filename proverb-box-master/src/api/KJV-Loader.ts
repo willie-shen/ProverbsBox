@@ -10,8 +10,13 @@ import sayingsStructure from '../indexing/Sayings.json'
 import statementStructure from '../indexing/Statements.json'
 
 
-export default class Indexer {
+export default class KJVLoader {
     Load(TranslationDataPath: string) {
-
+        fetch('./translations/KJV-Proverbs.json')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log('data:', data);
+            })
     }
+
 }
