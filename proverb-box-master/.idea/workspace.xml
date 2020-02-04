@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
-      <change afterPath="$PROJECT_DIR$/src/api/TestScriptConfig_default.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/Indexer.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/TranslationMap.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Interfaces.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/KJV-Loader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/KJV-Loader.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript3.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript3.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScriptConfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScriptConfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/translations/KJV-Proverbs.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/translations/KJV-Proverbs.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/translations/TranslationConfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/translations/TranslationConfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TestScript1.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript1.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TranslationMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TranslationMap.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,21 +38,22 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/api" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
-    <property name="ts.external.directory.path" value="C:\Code4Christ\ProverbsBox\proverb-box-master\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Code4Christ\Team\ProverbsBox\proverb-box-master\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\api" />
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\translations" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Code4Christ\Team\ProverbsBox\proverb-box-master\src\api" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\public\assets" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\indexing" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\data" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\filterDataModels" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\api" />
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\translations" />
     </key>
   </component>
   <component name="RunManager">
@@ -100,6 +97,7 @@
       <workItem from="1579571711172" duration="11189000" />
       <workItem from="1579836749812" duration="15838000" />
       <workItem from="1580770323075" duration="4929000" />
+      <workItem from="1580789578948" duration="4677000" />
     </task>
     <servers />
   </component>

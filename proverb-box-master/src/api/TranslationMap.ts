@@ -43,8 +43,16 @@ export default class TranslationMap
     /*
         Loads a translation of the book of proverbs
      */
-    LoadTranslation(TranslationName: string, OnComplete: (success: boolean) => void)
+    LoadTranslation(TranslationName: string)
     {
+        // Cache check
+        if (this.translationName === TranslationName)
+        {
+            // Push to asynch callback queue (for homogeneity)
+            setTimeout(this.TriggerCallbacks, 0);
+            return;
+        }
+
         // Init
         this.translationName = "LOADING";
 
@@ -53,22 +61,22 @@ export default class TranslationMap
             return (trans[0] === TranslationName);
         })[0][1];
 
-        // Set callback
-        this.onLoadedCallbacks.push(OnComplete);
-
         // Load
         const loaderInstance = new loaderData.Loader();
-        loaderInstance.Load(loaderData.Data).then((book: IBookData ) => {
+        loaderInstance.Load(loaderData.Data).then((book: IBookData) => {
             this.book = book;
-
-            // Callback hook
-            this.onLoadedCallbacks.forEach(callback => {
-                callback(true);
-            });
-
-            // Erase Callbacks
-            this.onLoadedCallbacks = [];
+            this.TriggerCallbacks();
         });
+    }
+
+    private TriggerCallbacks() {
+        // Callback hook
+        this.onLoadedCallbacks.forEach(callback => {
+            callback(true);
+        });
+
+        // Erase Callbacks
+        this.onLoadedCallbacks = [];
     }
 
     /*
@@ -80,6 +88,12 @@ export default class TranslationMap
      */
     GetContent(VerseID: number)
     {
+        if (this.translationName === "NONE") {
+            throw Error("Translation version has not been set");
+        }
+        else if (this.translationName === "LOADING") {
+            throw Error("Translation version is still loading. Try use a callback using AddOnLoadedCallback()");
+        }
         const {VerseNumber, Chapter} = Indexer.GetVerse(VerseID);
         return this.book.filter(verse => {
             return verse.VerseNumber == VerseNumber && verse.Chapter == Chapter;
