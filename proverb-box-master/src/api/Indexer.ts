@@ -97,11 +97,11 @@ type ISayingSections = Array<ISayingSection>
 
 export default class Indexer {
 
-    GetVerseID(Chapter: number, Verse: number) {
+    static GetVerseID(Chapter: number, Verse: number) {
         return Chapter * 1000 + Verse;
     }
 
-    GetVerse(VerseID: number) {
+    static GetVerse(VerseID: number) {
         let verse : IVerseSignature = {
             Chapter: Math.floor(VerseID/1000),
             VerseNumber: VerseID % 1000
@@ -109,7 +109,7 @@ export default class Indexer {
         return verse;
     }
 
-    PermuteVerses() {
+    static PermuteVerses() {
         /* accumulate chapter verses */
         let verses : Array<IVerseSignature> = Object.entries(structure.Verses).reduce(
             (v : Array<IVerseSignature>, args : [string, number]) => {
@@ -130,7 +130,7 @@ export default class Indexer {
         return verses;
     }
 
-    IsVerseBetween(verse: IVerseSignature, start: IVerseSignature, end: IVerseSignature)
+    static IsVerseBetween(verse: IVerseSignature, start: IVerseSignature, end: IVerseSignature)
     {
         // chapter bounds
         if (verse.Chapter < start.Chapter || verse.Chapter > end.Chapter)
@@ -149,7 +149,7 @@ export default class Indexer {
         return true;
     }
 
-    GetVerseType(VerseID: number) {
+    static GetVerseType(VerseID: number) {
         const verse = this.GetVerse(VerseID);
 
         const isSaying = () => {
