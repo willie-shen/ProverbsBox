@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/api/KJV-Loader.ts" afterDir="false" />
+    <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
+      <change afterPath="$PROJECT_DIR$/src/api/TestScriptConfig_default.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Interfaces.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/KJV-Loader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/KJV-Loader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TestScript3.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript3.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TestScriptConfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScriptConfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/translations/KJV-Proverbs.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/translations/KJV-Proverbs.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/translations/TranslationConfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/translations/TranslationConfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,14 +48,15 @@
     <property name="ts.external.directory.path" value="C:\Code4Christ\ProverbsBox\proverb-box-master\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\indexing" />
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\data" />
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\filterDataModels" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\api" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\translations" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\public\assets" />
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\indexing" />
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\data" />
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\filterDataModels" />
     </key>
   </component>
   <component name="RunManager">
@@ -91,6 +99,7 @@
       <workItem from="1579294256446" duration="9070000" />
       <workItem from="1579571711172" duration="11189000" />
       <workItem from="1579836749812" duration="15838000" />
+      <workItem from="1580770323075" duration="4929000" />
     </task>
     <servers />
   </component>
@@ -99,7 +108,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Test" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+    <MESSAGE value="Load KJV: done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Load KJV: done" />
   </component>
   <component name="WindowStateProjectService">
     <state x="225" y="72" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578871238608">
@@ -110,10 +120,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="279" y="227" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1578873162314" />
-    <state x="406" y="13" key="CommitChangelistDialog2" timestamp="1579578054664">
+    <state x="406" y="13" key="CommitChangelistDialog2" timestamp="1580779534753">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="406" y="13" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1579578054664" />
+    <state x="406" y="13" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1580779534753" />
     <state x="550" y="172" key="FileChooserDialogImpl" timestamp="1578871218616">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

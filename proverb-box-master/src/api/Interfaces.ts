@@ -3,6 +3,14 @@
  * Code for Christ, 1/23/2020
  */
 
+export type IProverb = {
+    Content : string,
+    Chapter : number,
+    Verse : number,
+    Saved : boolean,
+    ID : number
+};
+
 export type IVerseSignature = {
     Chapter: number,
     VerseNumber: number

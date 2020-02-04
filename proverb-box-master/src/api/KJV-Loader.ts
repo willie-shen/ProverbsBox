@@ -4,19 +4,24 @@
  * Code for Christ, 1/23/2020
  */
 
-import {IVerseSignature} from "./Interfaces"
-import structure from "../indexing/ProverbsStructure.json"
-import sayingsStructure from '../indexing/Sayings.json'
-import statementStructure from '../indexing/Statements.json'
-
+import {IBookData} from "./Interfaces"
 
 export default class KJVLoader {
-    Load(TranslationDataPath: string) {
-        fetch('./translations/KJV-Proverbs.json')
-            .then((res) => res.json())
-            .then((data) => {
-                console.log('data:', data);
-            })
+    async Load(TranslationDataPath: string) {
+        return new Promise(resolve => {
+            console.log("Test");
+            fetch(TranslationDataPath)
+                .then((res) => res.json())
+                .then((data) => {
+                    const book : IBookData = data.verses.map((verse :any) => {
+                        return {
+                            Content: verse.text,
+                            Chapter: verse.chapter,
+                            VerseNumber: verse.verse
+                        };
+                    });
+                    resolve(book);
+                });
+        });
     }
-
 }
