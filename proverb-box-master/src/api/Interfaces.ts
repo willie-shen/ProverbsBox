@@ -58,3 +58,11 @@ export type IModel = {
     Filters: Array<()=>boolean>
     Translation: string
 }
+
+export type IFilter = {
+    (verse: IVerseSignature) : boolean
+};
+
+export type IFilterMap = {
+    [name: string] : IFilter
+};
