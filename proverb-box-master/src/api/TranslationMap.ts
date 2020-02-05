@@ -75,13 +75,14 @@ export default class TranslationMap
 
     private TriggerCallbacks() {
         // Callback hook
-        const callbackBackup = this.onLoadedCallbacks;
-        for (let i in callbackBackup) {
-            // Push to async queue. this will allow for handling nested Loads and callbacks.
+        // add all callbacks to a callbackQueue
+        const callbackQueue = this.onLoadedCallbacks;
+        callbackQueue.forEach((c) => {
+            // Push callbacks to async queue. this will allow for handling nested Loads and callbacks.
             setTimeout(()=> {
-                callbackBackup[i](true);
+                c(true);
             }, 0);
-        }
+        });
 
         // Erase Callbacks
         console.log("erasing length", this.onLoadedCallbacks.length);

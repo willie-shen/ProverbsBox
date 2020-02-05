@@ -2,7 +2,7 @@
 import Indexer from "./Indexer"
 import * as I from "./Interfaces"
 
-describe("test Indexer api", () => {
+describe("Indexer", () => {
     it("gets ID correctly", () => {
         expect(Indexer.GetVerseID(1, 2)).toBe(1002);
         expect(Indexer.GetVerseID(21, 23)).toBe(21023);

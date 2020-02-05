@@ -26,7 +26,7 @@ describe("TranslationMap", () => {
         tm.LoadTranslation("KJV");
         expect(tm.GetTranslationName()).toEqual("LOADING");
         expect(() => {
-            tm.GetContent(10001)
+            tm.GetContent(10001);
         }).toThrow();
     });
 
