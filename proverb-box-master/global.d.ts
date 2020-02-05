@@ -1,2 +1,1 @@
-// Fetch Mock support for jest testing
-import 'jest-fetch-mock'
+import "jest-fetch-mock"

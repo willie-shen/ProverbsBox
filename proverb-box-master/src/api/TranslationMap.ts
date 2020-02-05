@@ -38,6 +38,7 @@ export default class TranslationMap
     AddOnLoadedCallback(callback: (success: boolean)=>void)
     {
         this.onLoadedCallbacks.push(callback);
+        console.log("Added callback");
     }
 
     /*
@@ -49,7 +50,9 @@ export default class TranslationMap
         if (this.translationName === TranslationName)
         {
             // Push to asynch callback queue (for homogeneity)
-            setTimeout(this.TriggerCallbacks, 0);
+            setTimeout(()=>{
+                this.TriggerCallbacks();
+                }, 0);
             return;
         }
 
@@ -65,17 +68,23 @@ export default class TranslationMap
         const loaderInstance = new loaderData.Loader();
         loaderInstance.Load(loaderData.Data).then((book: IBookData) => {
             this.book = book;
+            this.translationName = TranslationName;
             this.TriggerCallbacks();
         });
     }
 
     private TriggerCallbacks() {
         // Callback hook
-        this.onLoadedCallbacks.forEach(callback => {
-            callback(true);
-        });
+        const callbackBackup = this.onLoadedCallbacks;
+        for (let i in callbackBackup) {
+            // Push to async queue. this will allow for handling nested Loads and callbacks.
+            setTimeout(()=> {
+                callbackBackup[i](true);
+            }, 0);
+        }
 
         // Erase Callbacks
+        console.log("erasing length", this.onLoadedCallbacks.length);
         this.onLoadedCallbacks = [];
     }
 
