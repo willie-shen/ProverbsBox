@@ -12,10 +12,11 @@ export default function TestScript() {
 
     var storage = new StorageAssistant()
 
-    storage.BookmarkVerse(1)
-    storage.BookmarkVerse(2)
-    storage.BookmarkVerse(2)
-    storage.BookmarkVerse(3)
+    //storage.BookmarkVerse(1)
+    //storage.BookmarkVerse(3)
+    //storage.BookmarkVerse(2)
+    //storage.BookmarkVerse(2)
+    
 
     console.log(storage)
 
