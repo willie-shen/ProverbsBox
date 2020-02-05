@@ -35,7 +35,7 @@ export const Filters : {[name:string] : (input1?: any, input2?: any) => [string,
     },
 
     /*
-    The following nearly works but should be reformatted.
+    The following nearly works but should be reformatted to return a callback that takes a verse signature
     ByChapter : (chapter : number) => {
         const filter : IFilter = (proverb : IProverb) => (chapter === proverb.Chapter);
         return [

@@ -1,5 +1,5 @@
 import TranslationMap from "./TranslationMap"
-import 'jest-fetch-mock'
+//import 'jest-fetch-mock'
 import data from '../../public/assets/translations/KJV-Proverbs.json'
 
 it("loads with no callbacks", () => {
@@ -12,8 +12,6 @@ it("loads with no callbacks", () => {
 });
 
 it("loads with 1 callback", (done) => {
-
-    fetch.mockResponsOnce(JSON.stringify(data));
 
     const tm = new TranslationMap();
     expect(tm.GetTranslationName()).toEqual("NONE");
