@@ -31,6 +31,148 @@ describe("Indexer", () => {
     it("permutes verses", () => {
         const verses : Array<I.IVerseSignature> = Indexer.PermuteVerses();
         expect(verses.length).toBe(915);
+        expect(verses[1].VerseNumber).toBe(2);
+        expect(verses[1].Chapter).toBe(1);
+        expect(verses[914].VerseNumber).toBe(31);
+        expect(verses[914].Chapter).toBe(31);
         /* More exhaustive tests can be written here. */
     });
 });
+
+describe("InBetween", () => {
+
+    it("passes trivial cases", () => {
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 3,
+                VerseNumber: 7
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(true);
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 1,
+                VerseNumber: 5
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(false);
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 7,
+                VerseNumber: 1
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(false);
+    });
+
+    it("edge inclusivity", () => {
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(true);
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(true);
+    });
+
+    it("boundary chapter", () => {
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 2,
+                VerseNumber: 3
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(false);
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 2,
+                VerseNumber: 5
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(true);
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 6,
+                VerseNumber: 6
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(false);
+
+        expect(Indexer.IsVerseBetween(
+            {
+                Chapter: 6,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 2,
+                VerseNumber: 4
+            },
+            {
+                Chapter: 6,
+                VerseNumber: 5
+            })).toBe(true);
+    });
+
+}); // end of describe()
