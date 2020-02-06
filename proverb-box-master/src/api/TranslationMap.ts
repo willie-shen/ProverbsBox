@@ -38,10 +38,9 @@ export default class TranslationMap
     AddOnLoadedCallback(callback: (success: boolean)=>void)
     {
         this.onLoadedCallbacks.push(callback);
-        console.log("Added callback");
     }
 
-    /*
+     /*
         Loads a translation of the book of proverbs
      */
     LoadTranslation(TranslationName: string)
@@ -85,7 +84,6 @@ export default class TranslationMap
         });
 
         // Erase Callbacks
-        console.log("erasing length", this.onLoadedCallbacks.length);
         this.onLoadedCallbacks = [];
     }
 

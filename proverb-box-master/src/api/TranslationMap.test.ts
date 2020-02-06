@@ -78,10 +78,17 @@ describe("TranslationMap", () => {
         tm.AddOnLoadedCallback(mockCallback);
     });
 
-    it("retrieves verse", () => {
+    it("retrieves verse", (done) => {
         tm.LoadTranslation("KJV");
         tm.AddOnLoadedCallback(success => {
-
+            expect(tm.GetContent(1001).Content).toEqual("The proverbs of Solomon the son of David, king of Israel;");
+            expect(tm.GetContent(1001).Chapter).toBe(1);
+            expect(tm.GetContent(1001).VerseNumber).toBe(1);
+            expect(tm.GetContent(3014).Content).toEqual("For the merchandise of it [is] better than the merchandise of silver, and the gain thereof than fine gold.");
+            expect(tm.GetContent(3014).Chapter).toBe(3);
+            expect(tm.GetContent(3014).VerseNumber).toBe(14);
+            expect(tm.GetContent(31031).Content).toEqual("Give her of the fruit of her hands; and let her own works praise her in the gates.");
+            done();
         });
     });
 });
