@@ -77,4 +77,11 @@ describe("TranslationMap", () => {
         tm.AddOnLoadedCallback(mockCallback);
         tm.AddOnLoadedCallback(mockCallback);
     });
+
+    it("retrieves verse", () => {
+        tm.LoadTranslation("KJV");
+        tm.AddOnLoadedCallback(success => {
+
+        });
+    });
 });

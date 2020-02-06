@@ -1,5 +1,5 @@
 /*
- * Playground for testing API.
+ * Playground for testing API. (Deprecated, USE JEST test suite, run: terminal> npm test)
  * Code for Christ 1/23/2020
  */
 
