@@ -3,11 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/capacitor.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/capacitor.config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/StorageAssistant.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/StorageAssistant.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TestScript1.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript1.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/TestScript2.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript2.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript3.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript3.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript4.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript4.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript5.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TestScript5.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TranslationMap.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TranslationMap.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Filters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Filters.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Proverb.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Proverb.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ProverbData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProverbData.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Bookmarked.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Bookmarked.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Discover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Discover.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Library.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +105,7 @@
       <workItem from="1579836749812" duration="15838000" />
       <workItem from="1580770323075" duration="4929000" />
       <workItem from="1580789578948" duration="10539000" />
-      <workItem from="1580859962369" duration="19554000" />
+      <workItem from="1580859962369" duration="21239000" />
     </task>
     <servers />
   </component>

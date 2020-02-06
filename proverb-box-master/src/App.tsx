@@ -10,6 +10,7 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+
 import { search, filing, heartEmpty } from 'ionicons/icons';
 import Library from './pages/Library';
 import Bookmarked from './pages/Bookmarked';
@@ -36,12 +37,8 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 /* Data */
-import data from './data/Proverbs.json';
 import ProverbData from "./components/ProverbData";
 import {Filters} from "./components/Filters"
-
-/* Interface */
-import {IProverb} from "./components/ProverbInterface";
 
 // Test API Functionality
 import TestScript1 from "./api/TestScript1"
@@ -58,14 +55,6 @@ if (conf.test3) {TestScript3()}
 if (conf.test4) {TestScript4()}
 if (conf.test5) {TestScript5()}
 
-/* Resources */
-/*
-  https://alligator.io/js/json-parse-stringify/
-  https://github.com/chybie/ts-json/blob/master/app.ts
-  https://hackernoon.com/import-json-into-typescript-8d465beded79
-  https://reactjs.org/docs/lists-and-keys.html
-  https://errors.wtf/left-side-of-comma-operator-is-unused-and-has-no-side-effects/
-*/
 
 const pd = new ProverbData();
 

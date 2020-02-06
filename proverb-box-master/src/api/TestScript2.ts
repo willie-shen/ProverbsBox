@@ -10,7 +10,7 @@ export default function TestScript() {
     console.log("TestScript 2 Running");
     /* Test Code Here */
 
-    var storage = new StorageAssistant()
+    let storage = new StorageAssistant();
 
     //storage.BookmarkVerse(1)
     //storage.BookmarkVerse(3)

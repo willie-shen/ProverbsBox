@@ -1,7 +1,6 @@
 /* Parsing the Json */
 import data from '../data/Proverbs.json';
 import {IProverb, IFilter, IFilterMap} from './ProverbInterface';
-import {Filters} from './Filters';
 
 export default class ProverbData {
     private verses : Array<IProverb>;
@@ -24,17 +23,16 @@ export default class ProverbData {
 
         this.oneLiners = this.verses.filter((proverb: IProverb) => {
             let oneLine: boolean = true;
-            let text : string = "";
             if (typeof(proverb.Content) === "string")
             {
-                let text : string = proverb.Content;
+                let text: string = proverb.Content;
 
-                if (text[0] != (text[0]).toUpperCase())
+                if (text[0] !== (text[0]).toUpperCase())
                 {
                     oneLine = false;
                 }
 
-                if (text.slice(-1) != '.' && text.slice(-1) != '?') {
+                if (text.slice(-1) !== '.' && text.slice(-1) !== '?') {
                     oneLine = false;
                 }
 
@@ -85,17 +83,5 @@ export default class ProverbData {
     GetFilteredOneLiners() : Array<IProverb>
     {
         return this.RunFilters(this.oneLiners);
-    }
-
-    // Setters
-    // Memory
-    Save(id : number)
-    {
-
-    }
-
-    Unsave(id : number)
-    {
-
     }
 }
