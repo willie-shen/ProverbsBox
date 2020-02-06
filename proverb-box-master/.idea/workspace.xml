@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Indexer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Indexer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +94,7 @@
       <workItem from="1579836749812" duration="15838000" />
       <workItem from="1580770323075" duration="4929000" />
       <workItem from="1580789578948" duration="10539000" />
-      <workItem from="1580859962369" duration="23993000" />
+      <workItem from="1580859962369" duration="24051000" />
     </task>
     <servers />
   </component>

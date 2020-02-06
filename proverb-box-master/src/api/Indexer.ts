@@ -139,7 +139,7 @@ export default class Indexer {
         }
 
         // verse bounds
-        if (verse.Chapter == start.Chapter && verse.VerseNumber < end.VerseNumber
+        if (verse.Chapter == start.Chapter && verse.VerseNumber < start.VerseNumber
             || verse.Chapter == end.Chapter && verse.VerseNumber > end.VerseNumber)
         {
             return false;
