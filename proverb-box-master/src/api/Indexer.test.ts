@@ -176,3 +176,9 @@ describe("InBetween", () => {
     });
 
 }); // end of describe()
+
+describe("indexer.GetVerseType()", () => {
+    it("statements", () => {
+        expect(Indexer.GetVerseType(Indexer.GetVerseID(25, 3))).toEqual(["Statement"]);
+    });
+});

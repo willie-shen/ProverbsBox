@@ -204,6 +204,7 @@ export default class Indexer {
                             return ["Intro"];
                         }
                     }
+                    return ["Statement"];
                 }
             }
             return [];
@@ -211,9 +212,10 @@ export default class Indexer {
 
         // return values
         const sayingRes = isSaying();
-        if (sayingRes !== []) {return sayingRes;}
+        if (sayingRes.length !== 0) {return sayingRes;}
+
         const statementRes = isStatement();
-        if (statementRes) {return statementRes;}
+        if (statementRes.length !== 0) {return statementRes;}
         return ["Article"];
     }
 }
