@@ -6,71 +6,18 @@
 
 import {IVerseSignature} from "./Interfaces"
 import structure from "../indexing/ProverbsStructure.json"
-import sayingsStructure from '../indexing/Sayings.json'
-import statementStructure from '../indexing/Statements.json'
-
-/*
-{
-    "_comment": "Sayings outline",
-    "Sections": [
-        {
-            "Title": "Thirty Sayings of the Wise",
-            "Sayings": {
-                "1": {
-                    "Start": {
-                        "Ch": 22,
-                        "Vs": 17
-                    },
-                    "End": {
-                        "Ch": 22,
-                        "Vs": 21
-                    }
-                }
-            }
-        }
-    ]
-}
-*/
-/*
-Range": [
-{
-    "Title": "Proverbs of Solomon",
-    "Intro": {
-    "Ch": 25, "Vs": 1, "Part": true
-},
-    "Start": {
-    "Ch": 10,
-        "Vs": 1
-},
-    "End": {
-    "Ch": 22,
-        "Vs": 16
-}
-},
-{
-    "Title": "More Proverbs of Solomon",
-    "Intro": {"Ch": 25, "Vs": 1, "Part": false},
-    "Start": {
-    "Ch": 25,
-        "Vs": 1
-},
-    "End": {
-    "Ch": 29,
-        "Vs": 27
-}
-}
-]
-*/
+import sayingsStructure_Any from '../indexing/Sayings.json'
+import statementStructure_Any from '../indexing/Statements.json'
 
 type ISayingIndex = {
     Ch: number,
     Vs: number
-}
+};
 
 type ISayingRange = {
     Start: ISayingIndex,
     End: ISayingIndex
-}
+};
 
 type IStatementRange = {
     Title: string,
@@ -81,19 +28,27 @@ type IStatementRange = {
     }
     Start: ISayingIndex,
     End: ISayingIndex
-}
+};
 
-type IStatementStructure = Array<IStatementRange>
+type IStatementRanges = Array<IStatementRange>;
 
-type ISayings = Record<string, ISayingRange>
+type IStatementStructure = {
+    _comment: string,
+    Range: IStatementRanges
+};
+
+type ISayings = Record<string, ISayingRange>;
 
 type ISayingSection= {
     Title: string
     Sayings: ISayings
-}
+};
 
-type ISayingSections = Array<ISayingSection>
-
+type ISayingSections = Array<ISayingSection>;
+type ISayingStructure = {
+    _comment: string,
+    Sections: ISayingSections
+};
 
 export default class Indexer {
 
@@ -101,7 +56,7 @@ export default class Indexer {
         return Chapter * 1000 + Verse;
     }
 
-    static GetVerse(VerseID: number) {
+    static GetVerseSignature(VerseID: number) {
         let verse : IVerseSignature = {
             Chapter: Math.floor(VerseID/1000),
             VerseNumber: VerseID % 1000
@@ -150,12 +105,15 @@ export default class Indexer {
     }
 
     static GetVerseType(VerseID: number) {
-        const verse = this.GetVerse(VerseID);
+        const sayingsStructure: ISayingStructure = sayingsStructure_Any;
+        const statementStructure: IStatementStructure = statementStructure_Any;
+        const verse = this.GetVerseSignature(VerseID);
 
         const isSaying = () => {
-            for (const section of sayingsStructure.Sections)
+
+            for (const [secID, section] of Object.entries(sayingsStructure.Sections))
             {
-                for (const sayingRange of Object.values(section.Sayings))
+                for (const [sayID, sayingRange] of Object.entries(section.Sayings))
                 {
                     // check in range
                     const start: IVerseSignature = {
@@ -169,12 +127,21 @@ export default class Indexer {
                     const inRange: boolean = this.IsVerseBetween(verse, start, end);
 
                     // found range
-                    if (inRange) return ["Saying"];
+                    if (inRange) {
+                        const gID: number = parseInt(secID + 1) * 1000 + parseInt(sayID);
+                        return {
+                            found: true,
+                            types: ["Saying"],
+                            group: gID
+                        }
+                    }
                 }
             }
 
             // not found in records
-            return [];
+            return {
+                found: false
+            };
         };
 
         const isStatement = () => {
@@ -197,25 +164,43 @@ export default class Indexer {
                         // part
                         if (range.Intro.Part)
                         {
-                            return ["Intro", "Statement"];
+                            return {
+                                found: true,
+                                types: ["Intro","Statement"]
+                            };
                         }
                         else
                         {
-                            return ["Intro"];
+                            return {
+                                found: true,
+                                types: ["Intro"]
+                            };
                         }
                     }
-                    return ["Statement"];
+                    return {
+                        found: true,
+                        types: ["Statement"]
+                    };
                 }
             }
-            return [];
+            return {
+                found: false
+            };
         };
 
         // return values
         const sayingRes = isSaying();
-        if (sayingRes.length !== 0) {return sayingRes;}
+        if (sayingRes.found) {return sayingRes;}
 
         const statementRes = isStatement();
-        if (statementRes.length !== 0) {return statementRes;}
-        return ["Article"];
+        if (statementRes.found) {return statementRes;}
+        return {
+            found: true,
+            types: ["Article"]
+        };
+    }
+
+    static LoadVerseMetadata(verse: IVerseSignature) {
+
     }
 }

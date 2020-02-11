@@ -11,17 +11,17 @@ describe("Indexer", () => {
 
     it("gets verse", () => {
         let verse: I.IVerseSignature;
-        verse = Indexer.GetVerse(1002);
+        verse = Indexer.GetVerseSignature(1002);
         expect(verse).toEqual({
             Chapter: 1,
             VerseNumber: 2
         });
-        verse = Indexer.GetVerse(22031);
+        verse = Indexer.GetVerseSignature(22031);
         expect(verse).toEqual({
             Chapter: 22,
             VerseNumber: 31
         });
-        verse = Indexer.GetVerse(102351);
+        verse = Indexer.GetVerseSignature(102351);
         expect(verse).toEqual({
             Chapter: 102,
             VerseNumber: 351
@@ -179,6 +179,30 @@ describe("InBetween", () => {
 
 describe("indexer.GetVerseType()", () => {
     it("statements", () => {
-        expect(Indexer.GetVerseType(Indexer.GetVerseID(25, 3))).toEqual(["Statement"]);
+        expect(Indexer.GetVerseType(Indexer.GetVerseID(25, 3))).toEqual({
+            found: true,
+            types: ["Statement"]
+        });
+    });
+
+    it("sayings", () => {
+        expect(Indexer.GetVerseType(Indexer.GetVerseID(22, 18))).toEqual({
+            found: true,
+            types: ["Saying"],
+            group: 1001
+        });
+        expect(Indexer.GetVerseType(Indexer.GetVerseID(22, 17))).toEqual({
+            found: true,
+            types: ["Saying"],
+            group: 1001
+        });
+    });
+    /* Add more sayings tests */
+
+    it ("articles", ()=> {
+        expect(Indexer.GetVerseType(Indexer.GetVerseID(8, 1))).toEqual({
+            found: true,
+            types: ["Article"],
+        });
     });
 });

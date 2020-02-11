@@ -102,7 +102,7 @@ export default class TranslationMap
         else if (this.translationName === "LOADING") {
             throw Error("Translation version is still loading. Try use a callback using AddOnLoadedCallback()");
         }
-        const {VerseNumber, Chapter} = Indexer.GetVerse(VerseID);
+        const {VerseNumber, Chapter} = Indexer.GetVerseSignature(VerseID);
         return this.book.filter(verse => {
             return verse.VerseNumber == VerseNumber && verse.Chapter == Chapter;
         })[0];

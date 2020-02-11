@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
+      <change afterPath="$PROJECT_DIR$/src/api/ContentManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript1.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript3.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript4.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/TestScript5.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/FilterCollection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/FilterCollection.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Indexer.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Indexer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Interfaces.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TranslationMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TranslationMap.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +101,7 @@
       <workItem from="1580770323075" duration="4929000" />
       <workItem from="1580789578948" duration="10539000" />
       <workItem from="1580859962369" duration="27275000" />
-      <workItem from="1581397432089" duration="376000" />
+      <workItem from="1581397432089" duration="7616000" />
     </task>
     <servers />
   </component>
