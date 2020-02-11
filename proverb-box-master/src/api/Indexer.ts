@@ -4,7 +4,7 @@
  * Code for Christ, 1/23/2020
  */
 
-import {IVerseSignature} from "./Interfaces"
+import {IVerseSignature, IVerseMeta} from "./Interfaces"
 import structure from "../indexing/ProverbsStructure.json"
 import sayingsStructure_Any from '../indexing/Sayings.json'
 import statementStructure_Any from '../indexing/Statements.json'
@@ -104,7 +104,7 @@ export default class Indexer {
         return true;
     }
 
-    static GetVerseType(VerseID: number) {
+    static GetVerseType(VerseID: number): IVerseMeta {
         const sayingsStructure: ISayingStructure = sayingsStructure_Any;
         const statementStructure: IStatementStructure = statementStructure_Any;
         const verse = this.GetVerseSignature(VerseID);
@@ -173,13 +173,15 @@ export default class Indexer {
                         {
                             return {
                                 found: true,
-                                types: ["Intro"]
+                                types: ["Intro"],
+                                group: VerseID
                             };
                         }
                     }
                     return {
                         found: true,
-                        types: ["Statement"]
+                        types: ["Statement"],
+                        group: VerseID
                     };
                 }
             }
@@ -196,11 +198,18 @@ export default class Indexer {
         if (statementRes.found) {return statementRes;}
         return {
             found: true,
-            types: ["Article"]
+            types: ["Article"],
+            group: 1, // FOR NOW: all articles are bundled.
         };
     }
 
     static LoadVerseMetadata(verse: IVerseSignature) {
-
+        const meta = this.GetVerseType(this.GetVerseID(verse.Chapter, verse.VerseNumber));
+        if (meta.types) {
+            verse.Type = meta.types[0];
+        }
+        if (meta.group) {
+            verse.GroupID = meta.group
+        }
     }
 }

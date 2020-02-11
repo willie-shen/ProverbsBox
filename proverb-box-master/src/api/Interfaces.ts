@@ -29,25 +29,26 @@ export type IBookData = Array<IVerse>;
 
 export type IStatement = {
     Verse: IVerse
-    Saved : boolean,
-    ID : number
+    Saved?: boolean,
+    ID: number
 };
 
 export type IArticle = {
     Verses: Array<IVerse>,
-    ID : number
+    ID: number
     /* Potentially add highlights/notes array*/
 };
 
 export type ISaying = {
     Verses: Array<IVerse>,
-    ID : number,
-    Saved: boolean
+    Saved?: boolean
+    ID: number,
     /* Potentially add highlights/notes array*/
 };
 
 export type ITitle = {
-    Text: string
+    Text: string,
+    Ref: string
 };
 
 export type IComponentModel = {
@@ -57,11 +58,11 @@ export type IComponentModel = {
 
 export type IModel = {
     ComponentModels: Array<IComponentModel>
-    Filters: Array<()=>boolean>
+    FilterNames: Array<string>
     Translation: string
 };
 
-export type IMetaData = {
+export type IVerseMeta = {
     found: boolean,
     types?: Array<string>,
     group?: number
