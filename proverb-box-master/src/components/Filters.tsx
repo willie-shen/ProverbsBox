@@ -33,8 +33,8 @@ export const Filters : {[name:string] : (input1?: any, input2?: any) => [string,
             }
 
             // verse bounds
-            if (proverb.Chapter == start.Chapter && proverb.Verse < start.Verse
-                || proverb.Chapter == end.Chapter && proverb.Verse > end.Verse)
+            if ( (proverb.Chapter === start.Chapter && proverb.Verse < start.Verse)
+                || (proverb.Chapter === end.Chapter && proverb.Verse > end.Verse))
             {
                 return false;
             }

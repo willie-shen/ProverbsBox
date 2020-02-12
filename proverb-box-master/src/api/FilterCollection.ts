@@ -10,10 +10,10 @@
  * Code for Christ, Jan 4, 2020
  */
 
-import {IVerseSignature, IFilter} from './Interfaces';
+import {IVerseSignature, IFilter, IFilterCallback} from './Interfaces';
 import Indexer from './Indexer'
 
-export const Filters : {[name:string] : (input1?: any, input2?: any) => [string, IFilter]} = {
+export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) => IFilter} = {
     /*
         Example:
         FilterName :
@@ -26,12 +26,13 @@ export const Filters : {[name:string] : (input1?: any, input2?: any) => [string,
      */
 
     BySpan : (start:IVerseSignature, end:IVerseSignature) => {
-        const filter : IFilter = (verse : IVerseSignature) => {
+        const c: IFilterCallback = (verse : IVerseSignature) => {
             return Indexer.IsVerseBetween(verse, start, end);
         };
-        return [
-            "Span",
-            filter]
+        return {
+            name: "Span",
+            callback: c
+        };
     },
 
     /*
