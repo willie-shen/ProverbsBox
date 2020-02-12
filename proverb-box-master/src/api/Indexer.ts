@@ -214,10 +214,11 @@ export default class Indexer {
     }
 
     static SearchVerseHighlight(verse: IVerse, pattern: string): boolean {
-        const reg = new RegExp(pattern, "g");
-        let result = verse.Content.matchAll(reg);
+        const regex = new RegExp(pattern, "g");
+        let result: RegExpExecArray | null;
         let test = false;
-        for (let h of result) {
+
+        while ((result = regex.exec(verse.Content)) !== null) {
             test = true;
             if (!verse.SearchHighlights)
             {
@@ -225,14 +226,13 @@ export default class Indexer {
             }
 
             // Push highlights
-            if (h.index) {
-                verse.SearchHighlights.push({
-                    iStart: h.index,
-                    iEnd: h.index + h[0].length,
-                });
-            }
+            verse.SearchHighlights.push({
+                iStart: result.index,
+                iEnd: result.index + result[0].length
+            });
         }
-        return true;
+
+        return test;
     }
 
     static SearchVerseClear(verse: IVerse) {
