@@ -214,7 +214,7 @@ export default class Indexer {
     }
 
     static SearchVerseHighlight(verse: IVerse, pattern: string): boolean {
-        const regex = new RegExp(pattern, "g");
+        const regex = new RegExp(pattern, "gi");
         let result: RegExpExecArray | null;
         let test = false;
 

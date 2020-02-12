@@ -183,7 +183,8 @@ describe("indexer.GetVerseType()", () => {
     it("statements", () => {
         expect(Indexer.GetVerseType(Indexer.GetVerseID(25, 3))).toEqual({
             found: true,
-            types: ["Statement"]
+            types: ["Statement"],
+            group: 25003
         });
     });
 
@@ -205,6 +206,7 @@ describe("indexer.GetVerseType()", () => {
         expect(Indexer.GetVerseType(Indexer.GetVerseID(8, 1))).toEqual({
             found: true,
             types: ["Article"],
+            group: 1
         });
     });
 });
@@ -220,27 +222,56 @@ describe("indexer SearchVerseHighlight() ~~ regex", () => {
 
     it("searches single", (done) => {
         const verseID = Indexer.GetVerseID(11, 4);
-        const translator = new TranslationMap();
-        translator.LoadTranslation("KJV");
-        translator.AddOnLoadedCallback(success => {
-            expect(translator.GetTranslationName()).toBe("KJV");
-            const verse = translator.GetContent(verseID);
+        tm.LoadTranslation("KJV");
+        tm.AddOnLoadedCallback(success => {
+            expect(tm.GetTranslationName()).toBe("KJV");
+            const verse = tm.GetContent(verseID);
             expect(verse).toBeTruthy();
-            Indexer.SearchVerseHighlight(verse, "ess");
+            /*ess delivereth from death.*/
+            Indexer.SearchVerseHighlight(verse, "es");
+            expect(verse.SearchHighlights).toBeTruthy();
+            if (!verse.SearchHighlights) {
+                throw Error();
+            }
+            expect(verse.SearchHighlights.length).toBe(2);
+            expect(verse.SearchHighlights).toEqual([
+                {
+                    iStart: 4,
+                    iEnd: 6
+                },
+                {
+                    iStart: 53,
+                    iEnd: 55
+                },
+            ]);
+            done();
+        });
+    });
+
+    it("case insensitive", (done) => {
+        const verseID = Indexer.GetVerseID(11, 4);
+        tm.LoadTranslation("KJV");
+        tm.AddOnLoadedCallback(success => {
+            expect(tm.GetTranslationName()).toBe("KJV");
+            const verse = tm.GetContent(verseID);
+            expect(verse).toBeTruthy();
+            /*Riches profit not in the day of wrath: but righteousness delivereth from death.*/
+            Indexer.SearchVerseHighlight(verse, "RI");
             expect(verse.SearchHighlights).toBeTruthy();
             if (!verse.SearchHighlights) {throw Error();}
             expect(verse.SearchHighlights.length).toBe(2);
             expect(verse.SearchHighlights).toEqual([
                 {
-                    iStart: 16,
-                    iEnd: 19
+                    iStart: 0,
+                    iEnd: 2
                 },
                 {
-                    iStart: 55,
-                    iEnd: 58
-                },
+                    iStart: 43,
+                    iEnd: 45
+                }
             ]);
             done();
-        })
+        });
     });
+
 });
