@@ -16,14 +16,14 @@ import {
 export default class ContentManager {
 
     filters: Array<IFilter>;
-    searchExp: RegExp | undefined;
+    searchExp: string;
     translator: TranslationMap;
     translatorLoading: boolean;
     componentModels: Array<IComponentModel>;
 
     constructor() {
         this.filters = [];
-        this.searchExp = undefined;
+        this.searchExp = "";
         this.translator = new TranslationMap();
         this.translatorLoading = false;
         this.componentModels = [];
@@ -39,13 +39,79 @@ export default class ContentManager {
     }
 
     RefineSearch(): Array<IComponentModel> {
+        if (this.searchExp === "")
+        {
+            return this.componentModels;
+        }
 
-        let ore: Array<IComponentModel | undefined> = this.componentModels.map(m => {
+        let ore: Array<IComponentModel | undefined> = this.componentModels.map((m: IComponentModel) => {
+
+            // Saying search (all in or all out)
             if (m.Type === "Saying") {
-                m.Model.
-                Indexer.SearchVerseHighlight()
+                const model = m.Model as ISaying;
+                const keepSaying = model.Verses.map(verse => {
+                    Indexer.SearchVerseClear(verse);
+                    Indexer.SearchVerseHighlight(verse, this.searchExp);
+                })
+                .some(isHighlighted => isHighlighted);
+
+                // original m is altered to contain highlighted features.
+                if (keepSaying) {
+                    return m;
+                }
+
+                else {
+                    return undefined;
+                }
+            }
+
+            // Statement search (in or out)
+            else if (m.Type === "Statement") {
+                const model = m.Model as IStatement;
+                Indexer.SearchVerseClear(model.Verse);
+                if (Indexer.SearchVerseHighlight(model.Verse, this.searchExp)) {
+                    return m;
+                }
+                else {
+                    return undefined;
+                }
+            }
+
+            // Article search (filter by verse)
+            else if (m.Type === "Article") {
+                const model = m.Model as IArticle;
+                const refinedVerses = model.Verses.filter(v => {
+                    return Indexer.SearchVerseHighlight(v, this.searchExp);
+                });
+
+                if (refinedVerses.length == 0) {
+                    return undefined;
+                }
+                else {
+                    const refinedArticle = {
+                        Type: "Article",
+                        Model: {
+                            Verses: refinedVerses,
+                            ID: model.ID
+                        }
+                    };
+                    return refinedArticle;
+                }
+            }
+
+            // Don't alter titles
+            else if (m.Type === "Title") {
+                return m;
+            }
+
+            // Failure
+            else {
+                return undefined;
             }
         });
+
+        const refinedModel = ore.filter(m => !!m);
+        return refinedModel as Array<IComponentModel>;
     }
 
     GetModel() {

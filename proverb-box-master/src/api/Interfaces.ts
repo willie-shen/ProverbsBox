@@ -58,13 +58,13 @@ export type ITitle = {
 };
 
 export type IComponentModel = {
-    Type: string /* “Statement” “Article” “Saying” “Title” */
+    Type: string, /* “Statement” “Article” “Saying” “Title” */
     Model: IStatement | IArticle | ISaying | ITitle
 };
 
 export type IModel = {
-    ComponentModels: Array<IComponentModel>
-    FilterNames: Array<string>
+    ComponentModels: Array<IComponentModel>,
+    FilterNames: Array<string>,
     Translation: string
 };
 
