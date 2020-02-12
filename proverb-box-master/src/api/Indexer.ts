@@ -4,7 +4,7 @@
  * Code for Christ, 1/23/2020
  */
 
-import {IVerseSignature, IVerseMeta} from "./Interfaces"
+import {IVerseSignature, IVerseMeta, IVerse} from "./Interfaces"
 import structure from "../indexing/ProverbsStructure.json"
 import sayingsStructure_Any from '../indexing/Sayings.json'
 import statementStructure_Any from '../indexing/Statements.json'
@@ -211,5 +211,31 @@ export default class Indexer {
         if (meta.group) {
             verse.GroupID = meta.group
         }
+    }
+
+    static SearchVerseHighlight(verse: IVerse, pattern: string): boolean {
+        const reg = new RegExp(pattern, "g");
+        let result = verse.Content.matchAll(reg);
+        let test = false;
+        for (let h of result) {
+            test = true;
+            if (!verse.SearchHighlights)
+            {
+                verse.SearchHighlights = [];
+            }
+
+            // Push highlights
+            if (h.index) {
+                verse.SearchHighlights.push({
+                    iStart: h.index,
+                    iEnd: h.index + h[0].length,
+                });
+            }
+        }
+        return true;
+    }
+
+    static SearchVerseClear(verse: IVerse) {
+        verse.SearchHighlights = undefined;
     }
 }

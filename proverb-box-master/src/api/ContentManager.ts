@@ -16,22 +16,50 @@ import {
 export default class ContentManager {
 
     filters: Array<IFilter>;
+    searchExp: RegExp | undefined;
     translator: TranslationMap;
     translatorLoading: boolean;
+    componentModels: Array<IComponentModel>;
 
     constructor() {
         this.filters = [];
+        this.searchExp = undefined;
         this.translator = new TranslationMap();
         this.translatorLoading = false;
+        this.componentModels = [];
     }
 
     async LoadTranslation(translationName: string) {
         this.translatorLoading = true;
-        this.translator.AddOnLoadedCallback(()=>{this.translatorLoading = false;});
+        this.translator.AddOnLoadedCallback(()=>{
+            this.translatorLoading = false;
+            this.RefreshModels();
+        });
         await this.translator.LoadTranslation(translationName);
     }
 
+    RefineSearch(): Array<IComponentModel> {
+
+        let ore: Array<IComponentModel | undefined> = this.componentModels.map(m => {
+            if (m.Type === "Saying") {
+
+            }
+        });
+    }
+
     GetModel() {
+        // generate model
+        const model: IModel = {
+            ComponentModels: this.componentModels,
+            FilterNames: this.filters.map(f => f.name),
+            Translation: this.translator.GetTranslationName()
+        };
+
+        // return
+        return model;
+    }
+
+    private RefreshModels() {
         // filter verses
         let signatures = Indexer.PermuteVerses();
         this.filters.forEach(f => {
@@ -133,16 +161,7 @@ export default class ContentManager {
                 Model: model
             };
         });
-
-        // generate model
-        const model: IModel = {
-            ComponentModels: componentModels,
-            FilterNames: this.filters.map(f => f.name),
-            Translation: this.translator.GetTranslationName()
-        };
-
-        // return
-        return model;
+        this.componentModels = componentModels;
     }
 
     UpdateSearch(text: string) {
@@ -169,6 +188,9 @@ export default class ContentManager {
 
         // add filter
         this.filters.push(filter);
+
+        // refresh models
+        this.RefreshModels();
     }
 
     // Remove a filter by filter name
@@ -178,6 +200,9 @@ export default class ContentManager {
         });
 
         // For efficiency, add option: remove search pool
+
+        // refresh models
+        this.RefreshModels();
     }
 
 }

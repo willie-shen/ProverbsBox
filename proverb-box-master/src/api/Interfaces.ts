@@ -18,11 +18,17 @@ export type IVerseSignature = {
     Type?: string
 };
 
+export type ITextRange = {
+    iStart: number,
+    iEnd: number
+}
+
 export type IVerse = {
     Content : string,
     Chapter : number,
     VerseNumber : number,
-    Commentary ?: string
+    Commentary ?: string,
+    SearchHighlights?: Array<ITextRange>
 };
 
 export type IBookData = Array<IVerse>;
