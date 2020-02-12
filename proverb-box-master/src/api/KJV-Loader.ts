@@ -4,7 +4,7 @@
  * Code for Christ, 1/23/2020
  */
 
-import {IBookData} from "./Interfaces"
+import {IBookData, IProverb} from "./Interfaces"
 
 export default class KJVLoader {
     async Load(TranslationDataPath: string) {

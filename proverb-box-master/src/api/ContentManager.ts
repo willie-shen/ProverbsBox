@@ -42,7 +42,8 @@ export default class ContentManager {
 
         let ore: Array<IComponentModel | undefined> = this.componentModels.map(m => {
             if (m.Type === "Saying") {
-
+                m.Model.
+                Indexer.SearchVerseHighlight()
             }
         });
     }
