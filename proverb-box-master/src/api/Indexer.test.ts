@@ -1,6 +1,8 @@
 
 import Indexer from "./Indexer"
 import * as I from "./Interfaces"
+import TranslationMap from "./TranslationMap"
+import data from "../../public/assets/translations/KJV-Proverbs.json";
 
 describe("Indexer", () => {
     it("gets ID correctly", () => {
@@ -204,5 +206,41 @@ describe("indexer.GetVerseType()", () => {
             found: true,
             types: ["Article"],
         });
+    });
+});
+
+describe("indexer SearchVerseHighlight() ~~ regex", () => {
+    let tm: TranslationMap;
+
+    beforeEach(() => {
+        fetchMock.resetMocks();
+        fetchMock.mockResponseOnce(JSON.stringify(data));
+        tm = new TranslationMap();
+    });
+
+    it("searches single", (done) => {
+        const verseID = Indexer.GetVerseID(11, 4);
+        const translator = new TranslationMap();
+        translator.LoadTranslation("KJV");
+        translator.AddOnLoadedCallback(success => {
+            expect(translator.GetTranslationName()).toBe("KJV");
+            const verse = translator.GetContent(verseID);
+            expect(verse).toBeTruthy();
+            Indexer.SearchVerseHighlight(verse, "ess");
+            expect(verse.SearchHighlights).toBeTruthy();
+            if (!verse.SearchHighlights) {throw Error();}
+            expect(verse.SearchHighlights.length).toBe(2);
+            expect(verse.SearchHighlights).toEqual([
+                {
+                    iStart: 16,
+                    iEnd: 19
+                },
+                {
+                    iStart: 55,
+                    iEnd: 58
+                },
+            ]);
+            done();
+        })
     });
 });
