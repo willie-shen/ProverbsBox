@@ -1,7 +1,4 @@
-import {IProverb} from "../components/ProverbInterface";
-
 import { Plugins } from '@capacitor/core';
-
 const { Storage } = Plugins;
 
 
@@ -72,10 +69,14 @@ export class StorageAssistant{
 
 		//https://www.tutorialsteacher.com/typescript/typescript-array
 
-		this.storedIDs.push(VerseID)
+		this.storedIDs.push(VerseID);
 		//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+/*<<<<<<< HEAD
 		//console.log(JSON.stringify(this.storedIDs))
-
+=======
+		console.log(JSON.stringify(this.storedIDs));
+>>>>>>> 628de24cba75ffa95d99f0ab1c0c2cbf0e7a2df2
+*/
 		Storage.set({
 			key: "index",
 			value: JSON.stringify(this.storedIDs)
@@ -95,9 +96,15 @@ async setObject() {
 
 	}
 	isBookmarked(VerseID:Number) : boolean{
+<<<<<<< HEAD
 		//console.log(VerseID)
 		console.log(this.storedIDs)
 		return this.storedIDs.indexOf(VerseID) != -1;
+=======
+
+
+		return this.storedIDs.indexOf(VerseID) !== -1;
+>>>>>>> 628de24cba75ffa95d99f0ab1c0c2cbf0e7a2df2
 	}
 	
 }

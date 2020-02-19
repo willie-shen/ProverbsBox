@@ -1,8 +1,5 @@
 import React from 'react';
-import {IonFabButton, IonButton, IonIcon, IonHeader, IonToolbar, IonPage, IonTitle, IonContent, IonFab } from '@ionic/react';
-
-import {Proverb} from '../components/Proverb'
-
+import {IonFabButton, IonIcon, IonHeader, IonToolbar, IonPage, IonTitle, IonContent, IonFab } from '@ionic/react';
 
 const Discover: React.FC = () => {
   return (

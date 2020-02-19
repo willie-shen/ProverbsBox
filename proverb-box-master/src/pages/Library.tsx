@@ -1,28 +1,17 @@
 import {
-  IonPopover,
-  IonGrid,
-  IonRow,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonSearchbar,
-  IonCol,
-  IonButton, IonButtons
+    IonPopover,
+    IonContent,
+    IonHeader,
+    IonIcon,
+    IonPage,
+    IonTitle,
+    IonToolbar,
+    IonSearchbar,
+    IonButton,
+    IonButtons
 } from '@ionic/react';
-import { book, build, colorFill, grid } from 'ionicons/icons';
-import React, {useState} from 'react';
+import { book } from 'ionicons/icons';
+import React from 'react';
 import './Library.css';
 
 import {IProverb} from "../components/ProverbInterface";
@@ -110,6 +99,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             </IonPage>
         );
     }
-};
+}
 
 export default Library;

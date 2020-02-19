@@ -1,26 +1,18 @@
 import { 
   IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
   IonGrid,
   IonRow,
   IonCol,
   IonButton,
   IonIcon
 } from '@ionic/react';
-
-//import {IProverb} from './'
 import React from 'react';
-import CSS from 'csstype'
 
 // Styles
 import "./Proverb.scss"
 
 // Icons
 import { heart, heartEmpty } from 'ionicons/icons';
-
-import data from '../data/Proverbs.json';
 import {IProverb} from './ProverbInterface'
 
 type ProverbProp ={
@@ -34,24 +26,7 @@ type ProverbState = {
 }
 
 class Proverb extends React.Component<ProverbProp, ProverbState> {
-
-  constructor(props: ProverbProp) {
-    super(props);
-    //this.props.Proverb = verses[0]
-  }
-
-  // Member functions?
-
-  // Life 
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-  }
-
   render() {
-
     return (
         <IonCard id={"proverb"}>
           <IonGrid>
@@ -89,7 +64,6 @@ class Proverb extends React.Component<ProverbProp, ProverbState> {
         </IonCard>
       );
     }
-
 }
 
 export {Proverb};
