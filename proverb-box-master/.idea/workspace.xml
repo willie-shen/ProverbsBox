@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indexing/Sayings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexing/Sayings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +95,7 @@
       <workItem from="1580770323075" duration="4929000" />
       <workItem from="1580789578948" duration="10539000" />
       <workItem from="1580859962369" duration="27275000" />
-      <workItem from="1581397432089" duration="34375000" />
+      <workItem from="1581397432089" duration="34779000" />
     </task>
     <servers />
   </component>

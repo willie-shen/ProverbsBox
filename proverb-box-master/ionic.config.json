@@ -1,4 +1,7 @@
 {
   "name": "proverbBox",
-  "type": "react"
+  "type": "react",
+  "integrations": {
+    "capacitor": {}
+  }
 }
