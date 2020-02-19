@@ -7,18 +7,55 @@ const { Storage } = Plugins;
 
 export class StorageAssistant{
 
-	storedIDs:Array<Number> ;
+	storedIDs:Array<Number> = [];
 
 	constructor(){
-		this.storedIDs = [];
+		
+		
+		//this.storedIDs = this.loadFile()
+		//.then(()=>{console.log(this.storedIDs)});
+		
+		//this.loadFile().then(_=>console.log("Outside the then function")).then(_=>console.log(this.storedIDs)) //https://medium.com/better-programming/a-common-misconception-about-async-await-in-javascript-33de224bd5f
+		
+		
+		//console.log(typeof(this.storedIDs))
+		//console.log(typeof(stuff))
 
-		const  value  =  Storage.get({ key: 'index' });
-
-		console.log(value)
 		/*Storage.set({
 			key: "index",
 			value: JSON.stringify("Hello World")
 		})*/
+		// this.storedIDs = stuff
+
+	}
+
+	async loadFile(){
+		//not executing in order
+		console.log("asdf")
+
+		const  data  =  await Storage.get({ key: 'index' });
+		if(data.value!=null){
+
+			 this.storedIDs = await JSON.parse(data.value)
+		}
+
+		console.log("done")
+		//this.storedIDs = JSON.parse(data.value);
+		/*data.then((d)=>{
+			 //https://ionicframework.com/docs/building/storage
+			 alert("Print!")
+			 if(d.value != null){
+			 	this.storedIDs = JSON.parse(d.value)
+			 	//https://stackoverflow.com/questions/46915002/argument-of-type-string-null-is-not-assignable-to-parameter-of-type-string
+
+			 }
+
+			 //return this.storedIDs;
+			//this.storedIDs = {};
+			this.storedIDs = []
+		});*/
+
+
 	}
 
 	BookmarkVerse(VerseID:Number){
@@ -37,7 +74,7 @@ export class StorageAssistant{
 
 		this.storedIDs.push(VerseID)
 		//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-		console.log(JSON.stringify(this.storedIDs))
+		//console.log(JSON.stringify(this.storedIDs))
 
 		Storage.set({
 			key: "index",
@@ -58,10 +95,10 @@ async setObject() {
 
 	}
 	isBookmarked(VerseID:Number) : boolean{
-
-
+		//console.log(VerseID)
+		console.log(this.storedIDs)
 		return this.storedIDs.indexOf(VerseID) != -1;
 	}
-
+	
 }
 
