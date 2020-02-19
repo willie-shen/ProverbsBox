@@ -96,15 +96,15 @@ async setObject() {
 
 	}
 	isBookmarked(VerseID:Number) : boolean{
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 		//console.log(VerseID)
 		console.log(this.storedIDs)
 		return this.storedIDs.indexOf(VerseID) != -1;
 =======
-
+*/
 
 		return this.storedIDs.indexOf(VerseID) !== -1;
->>>>>>> 628de24cba75ffa95d99f0ab1c0c2cbf0e7a2df2
+//>>>>>>> 628de24cba75ffa95d99f0ab1c0c2cbf0e7a2df2
 	}
 	
 }
