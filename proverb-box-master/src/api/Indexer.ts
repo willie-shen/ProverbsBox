@@ -52,6 +52,18 @@ type ISayingStructure = {
 
 export default class Indexer {
 
+    /*
+     * Methods (All Static)
+     *  static GetVerseID(Chapter: number, Verse: number)
+     *  static GetVerseSignature(VerseID: number)
+     *  static PermuteVerses()
+     *  static IsVerseBetween(verse: IVerseSignature, start: IVerseSignature, end: IVerseSignature)
+     *  static GetVerseType(VerseID: number): IVerseMeta
+     *  static LoadVerseMetadata(verse: IVerseSignature)
+     *  static SearchVerseHighlight(verse: IVerse, pattern: string): boolean
+     *  static SearchVerseClear(verse: IVerse)
+     */
+
     static GetVerseID(Chapter: number, Verse: number) {
         return Chapter * 1000 + Verse;
     }
@@ -166,14 +178,14 @@ export default class Indexer {
                         {
                             return {
                                 found: true,
-                                types: ["Intro","Statement"]
+                                types: ["Title","Statement"]
                             };
                         }
                         else
                         {
                             return {
                                 found: true,
-                                types: ["Intro"],
+                                types: ["Title"],
                                 group: VerseID
                             };
                         }
@@ -207,6 +219,11 @@ export default class Indexer {
         const meta = this.GetVerseType(this.GetVerseID(verse.Chapter, verse.VerseNumber));
         if (meta.types) {
             verse.Type = meta.types[0];
+            if (meta.types.length === 2)
+            {
+                verse.Type = meta.types[1];
+                verse.TitlePrefix = "placeholder"; // will be filled with the title verse
+            }
         }
         if (meta.group) {
             verse.GroupID = meta.group
