@@ -6,7 +6,7 @@ import Indexer from "./Indexer";
 
 // Fetch Mock
 import { FetchMock } from 'jest-fetch-mock';
-import {ISaying, IStatement} from "./Interfaces";
+import {ISaying, IStatement, IVerseSignature} from "./Interfaces";
 const fetchMock = fetch as FetchMock;
 
 describe("Content Manager", () => {
@@ -94,7 +94,37 @@ describe("Content Manager", () => {
     it("gets content (with filters)", (done) => {
         cm.LoadTranslation("KJV")
             .then(()=> {
-                cm.ApplyFilter()
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 9,
+                };
+
+                // No filter model
+                let model = cm.GetModel();
+                const fullModelLength = model.ComponentModels.length;
+
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                model = cm.GetModel();
+                expect(model.ComponentModels.length).toBe(9);
+
+                // Replace filter
+                verseStart.Chapter = 11;
+                verseEnd.Chapter = 11;
+                verseEnd.VerseNumber = 11;
+
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                model = cm.GetModel();
+                expect(model.ComponentModels.length).toBe(11);
+
+                // Restore filters
+                cm.RemoveFilter("BySpan");
+                model = cm.GetModel();
+                expect(model.ComponentModels.length).toBe(fullModelLength);
+                done();
             });
     });
 });

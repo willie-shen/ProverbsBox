@@ -1,5 +1,6 @@
 import Indexer from "./Indexer"
 import TranslationMap from "./TranslationMap"
+import StorageAssistant from "./StorageAssistant"
 import {FilterGenerators} from "./FilterCollection"
 import {
     IVerseSignature,
@@ -18,24 +19,30 @@ export default class ContentManager {
     /*
      * Methods Summary
      *  (async) LoadTranslation(translationName: string)
-     *  RefineSearch(): Array<IComponentModel>
      *  GetModel()
+     *  UpdateSearch(text: string)
+     *  Bookmark(verse: IVerseSignature)
+     *  RemoveBookmark(verse: IVerseSignature)
      *  ApplyFilter(filter: IFilter)
      *  RemoveFilter(filterName: string)
      */
 
+    storageAssistant: StorageAssistant;
     filters: Array<IFilter>;
-    searchExp: string;
+    searchPattern: string;
     translator: TranslationMap;
     translatorLoading: boolean;
     componentModels: Array<IComponentModel>;
+    refinedModels: Array<IComponentModel>;
 
     constructor() {
+        this.storageAssistant = new StorageAssistant();
         this.filters = [];
-        this.searchExp = "";
+        this.searchPattern = "";
         this.translator = new TranslationMap();
         this.translatorLoading = false;
         this.componentModels = [];
+        this.refinedModels = [];
     }
 
     async LoadTranslation(translationName: string) {
@@ -46,6 +53,7 @@ export default class ContentManager {
             this.translator.AddOnLoadedCallback(()=>{
                 this.translatorLoading = false;
                 this.RefreshModels();
+                this.RefineSearch();
                 resolve();
             });
         });
@@ -53,92 +61,79 @@ export default class ContentManager {
         return translationPromise;
     }
 
-    RefineSearch(): Array<IComponentModel> {
-        if (this.searchExp === "")
-        {
-            return this.componentModels;
-        }
-
-        let ore: Array<IComponentModel | undefined> = this.componentModels.map((m: IComponentModel) => {
-
-            // Saying search (all in or all out)
-            if (m.Type === "Saying") {
-                const model = m.Model as ISaying;
-                const keepSaying = model.Verses.map(verse => {
-                    Indexer.SearchVerseClear(verse);
-                    Indexer.SearchVerseHighlight(verse, this.searchExp);
-                })
-                .some(isHighlighted => isHighlighted);
-
-                // original m is altered to contain highlighted features.
-                if (keepSaying) {
-                    return m;
-                }
-
-                else {
-                    return undefined;
-                }
-            }
-
-            // Statement search (in or out)
-            else if (m.Type === "Statement") {
-                const model = m.Model as IStatement;
-                Indexer.SearchVerseClear(model.Verse);
-                if (Indexer.SearchVerseHighlight(model.Verse, this.searchExp)) {
-                    return m;
-                }
-                else {
-                    return undefined;
-                }
-            }
-
-            // Article search (filter by verse)
-            else if (m.Type === "Article") {
-                const model = m.Model as IArticle;
-                const refinedVerses = model.Verses.filter(v => {
-                    return Indexer.SearchVerseHighlight(v, this.searchExp);
-                });
-
-                if (refinedVerses.length == 0) {
-                    return undefined;
-                }
-                else {
-                    const refinedArticle = {
-                        Type: "Article",
-                        Model: {
-                            Verses: refinedVerses,
-                            ID: model.ID
-                        }
-                    };
-                    return refinedArticle;
-                }
-            }
-
-            // Don't alter titles
-            else if (m.Type === "Title") {
-                return m;
-            }
-
-            // Failure
-            else {
-                return undefined;
-            }
-        });
-
-        const refinedModel = ore.filter(m => !!m);
-        return refinedModel as Array<IComponentModel>;
-    }
-
     GetModel() {
         // generate model
         const model: IModel = {
-            ComponentModels: this.componentModels,
+            ComponentModels: this.refinedModels,
             FilterNames: this.filters.map(f => f.name),
             Translation: this.translator.GetTranslationName()
         };
 
         // return
         return model;
+    }
+
+    UpdateSearch(text: string) {
+        this.searchPattern = text;
+        this.RefineSearch();
+    }
+
+    Bookmark(verse: IVerseSignature) {
+        this.storageAssistant.BookmarkVerse(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber));
+    }
+
+    RemoveBookmark(verse: IVerseSignature) {
+
+    }
+
+    // Automatically updates old copy of a filter
+    ApplyFilter(filterName: string, ...filterParams: any) {
+
+        // check if filter is present
+        /*let notPresent = this.filters.every(f => {
+            return f.name !== filter.name;
+        });*/
+
+        // verify filter
+        if (!(filterName in FilterGenerators)) {
+            throw Error("Filter: " + filterName + ", is not found. Please add a filter generator to ./api/FilterCollection.ts");
+        }
+
+        // get generator
+        let filterGenerator = FilterGenerators[filterName];
+
+        // verify params
+        if (filterParams.length !== filterGenerator.length) {
+            throw Error("Filter Generator for: " + filterName + ", takes " + filterGenerator.length + " params. See ./api/FilterCollection.ts");
+        }
+
+        // run generator
+        let filter = filterGenerator(...filterParams);
+        filter.name = filterName;
+
+        // ---- For efficiency ----
+        // add option: refine search pool if filter not replaced.
+
+        // remove old version
+        this.RemoveFilter(filter.name);
+
+        // add filter
+        this.filters.push(filter);
+
+        // refresh models
+        this.RefreshModels();
+    }
+
+    // Remove a filter by filter name
+    RemoveFilter(filterName: string) {
+        this.filters = this.filters.filter(f => {
+            return f.name !== filterName;
+        });
+
+        // For efficiency, add option: remove search pool
+
+        // refresh models
+        this.RefreshModels();
     }
 
     private RefreshModels() {
@@ -214,7 +209,13 @@ export default class ContentManager {
             // Discard titles :( [fix later] (not turned into title component models)
             if (bundle[0].TitlePrefix) {
                 bundle[0].TitlePrefix = verses[0].Content.split(".")[0] + ".";
-                verses[0].Content = verses[0].Content.split(".")[1].trimLeft();
+                try {
+                    verses[0].Content = verses[0].Content.split(".")[1].trimLeft();
+                }
+                catch {
+                    throw Error("Verse " + verses[0].Chapter + " : " + verses[0].VerseNumber
+                        + " only has one sentence, expected a title and a(n) " + bundle[0].Type);
+                }
             }
 
             if (!bundle[0].Type) {
@@ -276,47 +277,87 @@ export default class ContentManager {
             };
         });
         this.componentModels = componentModels;
+        this.RefineSearch();
     }
 
-    UpdateSearch(text: string) {
+    private RefineSearch(): void {
+        if (this.searchPattern === "")
+        {
+            this.refinedModels = this.componentModels;
+            return;
+        }
 
-    }
+        let ore: Array<IComponentModel | undefined> = this.componentModels.map((m: IComponentModel) => {
 
-    Bookmark(verse: IVerseSignature) {
+            // Saying search (all in or all out)
+            if (m.Type === "Saying") {
+                const model = m.Model as ISaying;
+                const keepSaying = model.Verses.map(verse => {
+                    Indexer.SearchVerseClear(verse);
+                    Indexer.SearchVerseHighlight(verse, this.searchPattern);
+                })
+                    .some(isHighlighted => isHighlighted);
 
-    }
+                // original m is altered to contain highlighted features.
+                if (keepSaying) {
+                    return m;
+                }
 
-    // Automatically updates old copy of a filter
-    ApplyFilter(filter: IFilter) {
+                else {
+                    return undefined;
+                }
+            }
 
-        // check if filter is present
-        /*let notPresent = this.filters.every(f => {
-            return f.name !== filter.name;
-        });*/
+            // Statement search (in or out)
+            else if (m.Type === "Statement") {
+                const model = m.Model as IStatement;
+                Indexer.SearchVerseClear(model.Verse);
+                if (Indexer.SearchVerseHighlight(model.Verse, this.searchPattern)) {
+                    return m;
+                }
+                else {
+                    return undefined;
+                }
+            }
 
-        // ---- For efficiency ----
-        // add option: refine search pool if filter not replaced.
+            // Article search (filter by verse)
+            else if (m.Type === "Article") {
+                const model = m.Model as IArticle;
+                const refinedVerses = model.Verses.filter(v => {
+                    return Indexer.SearchVerseHighlight(v, this.searchPattern);
+                });
 
-        // remove old version
-        this.RemoveFilter(filter.name);
+                if (refinedVerses.length == 0) {
+                    return undefined;
+                }
+                else {
+                    const refinedArticle = {
+                        Type: "Article",
+                        Model: {
+                            Verses: refinedVerses,
+                            ID: model.ID
+                        }
+                    };
+                    return refinedArticle;
+                }
+            }
 
-        // add filter
-        this.filters.push(filter);
+            // Don't alter titles
+            else if (m.Type === "Title") {
+                return m;
+            }
 
-        // refresh models
-        this.RefreshModels();
-    }
-
-    // Remove a filter by filter name
-    RemoveFilter(filterName: string) {
-        this.filters = this.filters.filter(f => {
-            return f.name !== filterName;
+            // Failure
+            else {
+                return undefined;
+            }
         });
 
-        // For efficiency, add option: remove search pool
+        // remove dross
+        const refinedModel = ore.filter(m => !!m);
 
-        // refresh models
-        this.RefreshModels();
+        // cache models
+        this.refinedModels = refinedModel as Array<IComponentModel>;
+        return;
     }
-
 }

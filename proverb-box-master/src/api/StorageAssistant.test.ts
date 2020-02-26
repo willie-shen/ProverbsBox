@@ -1,5 +1,5 @@
 
-import {StorageAssistant} from '../api/StorageAssistant'
+import StorageAssistant from '../api/StorageAssistant'
 
 test('Data is persisted', ()=>{
 	var storage = new StorageAssistant();
