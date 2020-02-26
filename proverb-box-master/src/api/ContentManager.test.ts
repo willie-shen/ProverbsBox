@@ -131,10 +131,38 @@ describe("Content Manager", () => {
             });
     });
 
-    it("gets content (with filters)", (done) => {
+    it("search feature", (done) => {
         cm.LoadTranslation("KJV")
             .then(() => {
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
 
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                cm.UpdateSearch("Lord");
+                let model = cm.GetModel();
+                expect(model.ComponentModels.length).toBe(2);
+                expect((model.ComponentModels[0].Model as IStatement).Verse.Chapter).toBe(10);
+                expect((model.ComponentModels[0].Model as IStatement).Verse.VerseNumber).toBe(3);
+
+                let myVerse = (model.ComponentModels[0].Model as IStatement).Verse;
+                if (myVerse.SearchHighlights) {
+                    expect(myVerse.SearchHighlights.length).toBe(1);
+                    expect(myVerse.SearchHighlights[0]).toEqual({
+                        iStart: 4,
+                        iEnd: 8
+                    });
+                }
+
+                expect((model.ComponentModels[1].Model as IStatement).Verse.Chapter).toBe(10);
+                expect((model.ComponentModels[1].Model as IStatement).Verse.VerseNumber).toBe(22);
+
+                done();
             });
     });
 });

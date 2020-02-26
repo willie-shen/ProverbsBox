@@ -4,6 +4,9 @@
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/ContentManager.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/ContentManager.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/ContentManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/ContentManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Interfaces.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Lexham-Loader.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Lexham-Loader.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

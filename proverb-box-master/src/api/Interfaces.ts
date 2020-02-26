@@ -73,7 +73,7 @@ export type IVerseMeta = {
     found: boolean,
     types?: Array<string>,
     group?: number
-}
+};
 
 export type IFilter = {
     name: string,

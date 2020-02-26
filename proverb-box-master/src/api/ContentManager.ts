@@ -27,13 +27,13 @@ export default class ContentManager {
      *  RemoveFilter(filterName: string)
      */
 
-    storageAssistant: StorageAssistant;
-    filters: Array<IFilter>;
-    searchPattern: string;
-    translator: TranslationMap;
-    translatorLoading: boolean;
-    componentModels: Array<IComponentModel>;
-    refinedModels: Array<IComponentModel>;
+    private storageAssistant: StorageAssistant;
+    private filters: Array<IFilter>;
+    private searchPattern: string;
+    private translator: TranslationMap;
+    private translatorLoading: boolean;
+    private componentModels: Array<IComponentModel>;
+    private refinedModels: Array<IComponentModel>;
 
     constructor() {
         this.storageAssistant = new StorageAssistant();
