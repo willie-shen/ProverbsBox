@@ -67,5 +67,10 @@ test("Test Removal", ()=>{
 		expect(storage.isBookmarked(5)).toBe(false);
 		expect(storage.isBookmarked(7)).toBe(true);
 		expect(storage.isBookmarked(6)).toBe(true);
+
+		
+		storage.removeBookmark(5);
+
+		expect(storage.isBookmarked(5)).toBe(false);
 	});
 })
