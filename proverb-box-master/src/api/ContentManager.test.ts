@@ -161,8 +161,16 @@ describe("Content Manager", () => {
 
                 expect((model.ComponentModels[1].Model as IStatement).Verse.Chapter).toBe(10);
                 expect((model.ComponentModels[1].Model as IStatement).Verse.VerseNumber).toBe(22);
-
                 done();
             });
     });
+
+    it("bookmark feature", (done) => {
+        cm.LoadTranslation("KJV")
+            .then(() => {
+                done();
+            });
+    });
+
+
 });

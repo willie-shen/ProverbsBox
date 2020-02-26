@@ -236,10 +236,11 @@ export default class ContentManager {
             // Statement
             else if (bundle[0].Type === "Statement") {
                 const statement = verses[0];
+                const verseID = Indexer.GetVerseID(statement.Chapter, statement.VerseNumber);
                 model = {
                     Verse: statement,
-                    Saved: false,  // ADD MEMORY COMPONENT
-                    ID: Indexer.GetVerseID(statement.Chapter, statement.VerseNumber)
+                    Saved: this.storageAssistant.isBookmarked(verseID),
+                    ID: verseID
                 };
             }
 
