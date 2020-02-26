@@ -16,6 +16,7 @@ export type IVerseSignature = {
     VerseNumber: number,
     GroupID?: number,
     Type?: string
+    TitlePrefix?: string
 };
 
 export type ITextRange = {

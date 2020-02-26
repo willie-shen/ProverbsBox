@@ -4,7 +4,7 @@
  * Code for Christ, 1/23/2020
  */
 
-import {IBookData} from "./Interfaces"
+import {IBookData, IVerse, IVerseSignature} from "./Interfaces"
 import TranslationConfig from './TranslationConfig'
 import Indexer from './Indexer'
 
@@ -94,7 +94,7 @@ export default class TranslationMap
         Note: If the following function turns out to be too slow, convert VerseID to contiguous,
         then verse lookup is an O(1) operation
      */
-    GetContent(VerseID: number)
+    GetContent(VerseID: number) : IVerse
     {
         if (this.translationName === "NONE") {
             throw Error("Translation version has not been set");
@@ -103,8 +103,15 @@ export default class TranslationMap
             throw Error("Translation version is still loading. Try use a callback using AddOnLoadedCallback()");
         }
         const {VerseNumber, Chapter} = Indexer.GetVerseSignature(VerseID);
-        return this.book.filter(verse => {
+        const primary = this.book.filter(verse => {
             return verse.VerseNumber == VerseNumber && verse.Chapter == Chapter;
         })[0];
+
+        // return a copy
+        return {
+            Content: primary.Content,
+            Chapter: primary.Chapter,
+            VerseNumber: primary.VerseNumber
+        }
     }
 }

@@ -1,7 +1,6 @@
 import TranslationMap from "./TranslationMap"
 import data from '../../public/assets/translations/KJV-Proverbs.json'
 
-
 // Fetch Mock
 import { FetchMock } from 'jest-fetch-mock';
 import {IBookData} from "./Interfaces";

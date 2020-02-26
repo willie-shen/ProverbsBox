@@ -20,9 +20,12 @@ export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) =>
             FilterGenerator(someInput)
                 Returns:
                 [
-                    UniqueFilterID: string,
-                    Filter
+                    name: UniqueFilterID: string -- This is just overwritten by the generator's key,
+                    callback: Filter
                 ]
+
+        Note:
+        While multiple filters can be used, only one filter of a particular name can be added
      */
 
     BySpan : (start:IVerseSignature, end:IVerseSignature) => {
@@ -30,7 +33,7 @@ export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) =>
             return Indexer.IsVerseBetween(verse, start, end);
         };
         return {
-            name: "Span",
+            name: "BySpan",
             callback: c
         };
     },

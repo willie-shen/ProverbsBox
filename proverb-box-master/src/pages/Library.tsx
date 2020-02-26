@@ -94,7 +94,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    {proverbDisplay}
                 </IonContent>
             </IonPage>
         );
