@@ -124,7 +124,17 @@ describe("Content Manager", () => {
                 cm.RemoveFilter("BySpan");
                 model = cm.GetModel();
                 expect(model.ComponentModels.length).toBe(fullModelLength);
+
+                // Expand tests: Test stacked filters
+
                 done();
+            });
+    });
+
+    it("gets content (with filters)", (done) => {
+        cm.LoadTranslation("KJV")
+            .then(() => {
+
             });
     });
 });
