@@ -62,6 +62,16 @@ export default class ContentManager {
     }
 
     GetModel() {
+        // sentinel
+        if (this.translator.GetTranslationName() === "NONE" || this.translator.GetTranslationName() === "LOADING")
+        {
+            return {
+                ComponentModels: [],
+                FilterNames: [],
+                Translation: "NONE",
+            }
+        }
+
         // generate model
         const model: IModel = {
             ComponentModels: this.refinedModels,
@@ -79,7 +89,8 @@ export default class ContentManager {
     }
 
     Bookmark(verse: IVerseSignature) {
-        this.storageAssistant.BookmarkVerse(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber));
+        const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
+        this.storageAssistant.BookmarkVerse(verseID);
     }
 
     RemoveBookmark(verse: IVerseSignature) {
@@ -134,6 +145,31 @@ export default class ContentManager {
 
         // refresh models
         this.RefreshModels();
+    }
+
+    private UpdateBookmarkModelCache(verseID: number, isBookmarked: boolean) {
+
+        // update cached models
+        const batch = [this.componentModels, this.refinedModels];
+        batch.forEach(models => {
+            models.forEach(m => {
+                if (m.Type === "Statement") {
+                    const model = m.Model as IStatement;
+                    if (Indexer.GetVerseID(model.Verse.Chapter, model.Verse.VerseNumber) === verseID) {
+                        model.Saved = isBookmarked;
+                    }
+                }
+                else if (m.Type === "Sayings") {
+                    const model = m.Model as ISaying;
+                    if (Indexer.GetVerseID(model.Verses[0].Chapter, model.Verses[0].VerseNumber) === verseID) {
+                        model.Saved = isBookmarked;
+                    }
+                }
+                else if (m.Type === "Article") {
+                    // Potentially add highlight/notes
+                }
+            })
+        });
     }
 
     private RefreshModels() {

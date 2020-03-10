@@ -17,6 +17,8 @@ import './Library.css';
 import {IProverb} from "../components/ProverbInterface";
 import {Proverb} from "../components/Proverb";
 import ProverbData from "../components/ProverbData";
+import ContentManager from "../api/ContentManager";
+import {IModel} from "../api/Interfaces";
 
 type ILibraryProps = {
   proverbProvider: ProverbData
@@ -27,21 +29,33 @@ type ILibraryState = {
     searchContent: string,
     popClickEvent: any,
     popOpen: boolean,
+    model: IModel,
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
 {
     /* Member data */
     private proverbLimit = 30;
+    private contentManager = new ContentManager();
 
     constructor(props: ILibraryProps) {
         super(props);
+
         this.state = {
             proverbs: this.props.proverbProvider.GetAllOneLiners(),
             searchContent: "",
             popClickEvent: null,
             popOpen: false,
+            model: this.contentManager.GetModel(), // A blank model
         };
+
+        // Hardcode translation for now.
+        this.contentManager.LoadTranslation("KJV")
+            .then(() => {
+                this.setState({
+                    model: this.contentManager.GetModel()
+                });
+            });
     }
 
     updateProverbs() {
@@ -57,7 +71,21 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }
 
     render() {
-        let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
+
+        let elements: Array<any> = [];
+
+        this.state.model.ComponentModels.forEach((c) => {
+            if (c.Type === "Article")
+            {
+
+                elements.push();
+            }
+        });
+
+        if this.state.model ==
+
+
+            let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
             return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
         });
 

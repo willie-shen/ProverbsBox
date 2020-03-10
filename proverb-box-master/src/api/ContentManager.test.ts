@@ -165,12 +165,90 @@ describe("Content Manager", () => {
             });
     });
 
-    it("bookmark feature", (done) => {
+    it("bookmark feature -- non-persist (part 1)", (done) => {
         cm.LoadTranslation("KJV")
             .then(() => {
+                // init content manager
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                let model = cm.GetModel();
+
+                // initial state
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+
+                // save
+                const target = Indexer.GetVerseSignature(Indexer.GetVerseID(10, 1));
+                cm.Bookmark(target);
+
+                // check bookmarked
+                model = cm.GetModel();
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(true);
+
+                // remove bookmark
+                cm.RemoveBookmark(target);
+                model = cm.GetModel();
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+
+                // re-bookmark
+                cm.Bookmark(target);
+                model = cm.GetModel();
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(true);
+
+                // finish test
                 done();
             });
     });
 
+    it("bookmark feature -- Bookmark persist (part 2)", (done) => {
+        cm.LoadTranslation("KJV")
+            .then(() => {
+                // init content manager
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                let model = cm.GetModel();
 
+                // initial state
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(true);
+
+                // Remove Bookmark
+                const target = Indexer.GetVerseSignature(Indexer.GetVerseID(10, 1));
+                cm.RemoveBookmark(target);
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+                done();
+            });
+    });
+
+    it("bookmark feature -- Bookmark persist (part 2)", (done) => {
+        cm.LoadTranslation("KJV")
+            .then(() => {
+                // init content manager
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                let model = cm.GetModel();
+
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+                done();
+            });
+    });
 });

@@ -19,9 +19,6 @@ const Discover: React.FC = () => {
 
 
           </IonFabButton>
-
-          
-
       </IonFab>
 
       <IonFab vertical = "bottom" horizontal = "end">
