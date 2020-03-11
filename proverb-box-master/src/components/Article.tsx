@@ -32,7 +32,7 @@ class Article extends React.Component<ArticleProp, ArticleState> {
                 <div className={"scripture"}>
                     <div className={"verse"}>
                         <p className={"number"}></p>
-                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel;</p>
+                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
                     </div>
                 </div>
             </div>
