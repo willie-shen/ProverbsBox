@@ -210,7 +210,7 @@ export default class Indexer {
         return {
             found: true,
             types: ["Article"],
-            group: 1, // FOR NOW: all articles are bundled.
+            group: verse.Chapter, // FOR NOW: all articles are bundled by Chapter.
         };
     }
 
