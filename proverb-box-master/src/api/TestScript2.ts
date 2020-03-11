@@ -4,7 +4,7 @@
 
  Willie Shen
  */
- import {StorageAssistant} from '../api/StorageAssistant'
+ import StorageAssistant from '../api/StorageAssistant'
 
 export default function TestScript() {
     console.log("TestScript 2 Running");

@@ -2,7 +2,7 @@ import { Plugins } from '@capacitor/core';
 const { Storage } = Plugins;
 
 
-export class StorageAssistant{
+export default class StorageAssistant{
 
 	storedIDs:Array<Number> = [];
 
