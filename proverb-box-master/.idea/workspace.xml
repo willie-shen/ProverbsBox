@@ -2,23 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
-      <change afterPath="$PROJECT_DIR$/scripts/note.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-Bold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-BoldItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-Italic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-Regular.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-SemiBold.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-SemiBoldItalic.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/OFL.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/Athena.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Article.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Article.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/indexing/ProverbsStructure.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexing/ProverbsStructure.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Bookmarked.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Bookmarked.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Library.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Library.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/theme/variables.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/variables.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +103,7 @@
       <workItem from="1582660333197" duration="19166000" />
       <workItem from="1582919905139" duration="726000" />
       <workItem from="1583294832052" duration="5963000" />
-      <workItem from="1583870460565" duration="15125000" />
+      <workItem from="1583870460565" duration="22003000" />
     </task>
     <servers />
   </component>
@@ -145,6 +132,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="550" y="172" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1578871218616" />
+    <state width="745" height="210" key="GridCell.Tab.0.bottom" timestamp="1583899688456">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="745" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583899688456" />
+    <state width="745" height="210" key="GridCell.Tab.0.center" timestamp="1583899688456">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="745" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1583899688456" />
+    <state width="745" height="210" key="GridCell.Tab.0.left" timestamp="1583899688455">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="745" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1583899688455" />
+    <state width="745" height="210" key="GridCell.Tab.0.right" timestamp="1583899688456">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="745" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1583899688456" />
     <state x="49" y="62" key="SettingsEditor" timestamp="1578872682932">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

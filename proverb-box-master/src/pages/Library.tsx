@@ -8,7 +8,16 @@ import {
     IonToolbar,
     IonSearchbar,
     IonButton,
-    IonButtons, IonModal, IonSegment, IonSegmentButton, IonLabel
+    IonButtons,
+    IonModal,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonListHeader,
+    IonRadioGroup,
+    IonList,
+    IonItemDivider,
+    IonItem, IonRadio, IonSelect, IonSelectOption
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
@@ -33,6 +42,8 @@ type ILibraryState = {
     popClickEvent: any,
     popOpen: boolean,
     model: IModel,
+    typeDisplay: string,
+    filterFormat: string
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
@@ -54,8 +65,9 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             popClickEvent: null,
             popOpen: false,
             model: this.cm.GetModel(), // A blank model
+            typeDisplay: "statement",
+            filterFormat: "chapter"
         };
-
 
         // Hard-code translation for now.
         this.cm.LoadTranslation("KJV")
@@ -110,23 +122,99 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 <IonContent>
                     <div  id={"filter-container"}>
                         {/*-- Default Segment --*/}
-                        <IonSegment onIonChange={
-                            e => console.log('Segment selected', e.detail.value)
+                        <IonSegment value = {this.state.typeDisplay} onIonChange={
+                            e => {
+                                if (e.detail.value !== undefined)
+                                {
+                                    this.setState({typeDisplay: e.detail.value})
+                                }
+                            }
                         }>
-                            <IonSegmentButton value="Statement">
+                            <IonSegmentButton value="statement">
                                 <IonLabel>Statements</IonLabel>
                             </IonSegmentButton>
-                            <IonSegmentButton value="Sayings">
+                            <IonSegmentButton value="sayings">
                                 <IonLabel>Sayings</IonLabel>
                             </IonSegmentButton>
-                            <IonSegmentButton value="Articles">
-                                <IonLabel>Articles</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="All">
+                            <IonSegmentButton value="all">
                                 <IonLabel>All</IonLabel>
                             </IonSegmentButton>
                         </IonSegment>
-                        <h3>Chapter Select</h3>
+
+                        <div id={"select-mode-container"}>
+                            <h3 id={"mode-text"}>Chapter Select</h3>
+                            <IonButton id={"mode-button"} size="small" color="dark">Select by Descriptor</IonButton>
+                        </div>
+                        <div className = {"selection-box"}>
+                            <IonRadioGroup value={""} onIonChange={e => {}}>
+
+                                <p className = {"title"}>Proverbs of Solomon</p>
+                                <IonList>
+                                        <IonItem>
+                                            <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 10</span></IonLabel>
+                                            <IonRadio slot="start" value="10" />
+                                        </IonItem>
+
+                                        <IonItem>
+                                            <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 11</span></IonLabel>
+                                            <IonRadio slot="start" value="11" />
+                                        </IonItem>
+
+                                        <IonItem>
+                                            <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 12</span></IonLabel>
+                                            <IonRadio slot="start" value="12" />
+                                        </IonItem>
+                                    {/*<IonItem>{selected ?? '(none selected'}</IonItem>*/}
+                                </IonList>
+
+                                <p className = {"title"}>More Proverbs of Solomon</p>
+                                <IonList>
+                                    <IonItem>
+                                        <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 25</span></IonLabel>
+                                        <IonRadio slot="start" value="25" />
+                                    </IonItem>
+
+                                    <IonItem>
+                                        <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 26</span></IonLabel>
+                                        <IonRadio slot="start" value="26" />
+                                    </IonItem>
+
+                                    <IonItem>
+                                        <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 27</span></IonLabel>
+                                        <IonRadio slot="start" value="27" />
+                                    </IonItem>
+                                </IonList>
+                            </IonRadioGroup>
+                        </div>
+
+                        {/*Statement
+                        "Range": [
+                        {
+                            "Title": "Proverbs of Solomon",
+                            "Intro": {
+                            "Ch": 10, "Vs": 1, "Part": true
+                        },
+                            "Start": {
+                            "Ch": 10,
+                            "Vs": 1
+                        },
+                            "End": {
+                            "Ch": 22,
+                            "Vs": 16
+                        }
+                        },
+                        {
+                            "Title": "More Proverbs of Solomon",
+                            "Intro": {"Ch": 25, "Vs": 1, "Part": false},
+                            "Start": {
+                            "Ch": 25,
+                            "Vs": 1
+                        },
+                            "End": {
+                            "Ch": 29,
+                            "Vs": 27
+                        }
+                        */}
 
                     </div>
                 </IonContent>

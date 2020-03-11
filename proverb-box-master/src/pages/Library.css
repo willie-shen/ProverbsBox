@@ -3,8 +3,28 @@
   overflow: hidden;
 }
 
+.chapter-select {
+}
+.chapter-select .text {
+    font-family: "Crimson Text";
+}
+
+#select-mode-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+#mode-text {
+    display: inline-block;
+}
+#mode-button {
+    display: inline-block;
+    width: 100%
+}
 #popover-filter {
-  --width: 80%;
+  --width: 90%;
   --max-width: 450px
 }
 
@@ -15,7 +35,6 @@
 @font-face{
     font-family: "Crimson Text";
     src: url("../fonts/crimson/CrimsonText-Regular.ttf");
-
 }
 
 * {
