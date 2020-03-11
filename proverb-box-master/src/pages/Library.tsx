@@ -15,37 +15,57 @@ import React from 'react';
 import './Library.css';
 
 import {IProverb} from "../components/ProverbInterface";
-import {Proverb} from "../components/Proverb";
+//import {Proverb} from "../components/Proverb";
 import ProverbData from "../components/ProverbData";
+import ContentManager from "../api/ContentManager";
+import {IArticle, IModel, ISaying, IStatement} from "../api/Interfaces";
+import {Article} from "../components/Article";
+import {Saying} from "../components/Saying";
+import {Statement} from "../components/Statement";
 
 type ILibraryProps = {
-  proverbProvider: ProverbData
+  contentManager: ContentManager
 }
 
 type ILibraryState = {
-    proverbs: Array<IProverb>,
+    //proverbs: Array<IProverb>,
     searchContent: string,
     popClickEvent: any,
     popOpen: boolean,
+    model: IModel,
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
 {
     /* Member data */
     private proverbLimit = 30;
+    private cm : ContentManager;
 
     constructor(props: ILibraryProps) {
         super(props);
+
+        this.cm = this.props.contentManager;
         this.state = {
-            proverbs: this.props.proverbProvider.GetAllOneLiners(),
+            //proverbs: this.props.proverbProvider.GetAllOneLiners(),
             searchContent: "",
             popClickEvent: null,
             popOpen: false,
+            model: this.cm.GetModel(), // A blank model
         };
+
+
+        // Hard-code translation for now.
+        this.cm.LoadTranslation("KJV")
+            .then(() => {
+                console.log("Writing model: ", this.cm.GetModel());
+                this.setState({
+                    model: this.cm.GetModel()
+                });
+            });
     }
 
     updateProverbs() {
-        this.setState({proverbs : this.props.proverbProvider.GetFilteredOneLiners()});
+        //this.setState({proverbs : this.props.proverbProvider.GetFilteredOneLiners()});
     }
 
     showPopover() {
@@ -57,9 +77,28 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }
 
     render() {
-        let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
-            return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
+
+        let elements: Array<any> = [];
+
+        this.state.model.ComponentModels.forEach((c) => {
+            if (c.Type === "Article")
+            {
+                elements.push((<Article model={(c.Model as IArticle)}></Article>));
+            }
+            else if (c.Type === "Statement")
+            {
+                elements.push((<Statement model={(c.Model as IStatement)}></Statement>));
+            }
+            else if (c.Type === "Saying")
+            {
+                elements.push((<Saying model={(c.Model as ISaying)}></Saying>));
+            }
         });
+
+        /*if this.state.model ==
+            let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
+            return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
+        });*/
 
         let popoverFilter = (
             <IonPopover event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e =>
@@ -94,6 +133,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
+                    {elements}
                 </IonContent>
             </IonPage>
         );

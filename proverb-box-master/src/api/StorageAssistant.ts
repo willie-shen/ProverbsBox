@@ -6,26 +6,6 @@ export default class StorageAssistant{
 
 	storedIDs:Array<Number> = [];
 
-	constructor(){
-		
-		
-		//this.storedIDs = this.loadFile()
-		//.then(()=>{console.log(this.storedIDs)});
-		
-		//this.loadFile().then(_=>console.log("Outside the then function")).then(_=>console.log(this.storedIDs)) //https://medium.com/better-programming/a-common-misconception-about-async-await-in-javascript-33de224bd5f
-		
-		
-		//console.log(typeof(this.storedIDs))
-		//console.log(typeof(stuff))
-
-		/*Storage.set({
-			key: "index",
-			value: JSON.stringify("Hello World")
-		})*/
-		// this.storedIDs = stuff
-
-	}
-
 	async loadFile(){
 		//not executing in order
 		//console.log("asdf")

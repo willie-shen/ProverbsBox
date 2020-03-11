@@ -27,13 +27,13 @@ export default class ContentManager {
      *  RemoveFilter(filterName: string)
      */
 
-    storageAssistant: StorageAssistant;
-    filters: Array<IFilter>;
-    searchPattern: string;
-    translator: TranslationMap;
-    translatorLoading: boolean;
-    componentModels: Array<IComponentModel>;
-    refinedModels: Array<IComponentModel>;
+    private storageAssistant: StorageAssistant;
+    private filters: Array<IFilter>;
+    private searchPattern: string;
+    private translator: TranslationMap;
+    private translatorLoading: boolean;
+    private componentModels: Array<IComponentModel>;
+    private refinedModels: Array<IComponentModel>;
 
     constructor() {
         this.storageAssistant = new StorageAssistant();
@@ -62,6 +62,16 @@ export default class ContentManager {
     }
 
     GetModel() {
+        // sentinel
+        if (this.translator.GetTranslationName() === "NONE" || this.translator.GetTranslationName() === "LOADING")
+        {
+            return {
+                ComponentModels: [],
+                FilterNames: [],
+                Translation: "NONE",
+            }
+        }
+
         // generate model
         const model: IModel = {
             ComponentModels: this.refinedModels,
@@ -79,7 +89,8 @@ export default class ContentManager {
     }
 
     Bookmark(verse: IVerseSignature) {
-        this.storageAssistant.BookmarkVerse(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber));
+        const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
+        this.storageAssistant.BookmarkVerse(verseID);
     }
 
     RemoveBookmark(verse: IVerseSignature) {
@@ -134,6 +145,31 @@ export default class ContentManager {
 
         // refresh models
         this.RefreshModels();
+    }
+
+    private UpdateBookmarkModelCache(verseID: number, isBookmarked: boolean) {
+
+        // update cached models
+        const batch = [this.componentModels, this.refinedModels];
+        batch.forEach(models => {
+            models.forEach(m => {
+                if (m.Type === "Statement") {
+                    const model = m.Model as IStatement;
+                    if (Indexer.GetVerseID(model.Verse.Chapter, model.Verse.VerseNumber) === verseID) {
+                        model.Saved = isBookmarked;
+                    }
+                }
+                else if (m.Type === "Sayings") {
+                    const model = m.Model as ISaying;
+                    if (Indexer.GetVerseID(model.Verses[0].Chapter, model.Verses[0].VerseNumber) === verseID) {
+                        model.Saved = isBookmarked;
+                    }
+                }
+                else if (m.Type === "Article") {
+                    // Potentially add highlight/notes
+                }
+            })
+        });
     }
 
     private RefreshModels() {
@@ -229,17 +265,18 @@ export default class ContentManager {
             if (bundle[0].Type === "Title") {
                 model = {
                     Text: verses[0].Content,
-                    Ref: "" + "Proverbs " + verses[0].Chapter + verses[0].VerseNumber
+                    Ref: "Proverbs " + verses[0].Chapter + verses[0].VerseNumber
                 }
             }
 
             // Statement
             else if (bundle[0].Type === "Statement") {
                 const statement = verses[0];
+                const verseID = Indexer.GetVerseID(statement.Chapter, statement.VerseNumber);
                 model = {
                     Verse: statement,
-                    Saved: false,  // ADD MEMORY COMPONENT
-                    ID: Indexer.GetVerseID(statement.Chapter, statement.VerseNumber)
+                    Saved: this.storageAssistant.isBookmarked(verseID),
+                    ID: verseID
                 };
             }
 
@@ -292,9 +329,10 @@ export default class ContentManager {
             // Saying search (all in or all out)
             if (m.Type === "Saying") {
                 const model = m.Model as ISaying;
-                const keepSaying = model.Verses.map(verse => {
+                const keepSaying = model.Verses.map(verse => { // replace with for loop?
                     Indexer.SearchVerseClear(verse);
                     Indexer.SearchVerseHighlight(verse, this.searchPattern);
+                    return verse;
                 })
                     .some(isHighlighted => isHighlighted);
 
@@ -327,7 +365,7 @@ export default class ContentManager {
                     return Indexer.SearchVerseHighlight(v, this.searchPattern);
                 });
 
-                if (refinedVerses.length == 0) {
+                if (refinedVerses.length === 0) {
                     return undefined;
                 }
                 else {

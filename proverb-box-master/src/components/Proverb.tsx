@@ -12,7 +12,7 @@ import React from 'react';
 import "./Proverb.scss"
 
 // Icons
-import { heart, heartEmpty } from 'ionicons/icons';
+import { heart, heartOutline } from 'ionicons/icons';
 import {IProverb} from './ProverbInterface'
 
 type ProverbProp ={
@@ -45,13 +45,13 @@ class Proverb extends React.Component<ProverbProp, ProverbState> {
 
               <IonCol id = {"buttons"}>
 
-              { this.props.Proverb.Saved 
-                  ? <IonButton>
-                      <IonIcon icon = {heart} />
-                    </IonButton>
-                  : <IonButton>
-                      <IonIcon icon = {heartEmpty} />
-                    </IonButton>
+              { this.props.Proverb.Saved
+                  ? (<IonButton>
+                      <IonIcon icon = {heart}></IonIcon>
+                    </IonButton>)
+                  : (<IonButton>
+                      <IonIcon icon = {heartOutline}></IonIcon>
+                    </IonButton>)
                 }
 
                 

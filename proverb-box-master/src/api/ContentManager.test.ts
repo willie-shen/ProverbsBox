@@ -131,10 +131,124 @@ describe("Content Manager", () => {
             });
     });
 
-    it("gets content (with filters)", (done) => {
+    it("search feature", (done) => {
         cm.LoadTranslation("KJV")
             .then(() => {
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
 
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                cm.UpdateSearch("Lord");
+                let model = cm.GetModel();
+                expect(model.ComponentModels.length).toBe(2);
+                expect((model.ComponentModels[0].Model as IStatement).Verse.Chapter).toBe(10);
+                expect((model.ComponentModels[0].Model as IStatement).Verse.VerseNumber).toBe(3);
+
+                let myVerse = (model.ComponentModels[0].Model as IStatement).Verse;
+                if (myVerse.SearchHighlights) {
+                    expect(myVerse.SearchHighlights.length).toBe(1);
+                    expect(myVerse.SearchHighlights[0]).toEqual({
+                        iStart: 4,
+                        iEnd: 8
+                    });
+                }
+
+                expect((model.ComponentModels[1].Model as IStatement).Verse.Chapter).toBe(10);
+                expect((model.ComponentModels[1].Model as IStatement).Verse.VerseNumber).toBe(22);
+                done();
+            });
+    });
+
+    it("bookmark feature -- non-persist (part 1)", (done) => {
+        cm.LoadTranslation("KJV")
+            .then(() => {
+                // init content manager
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                let model = cm.GetModel();
+
+                // initial state
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+
+                // save
+                const target = Indexer.GetVerseSignature(Indexer.GetVerseID(10, 1));
+                cm.Bookmark(target);
+
+                // check bookmarked
+                model = cm.GetModel();
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(true);
+
+                // remove bookmark
+                cm.RemoveBookmark(target);
+                model = cm.GetModel();
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+
+                // re-bookmark
+                cm.Bookmark(target);
+                model = cm.GetModel();
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(true);
+
+                // finish test
+                done();
+            });
+    });
+
+    it("bookmark feature -- Bookmark persist (part 2)", (done) => {
+        cm.LoadTranslation("KJV")
+            .then(() => {
+                // init content manager
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                let model = cm.GetModel();
+
+                // initial state
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(true);
+
+                // Remove Bookmark
+                const target = Indexer.GetVerseSignature(Indexer.GetVerseID(10, 1));
+                cm.RemoveBookmark(target);
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+                done();
+            });
+    });
+
+    it("bookmark feature -- Bookmark persist (part 2)", (done) => {
+        cm.LoadTranslation("KJV")
+            .then(() => {
+                // init content manager
+                const verseStart: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 1,
+                };
+                const verseEnd: IVerseSignature = {
+                    Chapter: 10,
+                    VerseNumber: 22,
+                };
+                cm.ApplyFilter("BySpan", verseStart, verseEnd);
+                let model = cm.GetModel();
+
+                expect((model.ComponentModels[0].Model as IStatement).Saved).toBe(false);
+                done();
             });
     });
 });
