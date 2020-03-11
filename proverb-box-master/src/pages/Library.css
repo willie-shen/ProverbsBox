@@ -9,5 +9,15 @@
 }
 
 #filter-container {
-  margin: .5em 1em;
+    margin: .5em 1em;
+}
+
+@font-face{
+    font-family: "Crimson Text";
+    src: url("../fonts/crimson/CrimsonText-Regular.ttf");
+
+}
+
+* {
+  font-family: "Crimson Text";
 }

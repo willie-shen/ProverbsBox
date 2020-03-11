@@ -2,9 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
+      <change afterPath="$PROJECT_DIR$/scripts/note.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-BoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-Regular.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-SemiBold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/CrimsonText-SemiBoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/crimson/OFL.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/Athena.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/FilterCollection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/FilterCollection.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Statement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Statement.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Article.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Article.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/indexing/ProverbsStructure.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/indexing/ProverbsStructure.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Bookmarked.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Bookmarked.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Library.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Library.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.tsx" afterDir="false" />
     </list>
@@ -104,7 +116,7 @@
       <workItem from="1582660333197" duration="19166000" />
       <workItem from="1582919905139" duration="726000" />
       <workItem from="1583294832052" duration="5963000" />
-      <workItem from="1583870460565" duration="14945000" />
+      <workItem from="1583870460565" duration="15125000" />
     </task>
     <servers />
   </component>

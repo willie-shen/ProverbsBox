@@ -154,6 +154,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
                         <IonTitle>Library</IonTitle>
                     </IonToolbar>
+
                     <IonToolbar>
                         <IonSearchbar></IonSearchbar>
                     </IonToolbar>
@@ -171,6 +172,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
                     {elements}
                 </IonContent>
+
+
             </IonPage>
         );
     }
