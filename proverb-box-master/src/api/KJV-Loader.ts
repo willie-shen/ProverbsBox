@@ -8,13 +8,10 @@ import {IBookData} from "./Interfaces"
 
 export default class KJVLoader {
     async Load(TranslationDataPath: string) {
-        console.log("start load");
         return new Promise<IBookData>((resolve, reject) => {
-            console.log("start fetch");
             fetch(TranslationDataPath)
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log("data ", data);
                     const book : IBookData = data.verses.map((verse :any) => {
                         return {
                             Content: verse.text,
@@ -26,7 +23,7 @@ export default class KJVLoader {
                 })
                 .catch((error) => {
                     console.log("Error: failed to load translation asset: ", TranslationDataPath);
-                    reject([]);
+                    reject("failed to load translation asset: " + TranslationDataPath);
                 });
         });
     }

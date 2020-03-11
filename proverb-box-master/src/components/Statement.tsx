@@ -7,6 +7,7 @@ import {
     IonIcon
 } from '@ionic/react';
 import React from 'react';
+import {IStatement} from "../api/Interfaces";
 
 // Styles
 import "./Proverb.scss"
@@ -15,24 +16,21 @@ import "./Proverb.scss"
 import { heart, heartOutline } from 'ionicons/icons';
 import {IProverb} from './ProverbInterface'
 
-type SayingProp ={
-    Proverb: IProverb,
-    Save?:any,
-    Unsave?:any
+type StatementProp ={
+    model: IStatement
 }
 
-type SayingState = {
-
+type StatementState = {
 }
 
-class Saying extends React.Component<SayingProp, SayingState> {
+class Statement extends React.Component<StatementProp, StatementState> {
     render() {
         return (
             <IonCard class={"saying"}>
-
+                <p>Statement</p>
             </IonCard>
         );
     }
 }
 
-export {Saying};
+export {Statement};

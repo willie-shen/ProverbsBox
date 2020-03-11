@@ -34,16 +34,16 @@ export type IVerse = {
 
 export type IBookData = Array<IVerse>;
 
-export type IStatement = {
-    Verse: IVerse
-    Saved?: boolean,
-    ID: number
-};
-
 export type IArticle = {
     Verses: Array<IVerse>,
     ID: number
     /* Potentially add highlights/notes array*/
+};
+
+export type IStatement = {
+    Verse: IVerse
+    Saved?: boolean,
+    ID: number
 };
 
 export type ISaying = {
