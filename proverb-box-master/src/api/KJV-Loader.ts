@@ -4,11 +4,11 @@
  * Code for Christ, 1/23/2020
  */
 
-import {IBookData, IProverb} from "./Interfaces"
+import {IBookData} from "./Interfaces"
 
 export default class KJVLoader {
     async Load(TranslationDataPath: string) {
-        return new Promise<IBookData>(resolve => {
+        return new Promise<IBookData>((resolve, reject) => {
             fetch(TranslationDataPath)
                 .then((res) => res.json())
                 .then((data) => {
@@ -22,8 +22,8 @@ export default class KJVLoader {
                     resolve(book);
                 })
                 .catch((error) => {
-                    // console.log("Error: failed to load translation asset.");
-                    resolve([]);
+                    console.log("Error: failed to load translation asset: ", TranslationDataPath);
+                    reject("failed to load translation asset: " + TranslationDataPath);
                 });
         });
     }

@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import { search, filing, heartEmpty } from 'ionicons/icons';
+import { search, fileTrayFullOutline, heartOutline } from 'ionicons/icons';
 import Library from './pages/Library';
 import Bookmarked from './pages/Bookmarked';
 import Discover from './pages/Discover';
@@ -43,23 +43,19 @@ import {Filters} from "./components/Filters"
 // Test API Functionality
 import TestScript2 from "./api/TestScript2"
 import conf from "./api/TestScriptConfig.json"
-
+import ContentManager from "./api/ContentManager"
 // TestScript hook.
 if (conf.test2) {TestScript2()}
 
-const pd = new ProverbData();
-
-/* Test filters */
-
-pd.AddFilter(...Filters.ByChapter(3));
-pd.AddFilter(...Filters.ByContent("Wisdom"));
+// init content manager
+let cm = new ContentManager();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/library" component={() => <Library proverbProvider={pd}/>} exact={true} />
+          <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true} />
           <Route path="/bookmarked" component={Bookmarked} exact={true} />
           <Route path="/bookmarked/details" component={Details} />
           <Route path="/discover" component={Discover} />
@@ -71,11 +67,11 @@ const App: React.FC = () => (
             <IonLabel>Library</IonLabel>
           </IonTabButton>
           <IonTabButton tab="bookmarked" href="/bookmarked" >
-            <IonIcon icon={filing} />
+            <IonIcon icon={fileTrayFullOutline} />
             <IonLabel>Bookmarked</IonLabel>
           </IonTabButton>
           <IonTabButton tab="discover" href="/discover">
-            <IonIcon icon={heartEmpty} />
+            <IonIcon icon={heartOutline} />
             <IonLabel>Discover</IonLabel>
           </IonTabButton>
         </IonTabBar>

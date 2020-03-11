@@ -83,7 +83,6 @@ export default class Indexer {
                 const [chapter, verseNumber] = args;
 
                 /* chapter verses */
-                let chapterVerses:Array<IVerseSignature> = [];
                 for (let i = 0; i < verseNumber; ++i) {
                     const verse: IVerseSignature = {
                         Chapter: parseInt(chapter),
@@ -106,8 +105,8 @@ export default class Indexer {
         }
 
         // verse bounds
-        if (verse.Chapter == start.Chapter && verse.VerseNumber < start.VerseNumber
-            || verse.Chapter == end.Chapter && verse.VerseNumber > end.VerseNumber)
+        if ((verse.Chapter === start.Chapter && verse.VerseNumber < start.VerseNumber)
+            || (verse.Chapter === end.Chapter && verse.VerseNumber > end.VerseNumber))
         {
             return false;
         }
@@ -211,7 +210,7 @@ export default class Indexer {
         return {
             found: true,
             types: ["Article"],
-            group: 1, // FOR NOW: all articles are bundled.
+            group: verse.Chapter, // FOR NOW: all articles are bundled by Chapter.
         };
     }
 
