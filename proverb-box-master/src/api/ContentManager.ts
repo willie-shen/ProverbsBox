@@ -265,7 +265,7 @@ export default class ContentManager {
             if (bundle[0].Type === "Title") {
                 model = {
                     Text: verses[0].Content,
-                    Ref: "" + "Proverbs " + verses[0].Chapter + verses[0].VerseNumber
+                    Ref: "Proverbs " + verses[0].Chapter + verses[0].VerseNumber
                 }
             }
 
@@ -329,9 +329,10 @@ export default class ContentManager {
             // Saying search (all in or all out)
             if (m.Type === "Saying") {
                 const model = m.Model as ISaying;
-                const keepSaying = model.Verses.map(verse => {
+                const keepSaying = model.Verses.map(verse => { // replace with for loop?
                     Indexer.SearchVerseClear(verse);
                     Indexer.SearchVerseHighlight(verse, this.searchPattern);
+                    return verse;
                 })
                     .some(isHighlighted => isHighlighted);
 
@@ -364,7 +365,7 @@ export default class ContentManager {
                     return Indexer.SearchVerseHighlight(v, this.searchPattern);
                 });
 
-                if (refinedVerses.length == 0) {
+                if (refinedVerses.length === 0) {
                     return undefined;
                 }
                 else {

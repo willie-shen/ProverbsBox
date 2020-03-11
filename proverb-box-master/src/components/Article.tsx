@@ -12,7 +12,7 @@ import React from 'react';
 import "./Proverb.scss"
 
 // Icons
-import { heart, heartEmpty } from 'ionicons/icons';
+import { heart, heartOutline } from 'ionicons/icons';
 import {IProverb} from './ProverbInterface'
 
 type ArticleProp ={

@@ -4,7 +4,7 @@
  * Code for Christ, 1/23/2020
  */
 
-import {IBookData, IVerse, IVerseSignature} from "./Interfaces"
+import {IBookData, IVerse} from "./Interfaces"
 import TranslationConfig from './TranslationConfig'
 import Indexer from './Indexer'
 
@@ -104,8 +104,21 @@ export default class TranslationMap
         }
         const {VerseNumber, Chapter} = Indexer.GetVerseSignature(VerseID);
         const primary = this.book.filter(verse => {
-            return verse.VerseNumber == VerseNumber && verse.Chapter == Chapter;
+            return verse.VerseNumber === VerseNumber && verse.Chapter === Chapter;
         })[0];
+
+        //console.log(this.book);
+        if (primary === undefined)
+        {
+            console.log(this.translationName);
+            console.log("VerseID ", VerseID);
+            console.log( this.book);
+            return {
+                Content: "loading",
+                Chapter: 1,
+                VerseNumber: 1
+            };
+        }
 
         // return a copy
         return {

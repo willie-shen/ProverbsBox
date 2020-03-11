@@ -2,13 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
-      <change afterPath="$PROJECT_DIR$/src/components/Article.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Saying.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Statement.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/ContentManager.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/ContentManager.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/ContentManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/ContentManager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Discover.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Discover.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/Indexer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/KJV-Loader.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/KJV-Loader.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/StorageAssistant.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/StorageAssistant.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TranslationConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TranslationConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/TranslationMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/TranslationMap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Article.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Article.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Proverb.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Proverb.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Saying.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Saying.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Statement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Statement.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/Library.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +114,7 @@
       <workItem from="1582660333197" duration="19166000" />
       <workItem from="1582919905139" duration="726000" />
       <workItem from="1583294832052" duration="5963000" />
-      <workItem from="1583870460565" duration="1282000" />
+      <workItem from="1583870460565" duration="6766000" />
     </task>
     <servers />
   </component>

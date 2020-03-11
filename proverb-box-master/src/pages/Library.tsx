@@ -15,17 +15,17 @@ import React from 'react';
 import './Library.css';
 
 import {IProverb} from "../components/ProverbInterface";
-import {Proverb} from "../components/Proverb";
+//import {Proverb} from "../components/Proverb";
 import ProverbData from "../components/ProverbData";
 import ContentManager from "../api/ContentManager";
 import {IModel} from "../api/Interfaces";
 
 type ILibraryProps = {
-  proverbProvider: ProverbData
+  contentManager: ContentManager
 }
 
 type ILibraryState = {
-    proverbs: Array<IProverb>,
+    //proverbs: Array<IProverb>,
     searchContent: string,
     popClickEvent: any,
     popOpen: boolean,
@@ -36,30 +36,43 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 {
     /* Member data */
     private proverbLimit = 30;
-    private contentManager = new ContentManager();
+    private cm : ContentManager;
+
+    //private contentManager = new ContentManager();
 
     constructor(props: ILibraryProps) {
         super(props);
 
+        this.cm = this.props.contentManager;
+
         this.state = {
-            proverbs: this.props.proverbProvider.GetAllOneLiners(),
+            //proverbs: this.props.proverbProvider.GetAllOneLiners(),
             searchContent: "",
             popClickEvent: null,
             popOpen: false,
-            model: this.contentManager.GetModel(), // A blank model
+            model: this.cm.GetModel(), // A blank model
         };
+        console.log("hi!");
+
+        this.cm.LoadTranslation("KJV")
+        .then(() => {
+            console.log("hi!");
+            console.log(this.cm);
+            //let model = this.cm.GetModel();
+        });
 
         // Hardcode translation for now.
-        this.contentManager.LoadTranslation("KJV")
+        /*this.cm.LoadTranslation("KJV")
             .then(() => {
+                console.log("Writing model");
                 this.setState({
-                    model: this.contentManager.GetModel()
+                    model: this.cm.GetModel()
                 });
-            });
+            });*/
     }
 
     updateProverbs() {
-        this.setState({proverbs : this.props.proverbProvider.GetFilteredOneLiners()});
+        //this.setState({proverbs : this.props.proverbProvider.GetFilteredOneLiners()});
     }
 
     showPopover() {
@@ -82,12 +95,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             }
         });
 
-        if this.state.model ==
+        /*if this.state.model ==
 
 
             let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
             return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
-        });
+        });*/
 
         let popoverFilter = (
             <IonPopover event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e =>
