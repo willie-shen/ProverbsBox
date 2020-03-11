@@ -2,3 +2,12 @@
   max-height: 35vh;
   overflow: hidden;
 }
+
+#popover-filter {
+  --width: 80%;
+  --max-width: 450px
+}
+
+#filter-container {
+  margin: .5em 1em;
+}

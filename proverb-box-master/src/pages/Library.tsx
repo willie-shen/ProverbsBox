@@ -8,7 +8,7 @@ import {
     IonToolbar,
     IonSearchbar,
     IonButton,
-    IonButtons
+    IonButtons, IonModal, IonSegment, IonSegmentButton, IonLabel
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
@@ -40,11 +40,14 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     /* Member data */
     private proverbLimit = 30;
     private cm : ContentManager;
+    private ref : any;
 
     constructor(props: ILibraryProps) {
         super(props);
 
         this.cm = this.props.contentManager;
+        this.ref = React.createRef();
+
         this.state = {
             //proverbs: this.props.proverbProvider.GetAllOneLiners(),
             searchContent: "",
@@ -101,15 +104,37 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         });*/
 
         let popoverFilter = (
-            <IonPopover event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e =>
+            <IonPopover id={"popover-filter"} event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e =>
                 this.setState({popOpen: false, popClickEvent: null})
             }>
-                <p>This is popover content</p>
+                <IonContent>
+                    <div  id={"filter-container"}>
+                        {/*-- Default Segment --*/}
+                        <IonSegment onIonChange={
+                            e => console.log('Segment selected', e.detail.value)
+                        }>
+                            <IonSegmentButton value="Statement">
+                                <IonLabel>Statements</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="Sayings">
+                                <IonLabel>Sayings</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="Articles">
+                                <IonLabel>Articles</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="All">
+                                <IonLabel>All</IonLabel>
+                            </IonSegmentButton>
+                        </IonSegment>
+                        <h3>Chapter Select</h3>
+
+                    </div>
+                </IonContent>
             </IonPopover>
         );
 
         return (
-            <IonPage>
+            <IonPage className={"library-page"}>
 
                 <IonHeader>
                     {popoverFilter}
@@ -121,6 +146,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                     popClickEvent: e,
                                     popOpen: true
                                 });
+                                //this.setState({popOpen: true});
                                 }}>
                                 <IonIcon slot = "icon-only" icon = {book} />
                             </IonButton>
@@ -133,6 +159,16 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
+
+                    {/*<IonModal
+                        isOpen={this.state.popOpen}
+                        swipeToClose={true}
+                        presentingElement={this.ref.current}
+                        onDidDismiss={() =>{this.setState({popOpen: false})}}>
+                        <p>This is modal content</p>
+                        <IonButton onClick={() => this.setState({popOpen: false})}>Close Modal</IonButton>
+                    </IonModal>*/}
+
                     {elements}
                 </IonContent>
             </IonPage>

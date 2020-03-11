@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/Indexer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/Indexer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/FilterCollection.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/FilterCollection.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Statement.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Statement.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Library.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Library.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +104,7 @@
       <workItem from="1582660333197" duration="19166000" />
       <workItem from="1582919905139" duration="726000" />
       <workItem from="1583294832052" duration="5963000" />
-      <workItem from="1583870460565" duration="8032000" />
+      <workItem from="1583870460565" duration="14945000" />
     </task>
     <servers />
   </component>

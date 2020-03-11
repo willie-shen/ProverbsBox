@@ -27,7 +27,10 @@ class Statement extends React.Component<StatementProp, StatementState> {
     render() {
         return (
             <IonCard class={"saying"}>
-                <p>Statement</p>
+                <h3>Statement Mock text</h3>
+                <p>{this.props.model.Verse.Content}</p>
+                <p>Chapter: {this.props.model.Verse.Chapter}</p>
+                <p>Verse: {this.props.model.Verse.VerseNumber}</p>
             </IonCard>
         );
     }

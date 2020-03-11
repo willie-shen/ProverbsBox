@@ -38,6 +38,21 @@ export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) =>
         };
     },
 
+    ByType : (type : string) => {
+        const c: IFilterCallback = (verse : IVerseSignature) => {
+            const verseTypes = Indexer.GetVerseType(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber)).types;
+            if (verseTypes != undefined)
+            {
+                return verseTypes.some(t => t===type);
+            }
+            return false;
+        };
+        return {
+            name: "ByType",
+            callback: c
+        };
+    },
+
     /*
     The following nearly works but should be reformatted to return a callback that takes a verse signature
     ByChapter : (chapter : number) => {
