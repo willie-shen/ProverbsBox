@@ -73,7 +73,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         // Hard-code translation for now.
         this.cm.LoadTranslation("KJV")
             .then(() => {
-                console.log("Writing model: ", this.cm.GetModel());
                 this.setState({
                     model: this.cm.GetModel()
                 });
@@ -99,15 +98,15 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.state.model.ComponentModels.forEach((c) => {
             if (c.Type === "Article")
             {
-                elements.push((<Article model={(c.Model as IArticle)}></Article>));
+                elements.push((<Article key={(c.Model as IArticle).ID * 10 + 1} model={(c.Model as IArticle)}></Article>));
             }
             else if (c.Type === "Statement")
             {
-                elements.push((<Statement model={(c.Model as IStatement)}></Statement>));
+                elements.push((<Statement key={(c.Model as IStatement).ID * 10 + 2} model={(c.Model as IStatement)}></Statement>));
             }
             else if (c.Type === "Saying")
             {
-                elements.push((<Saying model={(c.Model as ISaying)}></Saying>));
+                elements.push((<Saying key={(c.Model as ISaying).ID * 10 + 3} model={(c.Model as ISaying)}></Saying>));
             }
         });
 
@@ -115,6 +114,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
             return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
         });*/
+        console.log("rendering library");
 
         return (
             <IonPage className={"library-page"}>
@@ -128,6 +128,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                              popOpen: false,
                                              popClickEvent: undefined
                                          });
+                                         // this.forceUpdate();
                                      }}
                                      onUpdate={() => {
                                          this.setState({

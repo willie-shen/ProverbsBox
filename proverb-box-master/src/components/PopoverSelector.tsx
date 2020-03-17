@@ -43,34 +43,35 @@ const PopoverSelector = (props : IPopProps) => {
                     onDidDismiss={e => {
                         props.onDismiss();
                     }}>
-            <IonContent>
+            <IonContent scrollY={false}>
                 <div id={"filter-container"}>
-                    {/*-- Default Segment --*/}
-                    <IonSegment value={typeDisplay} onIonChange={
-                        e => {
-                            if (e.detail.value !== undefined) {
-                                setTypeDisplay(e.detail.value);
-                                console.log(e.detail.value);
-                                props.contentManager.ApplyFilter("ByType", e.detail.value);
-                                props.onUpdate();
+                    <div>
+                        <IonSegment value={typeDisplay} onIonChange={
+                            e => {
+                                if (e.detail.value !== undefined) {
+                                    setTypeDisplay(e.detail.value);
+                                    console.log(e.detail.value);
+                                    props.contentManager.ApplyFilter("ByType", e.detail.value);
+                                    props.onUpdate();
+                                }
                             }
-                        }
-                    }>
-                        <IonSegmentButton value="statement">
-                            <IonLabel>Statements</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="saying">
-                            <IonLabel>Sayings</IonLabel>
-                        </IonSegmentButton>
-                        <IonSegmentButton value="all">
-                            <IonLabel>All</IonLabel>
-                        </IonSegmentButton>
-                    </IonSegment>
-
+                        }>
+                            <IonSegmentButton value="statement">
+                                <IonLabel>Statements</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="saying">
+                                <IonLabel>Sayings</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="all">
+                                <IonLabel>All</IonLabel>
+                            </IonSegmentButton>
+                        </IonSegment>
+                    </div>
                     <div id={"select-mode-container"}>
                         <h3 id={"mode-text"}>Chapter Select</h3>
                         <IonButton id={"mode-button"} size="small" color="dark">Select by Descriptor</IonButton>
                     </div>
+                    <div id={"top-shadow"}/>
                     <div className={"selection-box"}>
                         <IonRadioGroup value={chapterSelect.toString()} onIonChange={e => {
                             props.contentManager.ApplyFilter("ByChapter", parseInt(e.detail.value));
@@ -79,7 +80,7 @@ const PopoverSelector = (props : IPopProps) => {
                         }}>
                             {
                                 Statements.Range.map(r => (
-                                    <>
+                                    <div key={r.Start.Ch}>
                                         <p className={"title"}>{r.Title}</p>
                                         <IonList>
                                             {
@@ -87,7 +88,7 @@ const PopoverSelector = (props : IPopProps) => {
                                                 Array.from({length: r.End.Ch - r.Start.Ch + 1}, (x,i) => {
                                                     return i + r.Start.Ch;
                                                 }).map(chapter => (   // map to components
-                                                    <IonItem>
+                                                    <IonItem key={chapter}>
                                                         <IonLabel className={"chapter-select"}><span
                                                             className={"text"}>Chapter {chapter}</span></IonLabel>
                                                         <IonRadio
@@ -110,81 +111,12 @@ const PopoverSelector = (props : IPopProps) => {
                                                 ))
                                             }
                                         </IonList>
-                                    </>
+                                    </div>
                                 ))
                             }
-
-                            <p className={"title"}>Proverbs of Solomon</p>
-                            <IonList>
-
-
-                                <IonItem>
-                                    <IonLabel className={"chapter-select"}><span
-                                        className={"text"}>Chapter 11</span></IonLabel>
-                                    <IonRadio slot="start" value="11"/>
-                                </IonItem>
-
-                                <IonItem>
-                                    <IonLabel className={"chapter-select"}><span
-                                        className={"text"}>Chapter 12</span></IonLabel>
-                                    <IonRadio slot="start" value="12"/>
-                                </IonItem>
-                                {/*<IonItem>{selected ?? '(none selected'}</IonItem>*/}
-                            </IonList>
-
-                            <p className={"title"}>More Proverbs of Solomon</p>
-                            <IonList>
-                                <IonItem>
-                                    <IonLabel className={"chapter-select"}><span
-                                        className={"text"}>Chapter 25</span></IonLabel>
-                                    <IonRadio slot="start" value="25"/>
-                                </IonItem>
-
-                                <IonItem>
-                                    <IonLabel className={"chapter-select"}><span
-                                        className={"text"}>Chapter 26</span></IonLabel>
-                                    <IonRadio slot="start" value="26"/>
-                                </IonItem>
-
-                                <IonItem>
-                                    <IonLabel className={"chapter-select"}><span
-                                        className={"text"}>Chapter 27</span></IonLabel>
-                                    <IonRadio slot="start" value="27"/>
-                                </IonItem>
-                            </IonList>
                         </IonRadioGroup>
-                    </div>
-
-                    {/*Statement
-                            "Range": [
-                            {
-                                "Title": "Proverbs of Solomon",
-                                "Intro": {
-                                "Ch": 10, "Vs": 1, "Part": true
-                            },
-                                "Start": {
-                                "Ch": 10,
-                                "Vs": 1
-                            },
-                                "End": {
-                                "Ch": 22,
-                                "Vs": 16
-                            }
-                            },
-                            {
-                                "Title": "More Proverbs of Solomon",
-                                "Intro": {"Ch": 25, "Vs": 1, "Part": false},
-                                "Start": {
-                                "Ch": 25,
-                                "Vs": 1
-                            },
-                                "End": {
-                                "Ch": 29,
-                                "Vs": 27
-                            }
-                            */}
-
-                </div>
+                    </div> {/*End .selection-box*/}
+                </div> {/* End #filter-container */}
             </IonContent>
         </IonPopover>
     );
