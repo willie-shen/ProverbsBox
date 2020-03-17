@@ -43,7 +43,7 @@
 #filter-container {
     overflow: hidden;
     width: 90vw;
-    height: 80vh;
+    max-height: 80vh;
     max-width: 450px;
     box-sizing: border-box;
     padding: .5em 1em;
@@ -73,8 +73,9 @@
     padding-top: .5em;
     overflow-y: scroll;
     padding-right: 1em;
+    padding-bottom: 1em;
 }
-.selection-box .title{
+.selection-box .title {
     margin-top: 0;
     font-size: 1.1em;
     padding-left: 1em;

@@ -72,7 +72,7 @@ const PopoverSelector = (props : IPopProps) => {
                         <IonButton id={"mode-button"} size="small" color="dark">Select by Descriptor</IonButton>
                     </div>
                     <div id={"top-shadow"}/>
-                    <div className={"selection-box"}>
+                    <div className={"selection-box"} onTouchStart={(e)=> e.preventDefault()}>
                         <IonRadioGroup value={chapterSelect.toString()} onIonChange={e => {
                             props.contentManager.ApplyFilter("ByChapter", parseInt(e.detail.value));
                             props.onUpdate();
@@ -90,7 +90,8 @@ const PopoverSelector = (props : IPopProps) => {
                                                 }).map(chapter => (   // map to components
                                                     <IonItem key={chapter}>
                                                         <IonLabel className={"chapter-select"}><span
-                                                            className={"text"}>Chapter {chapter}</span></IonLabel>
+                                                            className={"text"}>Chapter {chapter}</span>
+                                                        </IonLabel>
                                                         <IonRadio
                                                             slot="start"
                                                             value={chapter.toString()}
