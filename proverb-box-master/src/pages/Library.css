@@ -32,11 +32,23 @@
     margin: .5em 1em;
 }
 
+
+
 @font-face{
     font-family: "Crimson Text";
     src: url("../fonts/crimson/CrimsonText-Regular.ttf");
 }
-
+p{
+    color: #4f6aa2;
+    background-color: 009900;
+    width: 400px;
+}
+h2{
+    font-size: 1.5em;
+    background-color: #ccc;
+    margin: 20px;
+    padding: 40px
+}
 * {
   font-family: "Crimson Text";
 }

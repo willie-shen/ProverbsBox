@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ac347c-06b9-4938-979d-7be57f084d94" name="Default Changelist" comment="Load KJV: done">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Library.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Library.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Library.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/theme/variables.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/theme/variables.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,22 +34,23 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/build/assets" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
     <property name="ts.external.directory.path" value="C:\Code4Christ\Team\ProverbsBox\proverb-box-master\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Code4Christ\Team\ProverbsBox\proverb-box-master\build\assets" />
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\api" />
+      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\translations" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Code4Christ\Team\ProverbsBox\proverb-box-master\src\api" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\public\assets" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\indexing" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\data" />
       <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\filterDataModels" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\api" />
-      <recent name="C:\Code4Christ\ProverbsBox\proverb-box-master\src\translations" />
     </key>
   </component>
   <component name="RunManager">
@@ -103,7 +101,8 @@
       <workItem from="1582660333197" duration="19166000" />
       <workItem from="1582919905139" duration="726000" />
       <workItem from="1583294832052" duration="5963000" />
-      <workItem from="1583870460565" duration="22003000" />
+      <workItem from="1583870460565" duration="22432000" />
+      <workItem from="1584394664985" duration="16948000" />
     </task>
     <servers />
   </component>
@@ -152,14 +151,16 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="49" y="62" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1578872682932" />
-    <state x="42" y="190" key="run.anything.popup" timestamp="1582677390587">
+    <state x="42" y="190" key="run.anything.popup" timestamp="1584421082718">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="42" y="190" key="run.anything.popup/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1584421082718" />
     <state x="42" y="190" key="run.anything.popup/0.0.1536.824/1229.-1080.1920.1040@0.0.1536.824" timestamp="1582677390587" />
     <state x="42" y="190" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1578871546370" />
-    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1583297451392">
+    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1584424104748">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1584424104748" />
     <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/1229.-1080.1920.1040@0.0.1536.824" timestamp="1580265684983" />
     <state x="296" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1583297451392" />
   </component>

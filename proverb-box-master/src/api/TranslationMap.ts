@@ -26,6 +26,11 @@ export default class TranslationMap
         return this.translationName;
     }
 
+    IsReady()
+    {
+        return !(this.translationName === "LOADING" || this.translationName === "NONE");
+    }
+
     IsLoading()
     {
         return this.translationName === "LOADING";

@@ -31,6 +31,7 @@ import {IArticle, IModel, ISaying, IStatement} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
+import {PopoverSelector} from "../components/PopoverSelector"
 
 type ILibraryProps = {
   contentManager: ContentManager
@@ -62,7 +63,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.state = {
             //proverbs: this.props.proverbProvider.GetAllOneLiners(),
             searchContent: "",
-            popClickEvent: null,
+            popClickEvent: undefined,
             popOpen: false,
             model: this.cm.GetModel(), // A blank model
             typeDisplay: "statement",
@@ -115,120 +116,28 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
         });*/
 
-        let popoverFilter = (
-            <IonPopover id={"popover-filter"} event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e =>
-                this.setState({popOpen: false, popClickEvent: null})
-            }>
-                <IonContent>
-                    <div  id={"filter-container"}>
-                        {/*-- Default Segment --*/}
-                        <IonSegment value = {this.state.typeDisplay} onIonChange={
-                            e => {
-                                if (e.detail.value !== undefined)
-                                {
-                                    this.setState({typeDisplay: e.detail.value})
-                                }
-                            }
-                        }>
-                            <IonSegmentButton value="statement">
-                                <IonLabel>Statements</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="sayings">
-                                <IonLabel>Sayings</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="all">
-                                <IonLabel>All</IonLabel>
-                            </IonSegmentButton>
-                        </IonSegment>
-
-                        <div id={"select-mode-container"}>
-                            <h3 id={"mode-text"}>Chapter Select</h3>
-                            <IonButton id={"mode-button"} size="small" color="dark">Select by Descriptor</IonButton>
-                        </div>
-                        <div className = {"selection-box"}>
-                            <IonRadioGroup value={""} onIonChange={e => {}}>
-
-                                <p className = {"title"}>Proverbs of Solomon</p>
-                                <IonList>
-                                        <IonItem>
-                                            <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 10</span></IonLabel>
-                                            <IonRadio slot="start" value="10" />
-                                        </IonItem>
-
-                                        <IonItem>
-                                            <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 11</span></IonLabel>
-                                            <IonRadio slot="start" value="11" />
-                                        </IonItem>
-
-                                        <IonItem>
-                                            <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 12</span></IonLabel>
-                                            <IonRadio slot="start" value="12" />
-                                        </IonItem>
-                                    {/*<IonItem>{selected ?? '(none selected'}</IonItem>*/}
-                                </IonList>
-
-                                <p className = {"title"}>More Proverbs of Solomon</p>
-                                <IonList>
-                                    <IonItem>
-                                        <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 25</span></IonLabel>
-                                        <IonRadio slot="start" value="25" />
-                                    </IonItem>
-
-                                    <IonItem>
-                                        <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 26</span></IonLabel>
-                                        <IonRadio slot="start" value="26" />
-                                    </IonItem>
-
-                                    <IonItem>
-                                        <IonLabel className={"chapter-select"}><span className={"text"}>Chapter 27</span></IonLabel>
-                                        <IonRadio slot="start" value="27" />
-                                    </IonItem>
-                                </IonList>
-                            </IonRadioGroup>
-                        </div>
-
-                        {/*Statement
-                        "Range": [
-                        {
-                            "Title": "Proverbs of Solomon",
-                            "Intro": {
-                            "Ch": 10, "Vs": 1, "Part": true
-                        },
-                            "Start": {
-                            "Ch": 10,
-                            "Vs": 1
-                        },
-                            "End": {
-                            "Ch": 22,
-                            "Vs": 16
-                        }
-                        },
-                        {
-                            "Title": "More Proverbs of Solomon",
-                            "Intro": {"Ch": 25, "Vs": 1, "Part": false},
-                            "Start": {
-                            "Ch": 25,
-                            "Vs": 1
-                        },
-                            "End": {
-                            "Ch": 29,
-                            "Vs": 27
-                        }
-                        */}
-
-                    </div>
-                </IonContent>
-            </IonPopover>
-        );
-
         return (
             <IonPage className={"library-page"}>
 
                 <IonHeader>
-                    {popoverFilter}
+                    <PopoverSelector contentManager = {this.cm}
+                                     isOpen={this.state.popOpen}
+                                     event={this.state.popClickEvent}
+                                     onDismiss={() => {
+                                         this.setState({
+                                             popOpen: false,
+                                             popClickEvent: undefined
+                                         });
+                                     }}
+                                     onUpdate={() => {
+                                         this.setState({
+                                             model: this.cm.GetModel()
+                                         });
+                                     }}
+                                     />
                     <IonToolbar>
                         <IonButtons slot={"start"}>
-                            <IonButton onClick={(e) => {
+                            <IonButton onClick={(e : any) => {
                                 e.persist();
                                 this.setState({
                                     popClickEvent: e,

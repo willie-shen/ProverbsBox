@@ -8,6 +8,7 @@
 # testing
 /coverage
 /src/api/TestScriptConfig.json
+/scripts/ngrok.exe
 
 # production
 /build

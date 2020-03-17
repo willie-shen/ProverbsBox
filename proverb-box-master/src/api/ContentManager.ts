@@ -132,7 +132,9 @@ export default class ContentManager {
         this.filters.push(filter);
 
         // refresh models
-        this.RefreshModels();
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
     }
 
     // Remove a filter by filter name
@@ -144,7 +146,10 @@ export default class ContentManager {
         // For efficiency, add option: remove search pool
 
         // refresh models
-        this.RefreshModels();
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
     }
 
     private UpdateBookmarkModelCache(verseID: number, isBookmarked: boolean) {
@@ -173,6 +178,7 @@ export default class ContentManager {
     }
 
     private RefreshModels() {
+
         // filter verses
         let signatures = Indexer.PermuteVerses();
         this.filters.forEach(f => {
