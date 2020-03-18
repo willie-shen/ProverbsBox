@@ -1,5 +1,4 @@
 import {
-    IonPopover,
     IonContent,
     IonHeader,
     IonIcon,
@@ -9,36 +8,24 @@ import {
     IonSearchbar,
     IonButton,
     IonButtons,
-    IonModal,
-    IonSegment,
-    IonSegmentButton,
-    IonLabel,
-    IonListHeader,
-    IonRadioGroup,
-    IonList,
-    IonItemDivider,
-    IonItem, IonRadio, IonSelect, IonSelectOption
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
 import './Library.css';
 
-import {IProverb} from "../components/ProverbInterface";
-//import {Proverb} from "../components/Proverb";
-import ProverbData from "../components/ProverbData";
 import ContentManager from "../api/ContentManager";
 import {IArticle, IModel, ISaying, IStatement} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
 import {PopoverSelector} from "../components/PopoverSelector"
+import {TranslationToggle} from "../components/TranslationToggle";
 
 type ILibraryProps = {
   contentManager: ContentManager
 }
 
 type ILibraryState = {
-    //proverbs: Array<IProverb>,
     searchContent: string,
     popClickEvent: any,
     popOpen: boolean,
@@ -148,6 +135,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 }}>
                                 <IonIcon slot = "icon-only" icon = {book} />
                             </IonButton>
+                            <TranslationToggle contentManager={this.cm}/>
                         </IonButtons>
 
                         <IonTitle>Library</IonTitle>

@@ -21,7 +21,6 @@ type IPopProps = {
 };
 
 const PopoverSelector = (props : IPopProps) => {
-
     // config
     const defaultChapter : {[selector:string]: number} = {
         statement: 10,

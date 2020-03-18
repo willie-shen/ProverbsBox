@@ -1,0 +1,23 @@
+/* TranslationToggle */
+.translation-toggle-container {
+    height: 1em;
+}
+.translation-toggle {
+    --transparent: black;
+    --background: black !important;
+    --color: white;
+    margin-top: .5em;
+    margin-bottom: .5em;
+    --padding-top: 0em;
+    --padding-bottom: 0em;
+    --height: 20px;
+}
+.translation-toggle .version-tag {
+    font-size: .5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}

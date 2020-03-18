@@ -61,6 +61,14 @@ export default class ContentManager {
         return translationPromise;
     }
 
+    OnLoadTranslation(func: () => void) {
+        this.translator.AddOnLoadedCallback(func);
+    }
+
+    GetTranslationName() {
+        return this.translator.GetTranslationName();
+    }
+
     GetModel() {
         // sentinel
         if (this.translator.GetTranslationName() === "NONE" || this.translator.GetTranslationName() === "LOADING")

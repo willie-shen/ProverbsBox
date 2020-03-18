@@ -1,14 +1,24 @@
-.welcome-card img {
-  max-height: 35vh;
-  overflow: hidden;
+
+/* Global */
+@font-face{
+    font-family: "Crimson Text";
+    src: url("../fonts/crimson/CrimsonText-Regular.ttf");
+}
+* {
+    font-family: "Crimson Text";
 }
 
+.welcome-card img {
+    max-height: 35vh;
+    overflow: hidden;
+}
 .chapter-select {
 }
 .chapter-select .text {
     font-family: "Crimson Text";
 }
 
+/* Popover */
 #select-mode-container {
     display: flex;
     flex-direction: row;
@@ -57,7 +67,8 @@
 #top-shadow {
     height: 30px;
     width: 100%;
-    box-shadow: 0 4px 5px -5px rgba( 50, 50, 50, .8);
+    /*box-shadow: 0 4px 5px -5px rgba( 50, 50, 50, .8);*/
+    box-shadow: 0 4px 10px -7px rgba( 70, 70, 70, .8);
     z-index: 100;
 }
 #select-mode-container h3 {
@@ -84,10 +95,7 @@
 .selection-box .chapter-select {
     font-size: .9em;
 }
-@font-face{
-    font-family: "Crimson Text";
-    src: url("../fonts/crimson/CrimsonText-Regular.ttf");
-}
+
 /*p{
     color: #4f6aa2;
     background-color: 009900;
@@ -100,7 +108,3 @@ h2{
     padding: 40px
 }
 */
-
-* {
-  font-family: "Crimson Text";
-}
