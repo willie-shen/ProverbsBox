@@ -27,13 +27,15 @@ const TranslationToggle = (props : ITranslationToggleProps) => {
     const [selectOpen, setSelectOpen] = useState<boolean>(false);
 
     return (
-        <div className={"translation-toggle-container"}>
-            <IonButton expand={"block"} class="translation-toggle" onClick={()=>{
+        <>
+            <IonButton class="translation-toggle" onClick={()=>{
                 setSelectOpen(true);
             }}>
                 {
                     loading ? (
-                            <IonSpinner color="light" name="dots" />
+                            <div className={"spin-container"}>
+                                <IonSpinner color="light" name="dots" />
+                            </div>
                         )
                         :
                         (
@@ -71,7 +73,7 @@ const TranslationToggle = (props : ITranslationToggleProps) => {
                     }]
                 }
             />
-        </div>
+        </>
     );
 };
 

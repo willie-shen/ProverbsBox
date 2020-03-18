@@ -1,23 +1,27 @@
 /* TranslationToggle */
 .translation-toggle-container {
-    height: 1em;
 }
 .translation-toggle {
-    --transparent: black;
-    --background: black !important;
-    --color: white;
-    margin-top: .5em;
-    margin-bottom: .5em;
-    --padding-top: 0em;
-    --padding-bottom: 0em;
-    --height: 20px;
+    --background: var(--ion-color-primary-tint) !important;
+    --color: white !important;
+    height: 1.2em !important;
+    --border-radius: .6em !important;
+    /*--border-color: var(--ion-color-primary-tint);
+    --border-width: 2px;
+    --border-style: solid;*/
 }
 .translation-toggle .version-tag {
-    font-size: .5em;
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: 0;
-    padding-bottom: 0;
+    letter-spacing: 2px;
+    font-size: .6em;
+    font-weight: normal;
+    padding: 0 1em;
     margin-top: 0;
     margin-bottom: 0;
+}
+.translation-toggle .spin-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: .5em;
+    margin-right: .5em;
 }

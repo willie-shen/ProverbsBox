@@ -146,6 +146,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
+                    <IonButton className={"test-button"}> HELLLO </IonButton>
 
                     {/*<IonModal
                         isOpen={this.state.popOpen}

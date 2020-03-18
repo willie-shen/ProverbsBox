@@ -2,10 +2,28 @@
 /* Global */
 @font-face{
     font-family: "Crimson Text";
+    font-width: bold;
+    font-style: normal;
+    src: url("../fonts/crimson/CrimsonText-Bold.ttf");
+}
+@font-face{
+    font-family: "Crimson Text";
+    font-width: normal;
+    font-style: normal;
     src: url("../fonts/crimson/CrimsonText-Regular.ttf");
 }
 * {
     font-family: "Crimson Text";
+    font-style: normal;
+}
+
+.library-page .translation-toggle {
+    margin-left: .9em;
+
+}
+.test-button {
+    margin-left: 20px;
+    height: 20px;
 }
 
 .welcome-card img {
@@ -95,6 +113,7 @@
 .selection-box .chapter-select {
     font-size: .9em;
 }
+
 
 /*p{
     color: #4f6aa2;
