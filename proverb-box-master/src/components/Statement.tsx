@@ -11,6 +11,7 @@ import {IStatement} from "../api/Interfaces";
 
 // Styles
 import "./Proverb.scss"
+import "./Views.css"
 
 // Icons
 import { heart, heartOutline } from 'ionicons/icons';
@@ -26,12 +27,14 @@ type StatementState = {
 class Statement extends React.Component<StatementProp, StatementState> {
     render() {
         return (
-            <IonCard class={"saying"}>
-                <h3>Statement Mock text</h3>
-                <p>{this.props.model.Verse.Content}</p>
-                <p>Chapter: {this.props.model.Verse.Chapter}</p>
-                <p>Verse: {this.props.model.Verse.VerseNumber}</p>
-            </IonCard>
+            <div className={"statement-view"}>
+                <h3 className={"verse-content"}>{this.props.model.Verse.Content}</h3>
+                <div className={"bar"}/>
+                <div className={"info-bar"}>
+                    <p className={"verse-name"}>Proverbs {this.props.model.Verse.Chapter}:{this.props.model.Verse.VerseNumber}</p>
+                    <IonIcon className={"save-icon"} icon={heartOutline}></IonIcon>
+                </div>
+            </div>
         );
     }
 }

@@ -7,7 +7,7 @@ import {
     IonToolbar,
     IonSearchbar,
     IonButton,
-    IonButtons,
+    IonButtons, IonGrid, IonRow, IonCol,
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
@@ -137,30 +137,23 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                             </IonButton>
                             <TranslationToggle contentManager={this.cm}/>
                         </IonButtons>
-
                         <IonTitle>Library</IonTitle>
                     </IonToolbar>
-
                     <IonToolbar>
                         <IonSearchbar></IonSearchbar>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent>
-                    <IonButton className={"test-button"}> HELLLO </IonButton>
-
-                    {/*<IonModal
-                        isOpen={this.state.popOpen}
-                        swipeToClose={true}
-                        presentingElement={this.ref.current}
-                        onDidDismiss={() =>{this.setState({popOpen: false})}}>
-                        <p>This is modal content</p>
-                        <IonButton onClick={() => this.setState({popOpen: false})}>Close Modal</IonButton>
-                    </IonModal>*/}
-
-                    {elements}
+                <IonContent className={"proverb-panel"}>
+                    <IonGrid>
+                        {
+                            elements.map(component => (
+                                <IonRow className={"ion-justify-content-center"}>
+                                    {component}
+                                </IonRow>
+                            ))
+                        }
+                    </IonGrid>
                 </IonContent>
-
-
             </IonPage>
         );
     }
