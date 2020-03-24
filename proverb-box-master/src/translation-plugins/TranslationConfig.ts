@@ -1,7 +1,17 @@
-//  IMPORT LOADERS
+/*
+  Proverb Box
+  Code for Christ, 2020
+  Translation Configuration File (WEB/Lexham not yet implemented)
+
+    Note:
+      Place Translation JSON File in:
+      proverb-box-master/public/assets/translations
+*/
+
+//  Import Loaders
 import KJVLoader from './KJV-Loader'
 
-//  Translation Configuration file (KJV-Loader not yet implemented)
+//  Translation Config
 export default {
   "KJV": {
     "Label": "King James Version",

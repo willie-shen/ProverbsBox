@@ -1,11 +1,12 @@
 import {
     IonAlert,
-    IonButton, IonItem, IonLabel, IonListHeader, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonSpinner
+    IonButton,
+    IonSpinner
 } from "@ionic/react";
 import React, {useState} from "react";
 import ContentManager from "../api/ContentManager"
 import "./TranslationToggle.css"
-import TranslationConfig from "../api/TranslationConfig"
+import TranslationConfig from "../translation-plugins/TranslationConfig"
 
 type ITranslationToggleProps = {
     contentManager: ContentManager

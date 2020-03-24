@@ -7,7 +7,9 @@ import {
     IonToolbar,
     IonSearchbar,
     IonButton,
-    IonButtons, IonGrid, IonRow, IonCol,
+    IonButtons,
+    IonGrid,
+    IonRow
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
@@ -89,7 +91,32 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             }
             else if (c.Type === "Statement")
             {
-                elements.push((<Statement key={(c.Model as IStatement).ID * 10 + 2} model={(c.Model as IStatement)}></Statement>));
+                const statementModel = (c.Model as IStatement);
+                elements.push((<Statement
+                    key={statementModel.ID * 10 + 2}
+                    model={statementModel}
+                    heartCallback={()=>{
+                        if (statementModel.Saved) {
+                            console.log("Removing heart");
+                            this.cm.RemoveBookmark(
+                                {
+                                    Chapter: statementModel.Verse.Chapter,
+                                    VerseNumber: statementModel.Verse.VerseNumber
+                                }
+                            );
+                        }
+                        else {
+                            console.log("adding heart");
+                            this.cm.Bookmark(
+                                {
+                                    Chapter: statementModel.Verse.Chapter,
+                                    VerseNumber: statementModel.Verse.VerseNumber
+                                }
+                            );
+                        }
+                        this.setState({model: this.cm.GetModel()});
+                    }}>
+                </Statement>));
             }
             else if (c.Type === "Saying")
             {

@@ -42,7 +42,7 @@ export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) =>
     ByType : (type : string) => {
         let c: IFilterCallback = (verse : IVerseSignature) => {
             const verseTypes = Indexer.GetVerseType(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber)).types;
-            if (verseTypes != undefined)
+            if (verseTypes !== undefined)
             {
                 return verseTypes.some(t => t.toLowerCase() === type.toLowerCase());
             }

@@ -29,8 +29,8 @@ const PopoverSelector = (props : IPopProps) => {
     };
 
     // react hooks
-    const [cachedEvent, setCachedEvent] = useState<Event | undefined>(undefined);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    /*const [cachedEvent, setCachedEvent] = useState<Event | undefined>(undefined);
+    const [isOpen, setIsOpen] = useState<boolean>(false);*/
 
     const [typeDisplay, setTypeDisplay] = useState<string>("statement");
     //props.contentManager.ApplyFilter("ByType", "statement");

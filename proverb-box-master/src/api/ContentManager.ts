@@ -99,6 +99,26 @@ export default class ContentManager {
     Bookmark(verse: IVerseSignature) {
         const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
         this.storageAssistant.BookmarkVerse(verseID);
+        this.ToggleSaved(verse, true);
+    }
+
+    private ToggleSaved(verse:IVerseSignature, toggleSaved:boolean) {
+        [this.componentModels, this.refinedModels].forEach(models => {
+            const target = models.filter(m => {
+                if (m.Type === "Saying") {
+                    const v = (m.Model as ISaying).Verses[0];
+                    return v.VerseNumber === verse.VerseNumber
+                        && v.Chapter === verse.Chapter;
+                }
+                else if (m.Type === "Statement") {
+                    const v = (m.Model as IStatement).Verse;
+                    return v.Chapter === verse.Chapter
+                        && v.VerseNumber === verse.VerseNumber;
+                }
+                return false;
+            })[0];
+            (target.Model as (IStatement | ISaying)).Saved = toggleSaved;
+        });
     }
 
     RemoveBookmark(verse: IVerseSignature) {

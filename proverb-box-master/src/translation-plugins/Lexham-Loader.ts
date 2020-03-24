@@ -1,4 +1,4 @@
-import {IBookData} from "./Interfaces"
+import {IBookData} from "../api/Interfaces"
 
 export default class LexhamLoader {
     async Load(TranslationDataPath: string) {

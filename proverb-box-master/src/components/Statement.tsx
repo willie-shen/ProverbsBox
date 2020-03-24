@@ -1,9 +1,4 @@
 import {
-    IonCard,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonButton,
     IonIcon
 } from '@ionic/react';
 import React from 'react';
@@ -14,17 +9,17 @@ import "./Proverb.scss"
 import "./Views.css"
 
 // Icons
-import { heart, heartOutline } from 'ionicons/icons';
-import {IProverb} from './ProverbInterface'
+import {heartCircle, heartCircleOutline} from 'ionicons/icons';
 
-type StatementProp ={
+type StatementProps = {
     model: IStatement
-}
+    heartCallback: () => void
+};
 
 type StatementState = {
 }
 
-class Statement extends React.Component<StatementProp, StatementState> {
+class Statement extends React.Component<StatementProps, StatementState> {
     render() {
         return (
             <div className={"statement-view"}>
@@ -32,7 +27,7 @@ class Statement extends React.Component<StatementProp, StatementState> {
                 <div className={"bar"}/>
                 <div className={"info-bar"}>
                     <p className={"verse-name"}>Proverbs {this.props.model.Verse.Chapter}:{this.props.model.Verse.VerseNumber}</p>
-                    <IonIcon className={"save-icon"} icon={heartOutline}></IonIcon>
+                    <IonIcon onClick={this.props.heartCallback} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
                 </div>
             </div>
         );

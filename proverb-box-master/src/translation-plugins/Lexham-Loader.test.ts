@@ -3,7 +3,7 @@ import data from "../../public/assets/translations/Lexham-Proverbs.json";
 
 // Fetch Mock
 import { FetchMock } from 'jest-fetch-mock';
-import {IBookData} from "./Interfaces";
+import {IBookData} from "../api/Interfaces";
 
 const fetchMock = fetch as FetchMock;
 
