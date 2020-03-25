@@ -100,6 +100,7 @@ export default class ContentManager {
         const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
         this.storageAssistant.BookmarkVerse(verseID);
         this.ToggleSaved(verse, true);
+        console.log("Saved verse: ", verseID, " -- Bookmarked?: ", this.storageAssistant.isBookmarked(verseID));
     }
 
     private ToggleSaved(verse:IVerseSignature, toggleSaved:boolean) {
@@ -122,7 +123,10 @@ export default class ContentManager {
     }
 
     RemoveBookmark(verse: IVerseSignature) {
-
+        const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
+        this.storageAssistant.removeBookmark(verseID);
+        this.ToggleSaved(verse, false);
+        console.log("Unsaved verse: ", verseID, " -- Bookmarked?: ", this.storageAssistant.isBookmarked(verseID));
     }
 
     // Automatically updates old copy of a filter

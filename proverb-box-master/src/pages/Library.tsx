@@ -20,8 +20,11 @@ import {IArticle, IModel, ISaying, IStatement} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
-import {PopoverSelector} from "../components/PopoverSelector"
+import {PopoverSelector} from "../components/PopoverSelector";
 import {TranslationToggle} from "../components/TranslationToggle";
+
+import DefaultConfig from "./DefaultDisplayConfig";
+import Indexer from "../api/Indexer";
 
 type ILibraryProps = {
   contentManager: ContentManager
@@ -55,72 +58,75 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             popClickEvent: undefined,
             popOpen: false,
             model: this.cm.GetModel(), // A blank model
-            typeDisplay: "statement",
-            filterFormat: "chapter"
+            typeDisplay: DefaultConfig.typeDisplay,
+            filterFormat: DefaultConfig.filterFormat
         };
 
         // Hard-code translation for now.
-        this.cm.LoadTranslation("KJV")
+        this.cm.LoadTranslation(DefaultConfig.translation)
             .then(() => {
+                this.cm.ApplyFilter("ByType", this.state.typeDisplay);
+                this.cm.ApplyFilter("ByChapter",
+                    (DefaultConfig.chapter as  {[selector:string]: number})[this.state.typeDisplay]);
                 this.setState({
                     model: this.cm.GetModel()
                 });
             });
     }
 
-    updateProverbs() {
-        //this.setState({proverbs : this.props.proverbProvider.GetFilteredOneLiners()});
-    }
-
-    showPopover() {
-
-    }
-
-    setShowPopover() {
-
-    }
-
     render() {
 
-        let elements: Array<any> = [];
+        let elements: Array<{
+            key: number,
+            element: any
+        }> = [];
 
         this.state.model.ComponentModels.forEach((c) => {
             if (c.Type === "Article")
             {
-                elements.push((<Article key={(c.Model as IArticle).ID * 10 + 1} model={(c.Model as IArticle)}></Article>));
+                const keyVerse = (c.Model as IArticle).Verses[0];
+                elements.push({
+                    key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
+                    element: (<Article model={(c.Model as IArticle)}></Article>)
+                });
             }
             else if (c.Type === "Statement")
             {
                 const statementModel = (c.Model as IStatement);
-                elements.push((<Statement
-                    key={statementModel.ID * 10 + 2}
-                    model={statementModel}
-                    heartCallback={()=>{
-                        if (statementModel.Saved) {
-                            console.log("Removing heart");
-                            this.cm.RemoveBookmark(
-                                {
-                                    Chapter: statementModel.Verse.Chapter,
-                                    VerseNumber: statementModel.Verse.VerseNumber
-                                }
-                            );
-                        }
-                        else {
-                            console.log("adding heart");
-                            this.cm.Bookmark(
-                                {
-                                    Chapter: statementModel.Verse.Chapter,
-                                    VerseNumber: statementModel.Verse.VerseNumber
-                                }
-                            );
-                        }
-                        this.setState({model: this.cm.GetModel()});
-                    }}>
-                </Statement>));
+                elements.push({
+                    key: Indexer.GetVerseID(statementModel.Verse.Chapter, statementModel.Verse.VerseNumber),
+                    element: (<Statement
+                        model={statementModel}
+                        heartCallback={() => {
+                            if (statementModel.Saved) {
+                                console.log("Removing heart");
+                                this.cm.RemoveBookmark(
+                                    {
+                                        Chapter: statementModel.Verse.Chapter,
+                                        VerseNumber: statementModel.Verse.VerseNumber
+                                    }
+                                );
+                            } else {
+                                console.log("adding heart");
+                                this.cm.Bookmark(
+                                    {
+                                        Chapter: statementModel.Verse.Chapter,
+                                        VerseNumber: statementModel.Verse.VerseNumber
+                                    }
+                                );
+                            }
+                            this.setState({model: this.cm.GetModel()});
+                        }}>
+                    </Statement>)
+                });
             }
             else if (c.Type === "Saying")
             {
-                elements.push((<Saying key={(c.Model as ISaying).ID * 10 + 3} model={(c.Model as ISaying)}></Saying>));
+                const keyVerse = (c.Model as ISaying).Verses[0];
+                elements.push({
+                    key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
+                    element: (<Saying model={(c.Model as ISaying)}></Saying>)
+                });
             }
         });
 
@@ -174,8 +180,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     <IonGrid>
                         {
                             elements.map(component => (
-                                <IonRow className={"ion-justify-content-center"}>
-                                    {component}
+                                <IonRow key={component.key} className={"ion-justify-content-center"}>
+                                    {component.element}
                                 </IonRow>
                             ))
                         }

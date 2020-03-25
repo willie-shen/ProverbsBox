@@ -11,6 +11,7 @@ import {
 import React, {useState} from "react";
 import ContentManager from "../api/ContentManager";
 import Statements from "../indexing/Statements.json"
+import DefaultConfig from "../pages/DefaultDisplayConfig";
 
 type IPopProps = {
     contentManager: ContentManager,
@@ -22,11 +23,7 @@ type IPopProps = {
 
 const PopoverSelector = (props : IPopProps) => {
     // config
-    const defaultChapter : {[selector:string]: number} = {
-        statement: 10,
-        saying: 15,
-        all: 1
-    };
+    const defaultChapter : {[selector:string]: number} = DefaultConfig.chapter;
 
     // react hooks
     /*const [cachedEvent, setCachedEvent] = useState<Event | undefined>(undefined);
