@@ -43,6 +43,8 @@ export default class ContentManager {
         this.translatorLoading = false;
         this.componentModels = [];
         this.refinedModels = [];
+
+        this.storageAssistant.loadFile()
     }
 
     async LoadTranslation(translationName: string) {
