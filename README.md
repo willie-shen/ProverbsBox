@@ -1,6 +1,6 @@
 # ProverbsBox
-- Elegant app for reading/studying/memorizing the biblical book of Proverbs
-- Christian version of the Motivation App 
+- An elegant app for reading/studying/memorizing the biblical book of Proverbs
+- Christian alternative to the Motivation App 
 
 <div>
   <img src="https://github.com/willie-shen/ProverbsBox/raw/master/proverb-box-master/branding/screen-shots/ss_v1_statement.jpg" style="margin-left: 5px;" alt="Proverbs of Solomon: Chapter 10" width="200">
