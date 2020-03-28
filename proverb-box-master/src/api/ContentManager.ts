@@ -43,6 +43,8 @@ export default class ContentManager {
         this.translatorLoading = false;
         this.componentModels = [];
         this.refinedModels = [];
+
+        this.storageAssistant.loadFile()
     }
 
     async LoadTranslation(translationName: string) {
@@ -59,6 +61,14 @@ export default class ContentManager {
         });
 
         return translationPromise;
+    }
+
+    OnLoadTranslation(func: () => void) {
+        this.translator.AddOnLoadedCallback(func);
+    }
+
+    GetTranslationName() {
+        return this.translator.GetTranslationName();
     }
 
     GetModel() {
@@ -91,10 +101,34 @@ export default class ContentManager {
     Bookmark(verse: IVerseSignature) {
         const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
         this.storageAssistant.BookmarkVerse(verseID);
+        this.ToggleSaved(verse, true);
+        console.log("Saved verse: ", verseID, " -- Bookmarked?: ", this.storageAssistant.isBookmarked(verseID));
+    }
+
+    private ToggleSaved(verse:IVerseSignature, toggleSaved:boolean) {
+        [this.componentModels, this.refinedModels].forEach(models => {
+            const target = models.filter(m => {
+                if (m.Type === "Saying") {
+                    const v = (m.Model as ISaying).Verses[0];
+                    return v.VerseNumber === verse.VerseNumber
+                        && v.Chapter === verse.Chapter;
+                }
+                else if (m.Type === "Statement") {
+                    const v = (m.Model as IStatement).Verse;
+                    return v.Chapter === verse.Chapter
+                        && v.VerseNumber === verse.VerseNumber;
+                }
+                return false;
+            })[0];
+            (target.Model as (IStatement | ISaying)).Saved = toggleSaved;
+        });
     }
 
     RemoveBookmark(verse: IVerseSignature) {
-
+        const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
+        this.storageAssistant.removeBookmark(verseID);
+        this.ToggleSaved(verse, false);
+        console.log("Unsaved verse: ", verseID, " -- Bookmarked?: ", this.storageAssistant.isBookmarked(verseID));
     }
 
     // Automatically updates old copy of a filter
@@ -132,7 +166,9 @@ export default class ContentManager {
         this.filters.push(filter);
 
         // refresh models
-        this.RefreshModels();
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
     }
 
     // Remove a filter by filter name
@@ -144,7 +180,10 @@ export default class ContentManager {
         // For efficiency, add option: remove search pool
 
         // refresh models
-        this.RefreshModels();
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
     }
 
     private UpdateBookmarkModelCache(verseID: number, isBookmarked: boolean) {
@@ -173,6 +212,7 @@ export default class ContentManager {
     }
 
     private RefreshModels() {
+
         // filter verses
         let signatures = Indexer.PermuteVerses();
         this.filters.forEach(f => {

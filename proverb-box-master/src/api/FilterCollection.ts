@@ -12,6 +12,7 @@
 
 import {IVerseSignature, IFilter, IFilterCallback} from './Interfaces';
 import Indexer from './Indexer'
+import StorageAssistant from "./StorageAssistant";
 
 export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) => IFilter} = {
     /*
@@ -39,19 +40,46 @@ export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) =>
     },
 
     ByType : (type : string) => {
-        const c: IFilterCallback = (verse : IVerseSignature) => {
+        let c: IFilterCallback = (verse : IVerseSignature) => {
             const verseTypes = Indexer.GetVerseType(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber)).types;
-            if (verseTypes != undefined)
+            if (verseTypes !== undefined)
             {
-                return verseTypes.some(t => t===type);
+                return verseTypes.some(t => t.toLowerCase() === type.toLowerCase());
             }
             return false;
         };
+
+        if (type === "all")
+        {
+            c = (verse: IVerseSignature) => true;
+        }
         return {
             name: "ByType",
             callback: c
         };
     },
+
+    ByChapter : (chapter : number) => {
+        const c: IFilterCallback = (verse : IVerseSignature) => {
+            return (verse.Chapter === chapter);
+        };
+
+        return {
+            name: "ByChapter",
+            callback: c
+        };
+    },
+
+    BySaved : (sa : StorageAssistant) => {
+        const c: IFilterCallback = (verse : IVerseSignature) => {
+            return (sa.isBookmarked(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber)));
+        };
+
+        return {
+            name: "BySaved",
+            callback: c
+        }
+    }
 
     /*
     The following nearly works but should be reformatted to return a callback that takes a verse signature

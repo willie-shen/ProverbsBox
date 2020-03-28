@@ -18,7 +18,6 @@ import {
 } from '@ionic/react';
 
 import { Plugins } from '@capacitor/core';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 
 import {funnel} from 'ionicons/icons'
 const Bookmarked: React.FC = () => {

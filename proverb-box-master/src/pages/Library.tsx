@@ -1,5 +1,4 @@
 import {
-    IonPopover,
     IonContent,
     IonHeader,
     IonIcon,
@@ -8,31 +7,36 @@ import {
     IonToolbar,
     IonSearchbar,
     IonButton,
-    IonButtons, IonModal, IonSegment, IonSegmentButton, IonLabel
+    IonButtons,
+    IonGrid,
+    IonRow
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
 import './Library.css';
 
-import {IProverb} from "../components/ProverbInterface";
-//import {Proverb} from "../components/Proverb";
-import ProverbData from "../components/ProverbData";
 import ContentManager from "../api/ContentManager";
 import {IArticle, IModel, ISaying, IStatement} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
+import {PopoverSelector} from "../components/PopoverSelector";
+import {TranslationToggle} from "../components/TranslationToggle";
+
+import DefaultConfig from "./DefaultDisplayConfig";
+import Indexer from "../api/Indexer";
 
 type ILibraryProps = {
   contentManager: ContentManager
 }
 
 type ILibraryState = {
-    //proverbs: Array<IProverb>,
     searchContent: string,
     popClickEvent: any,
     popOpen: boolean,
     model: IModel,
+    typeDisplay: string,
+    filterFormat: string
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
@@ -51,50 +55,78 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.state = {
             //proverbs: this.props.proverbProvider.GetAllOneLiners(),
             searchContent: "",
-            popClickEvent: null,
+            popClickEvent: undefined,
             popOpen: false,
             model: this.cm.GetModel(), // A blank model
+            typeDisplay: DefaultConfig.typeDisplay,
+            filterFormat: DefaultConfig.filterFormat
         };
 
-
         // Hard-code translation for now.
-        this.cm.LoadTranslation("KJV")
+        this.cm.LoadTranslation(DefaultConfig.translation)
             .then(() => {
-                console.log("Writing model: ", this.cm.GetModel());
+                this.cm.ApplyFilter("ByType", this.state.typeDisplay);
+                this.cm.ApplyFilter("ByChapter",
+                    (DefaultConfig.chapter as  {[selector:string]: number})[this.state.typeDisplay]);
                 this.setState({
                     model: this.cm.GetModel()
                 });
             });
     }
 
-    updateProverbs() {
-        //this.setState({proverbs : this.props.proverbProvider.GetFilteredOneLiners()});
-    }
-
-    showPopover() {
-
-    }
-
-    setShowPopover() {
-
-    }
-
     render() {
 
-        let elements: Array<any> = [];
+        let elements: Array<{
+            key: number,
+            element: any
+        }> = [];
 
         this.state.model.ComponentModels.forEach((c) => {
             if (c.Type === "Article")
             {
-                elements.push((<Article model={(c.Model as IArticle)}></Article>));
+                const keyVerse = (c.Model as IArticle).Verses[0];
+                elements.push({
+                    key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
+                    element: (<Article model={(c.Model as IArticle)}></Article>)
+                });
             }
             else if (c.Type === "Statement")
             {
-                elements.push((<Statement model={(c.Model as IStatement)}></Statement>));
+                const statementModel = (c.Model as IStatement);
+                elements.push({
+                    key: Indexer.GetVerseID(statementModel.Verse.Chapter, statementModel.Verse.VerseNumber),
+                    element: (<Statement
+                        model={statementModel}
+                        heartCallback={() => {
+                            if (statementModel.Saved) {
+                                console.log("Removing heart");
+                                this.cm.RemoveBookmark(
+                                    {
+                                        Chapter: statementModel.Verse.Chapter,
+                                        VerseNumber: statementModel.Verse.VerseNumber
+                                    }
+                                );
+                            } else {
+                                console.log("adding heart");
+                                this.cm.Bookmark(
+                                    {
+                                        Chapter: statementModel.Verse.Chapter,
+                                        VerseNumber: statementModel.Verse.VerseNumber
+                                    }
+                                );
+                            }
+                            this.setState({model: this.cm.GetModel()});
+                        }}>
+                    </Statement>)
+                });
             }
             else if (c.Type === "Saying")
             {
-                elements.push((<Saying model={(c.Model as ISaying)}></Saying>));
+                const keyVerse = (c.Model as ISaying).Verses[0];
+                elements.push({
+                    key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
+                    element: (<Saying model={(c.Model as ISaying)}></Saying>)
+                });
             }
         });
 
@@ -102,45 +134,31 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
             return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
         });*/
-
-        let popoverFilter = (
-            <IonPopover id={"popover-filter"} event={this.state.popClickEvent} isOpen={this.state.popOpen} onDidDismiss={e =>
-                this.setState({popOpen: false, popClickEvent: null})
-            }>
-                <IonContent>
-                    <div  id={"filter-container"}>
-                        {/*-- Default Segment --*/}
-                        <IonSegment onIonChange={
-                            e => console.log('Segment selected', e.detail.value)
-                        }>
-                            <IonSegmentButton value="Statement">
-                                <IonLabel>Statements</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="Sayings">
-                                <IonLabel>Sayings</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="Articles">
-                                <IonLabel>Articles</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="All">
-                                <IonLabel>All</IonLabel>
-                            </IonSegmentButton>
-                        </IonSegment>
-                        <h3>Chapter Select</h3>
-
-                    </div>
-                </IonContent>
-            </IonPopover>
-        );
+        console.log("rendering library");
 
         return (
             <IonPage className={"library-page"}>
 
                 <IonHeader>
-                    {popoverFilter}
+                    <PopoverSelector contentManager = {this.cm}
+                                     isOpen={this.state.popOpen}
+                                     event={this.state.popClickEvent}
+                                     onDismiss={() => {
+                                         this.setState({
+                                             popOpen: false,
+                                             popClickEvent: undefined
+                                         });
+                                         // this.forceUpdate();
+                                     }}
+                                     onUpdate={() => {
+                                         this.setState({
+                                             model: this.cm.GetModel()
+                                         });
+                                     }}
+                                     />
                     <IonToolbar>
                         <IonButtons slot={"start"}>
-                            <IonButton onClick={(e) => {
+                            <IonButton onClick={(e : any) => {
                                 e.persist();
                                 this.setState({
                                     popClickEvent: e,
@@ -150,30 +168,25 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 }}>
                                 <IonIcon slot = "icon-only" icon = {book} />
                             </IonButton>
+                            <TranslationToggle contentManager={this.cm}/>
                         </IonButtons>
-
                         <IonTitle>Library</IonTitle>
                     </IonToolbar>
-
                     <IonToolbar>
                         <IonSearchbar></IonSearchbar>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent>
-
-                    {/*<IonModal
-                        isOpen={this.state.popOpen}
-                        swipeToClose={true}
-                        presentingElement={this.ref.current}
-                        onDidDismiss={() =>{this.setState({popOpen: false})}}>
-                        <p>This is modal content</p>
-                        <IonButton onClick={() => this.setState({popOpen: false})}>Close Modal</IonButton>
-                    </IonModal>*/}
-
-                    {elements}
+                <IonContent className={"proverb-panel"}>
+                    <IonGrid>
+                        {
+                            elements.map(component => (
+                                <IonRow key={component.key} className={"ion-justify-content-center"}>
+                                    {component.element}
+                                </IonRow>
+                            ))
+                        }
+                    </IonGrid>
                 </IonContent>
-
-
             </IonPage>
         );
     }

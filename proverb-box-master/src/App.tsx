@@ -35,10 +35,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-
-/* Data */
-import ProverbData from "./components/ProverbData";
-import {Filters} from "./components/Filters"
+import './fonts/font-config.css';
 
 // Test API Functionality
 import TestScript2 from "./api/TestScript2"

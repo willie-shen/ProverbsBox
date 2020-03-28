@@ -5,7 +5,7 @@
  */
 
 import {IBookData, IVerse} from "./Interfaces"
-import TranslationConfig from './TranslationConfig'
+import TranslationConfig from '../translation-plugins/TranslationConfig'
 import Indexer from './Indexer'
 
 export default class TranslationMap
@@ -24,6 +24,11 @@ export default class TranslationMap
     GetTranslationName()
     {
         return this.translationName;
+    }
+
+    IsReady()
+    {
+        return !(this.translationName === "LOADING" || this.translationName === "NONE");
     }
 
     IsLoading()
