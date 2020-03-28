@@ -3,7 +3,7 @@ export default {
     typeDisplay: "statement",
     filterFormat: "chapter",
     chapter: {
-        statement: 11,
+        statement: 10,
         saying: 15,
         all: 1
     },

@@ -22,7 +22,7 @@ describe("Test Lexham Loader", () => {
         loader.Load("./translations/Lexham-Proverbs.json").then((book: IBookData) => {
             expect(book.length).toBe(915);
             expect(fetchMock.mock.calls[0][0]).toEqual("./translations/Lexham-Proverbs.json");
-            expect(book[3].Content).toEqual("to give shrewdness<note: Or \"cleverness,\" or \"prudence\"> to the simple, knowledge and purpose<note: Or \"plan\"> to the young,");
+            expect(book[3].Content).toEqual("to give shrewdness to the simple, knowledge and purpose<note: Or \"plan\"> to the young,");
             done();
         });
     });
