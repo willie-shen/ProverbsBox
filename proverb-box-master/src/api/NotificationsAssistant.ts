@@ -49,8 +49,10 @@ export default class NotificationsAssistant{
 
 			//add to notifications array
 	}
-	ClearNotifications(){
-		//Plugins.LocalNotifications.cancel(Plugins.LocalNotifications.getPending())
+	async ClearNotifications(){
+
+		const pending = await Plugins.LocalNotifications.getPending()
+		Plugins.LocalNotifications.cancel(pending)
 		
 	}
 	//https://capacitor.ionicframework.com/docs/apis/local-notifications
