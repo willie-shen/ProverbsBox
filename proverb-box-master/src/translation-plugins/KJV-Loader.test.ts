@@ -23,14 +23,7 @@ describe("Test KJV Loader", () => {
             expect(book[3].Content).toEqual("To give subtilty to the simple, to the young man knowledge and discretion.");
             done();
         });
-    });
+    }
 
-    it("fails gracefully", (done) => {
-        const loader = new KJVLoader();
-        fetchMock.mockReject(new Error('fake error message'));
-        loader.Load("./translations/KJV-Proverbs.fail").then((book: IBookData) => {
-            expect(book).toEqual([]);
-            done();
-        });
-    });
+    );
 });
