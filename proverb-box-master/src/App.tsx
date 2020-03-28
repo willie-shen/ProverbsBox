@@ -11,7 +11,15 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
-import { search, fileTrayFullOutline, heartOutline } from 'ionicons/icons';
+import {
+  search,
+  fileTrayFullOutline,
+  heartOutline,
+  libraryOutline,
+  bookmark,
+  bookmarkOutline,
+  shuffle, shuffleOutline
+} from 'ionicons/icons';
 import Library from './pages/Library';
 import Bookmarked from './pages/Bookmarked';
 import Discover from './pages/Discover';
@@ -48,33 +56,33 @@ if (conf.test2) {TestScript2()}
 let cm = new ContentManager();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true} />
-          <Route path="/bookmarked" component={Bookmarked} exact={true} />
-          <Route path="/bookmarked/details" component={Details} />
-          <Route path="/discover" component={Discover} />
-          <Route path="/" render={() => <Redirect to="/library" />} exact={true} />
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="library" href="/library">
-            <IonIcon icon={search} />
-            <IonLabel>Library</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="bookmarked" href="/bookmarked" >
-            <IonIcon icon={fileTrayFullOutline} />
-            <IonLabel>Bookmarked</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="discover" href="/discover">
-            <IonIcon icon={heartOutline} />
-            <IonLabel>Discover</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true}/>
+            <Route path="/bookmarked" component={Bookmarked} exact={true}/>
+            <Route path="/bookmarked/details" component={Details}/>
+            <Route path="/discover" component={Discover}/>
+            <Route path="/" render={() => <Redirect to="/library"/>} exact={true}/>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="library" href="/library">
+              <IonIcon icon={libraryOutline}/>
+              <IonLabel>Library</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="bookmarked" href="/bookmarked">
+              <IonIcon icon={bookmarkOutline}/>
+              <IonLabel>Bookmarked</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="discover" href="/discover">
+              <IonIcon icon={shuffleOutline}/>
+              <IonLabel>Discover</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
 );
 
 export default App;
