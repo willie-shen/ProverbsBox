@@ -19,7 +19,7 @@ export default class LexhamLoader {
                     resolve(book);
                 })
                 .catch((error) => {
-                    // console.log("Error: failed to load translation asset.");
+                    console.log("Error: failed to load translation asset.");
                     resolve([]);
                 });
         });
