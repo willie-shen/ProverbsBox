@@ -9,7 +9,7 @@ import "./Proverb.scss"
 import "./Views.css"
 
 // Icons
-import {folderOutline, heartCircle, heartCircleOutline} from 'ionicons/icons';
+import {heartCircle, heartCircleOutline} from 'ionicons/icons';
 
 type StatementProps = {
     model: IStatement

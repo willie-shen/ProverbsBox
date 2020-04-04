@@ -12,13 +12,9 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 
 import {
-  search,
-  fileTrayFullOutline,
-  heartOutline,
   libraryOutline,
-  bookmark,
   bookmarkOutline,
-  shuffle, shuffleOutline
+  shuffleOutline
 } from 'ionicons/icons';
 import Library from './pages/Library';
 import Bookmarked from './pages/Bookmarked';

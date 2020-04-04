@@ -289,6 +289,8 @@ export default class ContentManager {
                     verses[0].Content = verses[0].Content.split(".")[1].trimLeft();
                 }
                 catch {
+                    console.log(verses[0]);
+                    console.log(bundle);
                     throw Error("Verse " + verses[0].Chapter + " : " + verses[0].VerseNumber
                         + " only has one sentence, expected a title and a(n) " + bundle[0].Type);
                 }
