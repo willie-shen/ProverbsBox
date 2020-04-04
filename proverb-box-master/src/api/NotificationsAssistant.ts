@@ -1,24 +1,17 @@
 import { Plugins } from '@capacitor/core';
 
 import {IVerse} from "./Interfaces"
-/*
-Plugins.LocalNotifications.schedule({
-    notifications:[{
-      title:'title',
-      body:'text',
-      id:1,
-      schedule: { at: new Date(Date.now() + 10) }
-    }]
-*/
+
 
 export default class NotificationsAssistant{
 
 
+	id:any = 0
 
-	frequency:Number = 0
+	frequency:any = 0
 
-	start:Number = -1
-	end:Number = -1
+	start:any = -1
+	end:any = -1
 
 	verses:Array<IVerse> = []
 
@@ -38,7 +31,17 @@ export default class NotificationsAssistant{
 		this.verses = listOfVerses
 	}
 
-	BakeNotifications(){
+
+	/*
+export type IVerse = {
+    Content : string,
+    Chapter : number,
+    VerseNumber : number,
+    Commentary ?: string,
+    SearchHighlights?: Array<ITextRange>
+};
+	*/
+	async BakeNotifications(){
 		//Start scheduling the notifications
 
 		// end - start / frequency = interval
@@ -48,6 +51,51 @@ export default class NotificationsAssistant{
 			//time += interval
 
 			//add to notifications array
+
+			/*
+Plugins.LocalNotifications.schedule({
+    notifications:[{
+      title:'title', Proverbs Chapter:Verse
+      body:'text', Actual Proverbs
+      id:1,
+      schedule: { at: new Date(Date.now() + 10) }
+    }]
+*/
+		
+		var interval = (this.end - this.start)/this.frequency
+
+		var time = this.start
+		var notifications:any = []
+		while(time <= this.end){
+
+			var randomVerse = this.verses[this.getRandomInt(this.verses.length)] //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+			//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length
+			
+			//https://www.tutorialspoint.com/typescript/typescript_string_concat.htm
+			var title = "Proverbs " + randomVerse.Chapter + ":" + randomVerse.VerseNumber
+			var body = randomVerse.Content
+		 	
+			notifications.append({
+				title:title,
+				body:body,
+				id:this.id,
+				schedule:{at: new Date(time)}
+			})
+
+			//increase time
+			time += interval
+			//increment id
+			this.id++
+
+		}
+
+		
+
+		//interval:Number = (this.end - this.start)
+
+		await Plugins.LocalNotifications.schedule({notifications:notifications})
+
+
 	}
 	async ClearNotifications(){
 
@@ -56,6 +104,11 @@ export default class NotificationsAssistant{
 		
 	}
 	//https://capacitor.ionicframework.com/docs/apis/local-notifications
+
+	//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+	getRandomInt(max:number) {
+  		return Math.floor(Math.random() * Math.floor(max));
+	}
 }
 /*
 
