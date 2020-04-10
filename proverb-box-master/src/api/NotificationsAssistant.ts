@@ -67,7 +67,9 @@ Plugins.LocalNotifications.schedule({
 		var notifications:any = []
 
 		var dateToday = new Date()
-		dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDay()) //want to set today's time to 0000
+		dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDay()) 
+		//want to set today's time to 0000
+		
 		for(var day=0; day<60; ++day){
 			while(time <= this.end){
 
