@@ -10,10 +10,11 @@ export default class LexhamLoader {
                         if (typeof lexham[1] !== "string") {
                             throw Error();
                         }
+                        // console.log("Content: "+ lexham[1].toString() + "\nChapter: " + parseInt(lexham[0].split(":")[0]) + "\nVerseNumber: " + parseInt(lexham[0].split(":")[1]));
                         return {
-                            Content: lexham[0].toString(),
-                            Chapter: parseInt(lexham[1].split(":")[0]),
-                            VerseNumber: parseInt(lexham[1].split(":")[1])
+                            Content: lexham[1].toString(),
+                            Chapter: parseInt(lexham[0].split(":")[0]),
+                            VerseNumber: parseInt(lexham[0].split(":")[1])
                         };
                     });
                     resolve(book);
