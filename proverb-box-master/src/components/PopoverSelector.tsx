@@ -12,9 +12,16 @@ import React, {useState} from "react";
 import ContentManager from "../api/ContentManager";
 import Statements from "../indexing/Statements.json"
 import DefaultConfig from "../pages/DefaultDisplayConfig";
+import {ILibraryContext} from "../api/Interfaces";
+import {StatementPopoverContent} from "./StatementPopoverContent";
+import {SayingPopoverContent} from "./SayingPopoverContent";
+import {AllPopoverContent} from "./AllPopoverContent";
+
 
 type IPopProps = {
     contentManager: ContentManager,
+    context: ILibraryContext,
+    setContext: (ctx: ILibraryContext) => void,
     isOpen: boolean,
     event: any,
     onDismiss: () => void,
@@ -24,15 +31,37 @@ type IPopProps = {
 const PopoverSelector = (props : IPopProps) => {
     // config
     const defaultChapter : {[selector:string]: number} = DefaultConfig.chapter;
-
-    // react hooks
-    /*const [cachedEvent, setCachedEvent] = useState<Event | undefined>(undefined);
-    const [isOpen, setIsOpen] = useState<boolean>(false);*/
-
-    const [typeDisplay, setTypeDisplay] = useState<string>("statement");
-    //props.contentManager.ApplyFilter("ByType", "statement");
-
-    const [chapterSelect, setChapterSelect] = useState<number>(defaultChapter[typeDisplay]);
+    let popoverContent : any;
+    if (props.context.Mode == "statement") {
+        popoverContent = (<StatementPopoverContent contentManager={props.contentManager}
+                                  context={props.context}
+                                  setContext={props.setContext}
+                                  isOpen={props.isOpen}
+                                  event={props.event}
+                                  onDismiss={props.onDismiss}
+                                  onUpdate={props.onUpdate}/>);
+    }
+    else if (props.context.Mode == "saying") {
+        popoverContent = (<SayingPopoverContent contentManager={props.contentManager}
+                                                   context={props.context}
+                                                   setContext={props.setContext}
+                                                   isOpen={props.isOpen}
+                                                   event={props.event}
+                                                   onDismiss={props.onDismiss}
+                                                   onUpdate={props.onUpdate}/>);
+    }
+    else if (props.context.Mode == "all") {
+        popoverContent = (<AllPopoverContent contentManager={props.contentManager}
+                                                context={props.context}
+                                                setContext={props.setContext}
+                                                isOpen={props.isOpen}
+                                                event={props.event}
+                                                onDismiss={props.onDismiss}
+                                                onUpdate={props.onUpdate}/>);
+    }
+    else {
+        throw("unrecognized context mode.")
+    }
 
     return (
         <IonPopover id={"popover-filter"} event={props.event as Event} isOpen={props.isOpen}
@@ -42,12 +71,17 @@ const PopoverSelector = (props : IPopProps) => {
             <IonContent scrollY={false}>
                 <div id={"filter-container"}>
                     <div>
-                        <IonSegment value={typeDisplay} onIonChange={
+                        <IonSegment value={props.context.Mode} onIonChange={
                             e => {
                                 if (e.detail.value !== undefined) {
-                                    setTypeDisplay(e.detail.value);
+                                    // update to deep copy
+                                    const n_ctx: ILibraryContext = {
+                                        Mode: e.detail.value,
+                                        Chapter:props.context.Chapter
+                                    };
+                                    props.setContext(n_ctx);
                                     console.log(e.detail.value);
-                                    props.contentManager.ApplyFilter("ByType", e.detail.value);
+                                    props.contentManager.ApplyFilter("ByType", props.context.Mode);
                                     props.onUpdate();
                                 }
                             }
@@ -63,56 +97,8 @@ const PopoverSelector = (props : IPopProps) => {
                             </IonSegmentButton>
                         </IonSegment>
                     </div>
-                    <div id={"select-mode-container"}>
-                        <h3 id={"mode-text"}>Chapter Select</h3>
-                        <IonButton id={"mode-button"} size="small" color="dark">Select by Descriptor</IonButton>
-                    </div>
-                    <div id={"top-shadow"}/>
-                    <div className={"selection-box"} onTouchStart={(e)=> e.preventDefault()}>
-                        <IonRadioGroup value={chapterSelect.toString()} onIonChange={e => {
-                            props.contentManager.ApplyFilter("ByChapter", parseInt(e.detail.value));
-                            props.onUpdate();
-                            setChapterSelect(e.detail.value);
-                        }}>
-                            {
-                                Statements.Range.map(r => (
-                                    <div key={r.Start.Ch}>
-                                        <p className={"title"}>{r.Title}</p>
-                                        <IonList>
-                                            {
-                                                // get chapter numbers
-                                                Array.from({length: r.End.Ch - r.Start.Ch + 1}, (x,i) => {
-                                                    return i + r.Start.Ch;
-                                                }).map(chapter => (   // map to components
-                                                    <IonItem key={chapter}>
-                                                        <IonLabel className={"chapter-select"}><span
-                                                            className={"text"}>Chapter {chapter}</span>
-                                                        </IonLabel>
-                                                        <IonRadio
-                                                            slot="start"
-                                                            value={chapter.toString()}
-                                                            onChange = {() => {
-                                                                props.contentManager.ApplyFilter("BySpan",
-                                                                    {
-                                                                        Chapter: r.Start.Ch,
-                                                                        VerseNumber: r.Start.Vs
-                                                                    },
-                                                                    {
-                                                                        Chapter: r.End.Ch,
-                                                                        VerseNumber: r.End.Vs
-                                                                    }
-                                                                )
-                                                            }}
-                                                            />
-                                                    </IonItem>
-                                                ))
-                                            }
-                                        </IonList>
-                                    </div>
-                                ))
-                            }
-                        </IonRadioGroup>
-                    </div> {/*End .selection-box*/}
+
+                    { popoverContent }
                 </div> {/* End #filter-container */}
             </IonContent>
         </IonPopover>
