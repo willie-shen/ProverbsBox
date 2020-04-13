@@ -14,6 +14,7 @@
     "@types/react-router": "^5.1.1",
     "@types/react-router-dom": "^5.1.0",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
+    "immutability-helper": "^3.0.2",
     "ionicons": "^5.0.1",
     "jest-fetch-mock": "^3.0.1",
     "node-sass": "^4.13.0",
