@@ -49,6 +49,10 @@ export default class ContentManager {
         this.storageAssistant.loadFile();
     }
 
+    IsTranslatationReady() {
+        return this.translator.IsReady();
+    }
+
     async LoadTranslation(translationName: string) {
         this.translatorLoading = true;
         this.translator.LoadTranslation(translationName);
@@ -136,11 +140,37 @@ export default class ContentManager {
     CacheFilters(cacheName : string) {
         this.filterCache[cacheName] = this.filters;
         this.filters = [];
+
+        // refresh models
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
     }
 
     RestoreFilters(cacheName : string) {
         if (cacheName in this.filterCache) {
             this.filters = this.filterCache[cacheName];
+        }
+
+        // refresh models
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
+    }
+
+    ClearFiltersNoRefresh() {
+        this.filters = [];
+    }
+
+    ClearFilters() {
+        this.filters = [];
+
+        // refresh models
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
         }
     }
 

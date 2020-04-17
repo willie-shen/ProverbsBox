@@ -1,14 +1,12 @@
 import React, {useState} from 'react';
 import {
-    IonFabButton,
     IonIcon,
     IonHeader,
     IonToolbar,
     IonPage,
     IonTitle,
     IonContent,
-    IonFab,
-    IonGrid, IonCol, IonRow, useIonViewWillEnter, useIonViewDidLeave
+    IonGrid, IonCol, IonRow, withIonLifeCycle
 } from '@ionic/react';
 import ContentManager from "../api/ContentManager";
 import {Statement} from "../components/Statement"
@@ -19,67 +17,84 @@ type IDiscoverProps = {
     contentManager: ContentManager
 }
 
+type IDiscoverState = {
+    allStatements: Array<IStatement>,
+    selectedStatements: Array<IStatement>,
+    head: number
+}
+
 const SelectRandom = (pool: Array<IStatement>) => {
     console.log("Pool is: ", pool);
     console.log("select: ", pool[Math.floor(Math.random() * pool.length)]);
     return pool[Math.floor(Math.random() * pool.length)];
 };
 
-const Discover: React.FC<IDiscoverProps> = (props: IDiscoverProps) => {
+class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
-    const [ allStatements, setAllStatements ] = useState<Array<IStatement>>([]);
-    const [ selectedStatements, setSelectedStatements ] = useState<Array<IStatement>>([]);
-    const [ head, setHead ] = useState<number>(-1);
+    constructor(props : IDiscoverProps) {
+        super(props);
+        this.state = {
+            allStatements: [],
+            selectedStatements: [],
+            head: -1
+        };
+    }
 
     // life cycle
-    useIonViewWillEnter(() => {
-        props.contentManager.RestoreFilters("discover");
-        props.contentManager.ApplyFilter("ByType", "statement");
+    ionViewWillEnter() {
+        if (this.props.contentManager.IsTranslatationReady()) {
+            if (this.state.allStatements.length == 0) {
 
-        props.contentManager.OnLoadTranslation(() => {
-            let allStatements_local = props.contentManager.GetModel().ComponentModels.map(comp => {
-                return (comp.Model as IStatement);
+                this.props.contentManager.ClearFiltersNoRefresh();
+                this.props.contentManager.ApplyFilter("ByType", "statement");
+
+                this.setState({
+                    allStatements: this.props.contentManager.GetModel().ComponentModels.map(comp => {
+                        return (comp.Model as IStatement);
+                    })
+                });
+            }
+
+            this.setState(cur => {
+                return {
+                    selectedStatements: update(cur.selectedStatements, { $push: [SelectRandom(this.state.allStatements)] }),
+                    head: (cur.head) + 1
+                }
             });
-            setAllStatements(allStatements_local);
+        }
+    };
 
-            // populate
-            setHead((prev) => {return ++prev});
-            setSelectedStatements(update(selectedStatements, { $push: [SelectRandom(allStatements_local)] }));
-        });
-    });
+    render() {
+        return (
+            <IonPage>
+                <IonHeader>
+                    <IonToolbar>
+                        <IonTitle>Discover</IonTitle>
+                    </IonToolbar>
+                </IonHeader>
 
-    useIonViewDidLeave(() => {
-        props.contentManager.CacheFilters("discover");
-    });
-
-    return (
-        <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonTitle>Discover</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-
-            <IonContent/>
-            <IonGrid>
-                <IonCol>
+                <IonContent/>
+                <IonGrid>
                     <IonRow>
-                        <IonIcon name="arrow-back"/>
+                        <IonCol>
+                            <IonIcon name="arrow-back" style={{color: 'black'}}/>
+                        </IonCol>
+
+                        {
+                            (this.state.selectedStatements.length > 0)
+                                ? <Statement model={this.state.selectedStatements[this.state.head]} heartCallback={() => {
+                                }}/>
+                                : <></>
+                        }
+                        <IonCol>
+                            <IonIcon name="arrow-back"/>
+                        </IonCol>
                     </IonRow>
-                    {console.log(selectedStatements)}
-                    {
-                        (selectedStatements.length > 0)
-                        ? <Statement model={selectedStatements[head]} heartCallback={()=>{}}/>
-                        : <></>
-                    }
-                    <IonRow>
-                        <IonIcon name="arrow-back"/>
-                    </IonRow>
-                </IonCol>
-            </IonGrid>
-            <IonContent/>
-        </IonPage>
-    );
+                </IonGrid>
+                <IonContent/>
+            </IonPage>
+        )
+    }
 };
 
-export default Discover;
+export default withIonLifeCycle(Discover);
