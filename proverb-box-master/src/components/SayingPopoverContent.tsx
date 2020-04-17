@@ -1,12 +1,11 @@
 import {
     IonButton,
-    IonContent, IonItem,
+    IonItem,
     IonLabel,
     IonList,
-    IonPopover, IonRadio,
+    IonRadio,
     IonRadioGroup,
-    IonSegment,
-    IonSegmentButton
+
 } from "@ionic/react";
 import React, {useState} from "react";
 import ContentManager from "../api/ContentManager";

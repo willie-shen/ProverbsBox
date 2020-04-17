@@ -59,7 +59,7 @@ const App: React.FC = () => (
             <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true}/>
             <Route path="/bookmarked" component={Bookmarked} exact={true}/>
             <Route path="/bookmarked/details" component={Details}/>
-            <Route path="/discover" component={Discover}/>
+            <Route path="/discover" component={() => <Discover contentManager={cm}/>} exact={true}/>
             <Route path="/" render={() => <Redirect to="/library"/>} exact={true}/>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">

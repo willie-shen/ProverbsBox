@@ -19,18 +19,8 @@ export default {
     "Data": "./assets/translations/KJV-Proverbs.json",
     "Loader": KJVLoader,
   },
-  "WEB": {
-    "Label": "Web Pro Version",
-    "Data": "./assets/translations/KJV-Proverbs.json",
-    "Loader": KJVLoader,
-  },
   "LEB": {
     "Label": "Lexham English Version",
-    "Data": "./assets/translations/Lexham-Proverbs.json",
-    "Loader": LexhamLoader,
-  },
-  "WEB1": {
-    "Label": "Web Pro Version",
     "Data": "./assets/translations/Lexham-Proverbs.json",
     "Loader": LexhamLoader,
   }

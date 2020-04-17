@@ -7,9 +7,11 @@ import React, {useState} from "react";
 import ContentManager from "../api/ContentManager"
 import "./TranslationToggle.css"
 import TranslationConfig from "../translation-plugins/TranslationConfig"
+import {IModel} from "../api/Interfaces";
 
 type ITranslationToggleProps = {
     contentManager: ContentManager
+    setModel: (mdl: IModel)=>void;
 };
 
 const TranslationToggle = (props : ITranslationToggleProps) => {
@@ -68,6 +70,7 @@ const TranslationToggle = (props : ITranslationToggleProps) => {
                             props.contentManager.LoadTranslation(data).then(()=>{
                                 setVersion(data);
                                 setLoading(false);
+                                props.setModel(props.contentManager.GetModel());
                             })
                         }
 

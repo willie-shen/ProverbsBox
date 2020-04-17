@@ -15,6 +15,7 @@ export type ILibraryContext = {
     Mode : string,
     Chapter : {[key:string]:number},
     SayingGroup ?: number,
+    BrowseMode ?: string
 };
 
 export type IVerseSignature = {

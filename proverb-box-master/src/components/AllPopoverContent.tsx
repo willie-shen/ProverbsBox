@@ -13,6 +13,8 @@ import ContentManager from "../api/ContentManager";
 import Statements from "../indexing/Statements.json"
 import DefaultConfig from "../pages/DefaultDisplayConfig";
 import {ILibraryContext} from "../api/Interfaces";
+import ProverbsStructure from "../indexing/ProverbsStructure.json"
+import update from 'immutability-helper'
 
 type IPopProps = {
     contentManager: ContentManager,
@@ -21,7 +23,7 @@ type IPopProps = {
     isOpen: boolean,
     event: any,
     onDismiss: () => void,
-    onUpdate: () => void
+    onUpdate: () => void,
 };
 
 const AllPopoverContent = (props : IPopProps) => {
@@ -29,7 +31,7 @@ const AllPopoverContent = (props : IPopProps) => {
     // config
     const defaultChapter : {[selector:string]: number} = DefaultConfig.chapter;
     const [typeDisplay, setTypeDisplay] = useState<string>("statement");
-    const [chapterSelect, setChapterSelect] = useState<number>(defaultChapter[typeDisplay]);
+    const [browseMode, setBrowseMode] = useState<string>("descriptor");
 
     return (
         <>
@@ -39,48 +41,36 @@ const AllPopoverContent = (props : IPopProps) => {
             </div>
             <div id={"top-shadow"}/>
             <div className={"selection-box"} onTouchStart={(e)=> e.preventDefault()}>
-                <IonRadioGroup value={chapterSelect.toString()} onIonChange={e => {
+                { console.log("all chapters", props.context.Chapter["all"]) }
+                <IonRadioGroup value={props.context.Chapter["all"].toString()} onIonChange={e => {
+                    //props.contentManager.RemoveFilter("BySpan");
+                    //props.contentManager.RemoveFilter("ByChapter");
+                    props.contentManager.ApplyFilter("ByType", "all");
+
                     props.contentManager.ApplyFilter("ByChapter", parseInt(e.detail.value));
                     props.onUpdate();
-                    setChapterSelect(e.detail.value);
+                    props.setContext({
+                        Mode: "all",
+                        Chapter: update(props.context.Chapter, {
+                            "all": {$set: e.detail.value}
+                        }),
+                        BrowseMode: browseMode
+                    });
                 }}>
-                    {
-                        Statements.Range.map(r => (
-                            <div key={r.Start.Ch}>
-                                <p className={"title"}>{r.Title}</p>
-                                <IonList>
-                                    {
-                                        // get chapter numbers
-                                        Array.from({length: r.End.Ch - r.Start.Ch + 1}, (x,i) => {
-                                            return i + r.Start.Ch;
-                                        }).map(chapter => (   // map to components
-                                            <IonItem key={chapter}>
-                                                <IonLabel className={"chapter-select"}><span
-                                                    className={"text"}>Chapter {chapter}</span>
-                                                </IonLabel>
-                                                <IonRadio
-                                                    slot="start"
-                                                    value={chapter.toString()}
-                                                    onChange = {() => {
-                                                        props.contentManager.ApplyFilter("BySpan",
-                                                            {
-                                                                Chapter: r.Start.Ch,
-                                                                VerseNumber: r.Start.Vs
-                                                            },
-                                                            {
-                                                                Chapter: r.End.Ch,
-                                                                VerseNumber: r.End.Vs
-                                                            }
-                                                        )
-                                                    }}
-                                                />
-                                            </IonItem>
-                                        ))
-                                    }
-                                </IonList>
-                            </div>
-                        ))
-                    }
+                {Object.keys(ProverbsStructure.Verses).map(chapter => {
+                        return (
+                            <IonItem key={chapter}>
+                                <IonLabel className={"chapter-select"}><span
+                                    className={"text"}>Chapter {chapter}</span>
+                                </IonLabel>
+                                <IonRadio
+                                    slot="start"
+                                    value={chapter.toString()}
+                                />
+                            </IonItem>
+                        );
+                    })
+                }
                 </IonRadioGroup>
             </div> {/*End .selection-box*/}
         </>

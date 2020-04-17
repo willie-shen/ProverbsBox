@@ -9,7 +9,7 @@ import {
     IonButton,
     IonButtons,
     IonGrid,
-    IonRow
+    IonRow, withIonLifeCycle
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
@@ -78,6 +78,19 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     {
         this.setState({context: ctx});
     };
+
+    setModel = (mdl : IModel) => {
+        this.setState({model: mdl});
+    };
+
+    // life cycle
+    ionViewWillEnter() {
+        this.cm.RestoreFilters("library");
+    }
+
+    ionViewDidLeave() {
+        this.cm.CacheFilters("library");
+    }
 
     render() {
 
@@ -174,7 +187,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 }}>
                                 <IonIcon slot = "icon-only" icon = {book} />
                             </IonButton>
-                            <TranslationToggle contentManager={this.cm}/>
+                            <TranslationToggle contentManager={this.cm} setModel={this.setModel}/>
                         </IonButtons>
                         <IonTitle>Library</IonTitle>
                     </IonToolbar>
@@ -184,7 +197,11 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 </IonHeader>
                 <IonContent className={"proverb-panel"}>
                     <Article model={{
-                        Verses: [],
+                        Verses: [{
+                            Chapter: 0,
+                            VerseNumber: 1,
+                            Content: "test content"
+                        }],
                         ID: 1
                     }}></Article>
                     <IonGrid>
@@ -202,4 +219,4 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }
 }
 
-export default Library;
+export default withIonLifeCycle(Library);
