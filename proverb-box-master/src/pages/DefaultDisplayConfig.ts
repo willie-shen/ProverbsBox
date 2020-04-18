@@ -7,6 +7,6 @@ export default {
         saying: 15,
         all: 1
     },
-    translation: "KJV",
+    translation: "LEB",
 
 }

@@ -12,13 +12,9 @@ import {
 import { IonReactRouter } from '@ionic/react-router';
 
 import {
-  search,
-  fileTrayFullOutline,
-  heartOutline,
   libraryOutline,
-  bookmark,
   bookmarkOutline,
-  shuffle, shuffleOutline
+  shuffleOutline
 } from 'ionicons/icons';
 import Library from './pages/Library';
 import Bookmarked from './pages/Bookmarked';
@@ -47,10 +43,10 @@ import './fonts/font-config.css';
 
 // Test API Functionality
 import TestScript2 from "./api/TestScript2"
-import conf from "./api/TestScriptConfig.json"
+//import conf from "./api/TestScriptConfig.json"
 import ContentManager from "./api/ContentManager"
 // TestScript hook.
-if (conf.test2) {TestScript2()}
+//if (conf.test2) {TestScript2()}
 
 // init content manager
 let cm = new ContentManager();
@@ -63,7 +59,7 @@ const App: React.FC = () => (
             <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true}/>
             <Route path="/bookmarked" component={Bookmarked} exact={true}/>
             <Route path="/bookmarked/details" component={Details}/>
-            <Route path="/discover" component={Discover}/>
+            <Route path="/discover" component={() => <Discover contentManager={cm}/>} exact={true}/>
             <Route path="/" render={() => <Redirect to="/library"/>} exact={true}/>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">

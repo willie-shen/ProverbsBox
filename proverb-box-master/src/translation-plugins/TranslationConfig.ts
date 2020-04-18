@@ -10,6 +10,7 @@
 
 //  Import Loaders
 import KJVLoader from './KJV-Loader'
+import LexhamLoader from './Lexham-Loader'
 
 //  Translation Config
 export default {
@@ -18,9 +19,9 @@ export default {
     "Data": "./assets/translations/KJV-Proverbs.json",
     "Loader": KJVLoader,
   },
-  "WEB": {
-    "Label": "Web Pro Version",
-    "Data": "./assets/translations/KJV-Proverbs.json",
-    "Loader": KJVLoader,
+  "LEB": {
+    "Label": "Lexham English Version",
+    "Data": "./assets/translations/Lexham-Proverbs.json",
+    "Loader": LexhamLoader,
   }
 }

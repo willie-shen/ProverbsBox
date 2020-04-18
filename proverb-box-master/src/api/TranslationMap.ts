@@ -42,6 +42,11 @@ export default class TranslationMap
      */
     AddOnLoadedCallback(callback: (success: boolean)=>void)
     {
+        if (this.IsReady())
+        {
+            callback(true);
+            return;
+        }
         this.onLoadedCallbacks.push(callback);
     }
 

@@ -9,14 +9,14 @@ import {
     IonButton,
     IonButtons,
     IonGrid,
-    IonRow
+    IonRow, withIonLifeCycle
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
 import React from 'react';
 import './Library.css';
 
 import ContentManager from "../api/ContentManager";
-import {IArticle, IModel, ISaying, IStatement} from "../api/Interfaces";
+import {IArticle, IModel, ISaying, IStatement, ILibraryContext} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
@@ -35,14 +35,12 @@ type ILibraryState = {
     popClickEvent: any,
     popOpen: boolean,
     model: IModel,
-    typeDisplay: string,
-    filterFormat: string
+    context: ILibraryContext
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
 {
     /* Member data */
-    private proverbLimit = 30;
     private cm : ContentManager;
     private ref : any;
 
@@ -58,20 +56,40 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             popClickEvent: undefined,
             popOpen: false,
             model: this.cm.GetModel(), // A blank model
-            typeDisplay: DefaultConfig.typeDisplay,
-            filterFormat: DefaultConfig.filterFormat
+            context: {
+                Mode: DefaultConfig.typeDisplay,
+                Chapter: (DefaultConfig.chapter as {[key: string]: number;})
+            }
         };
 
-        // Hard-code translation for now.
+        // Non-persistant translation for now.
         this.cm.LoadTranslation(DefaultConfig.translation)
             .then(() => {
-                this.cm.ApplyFilter("ByType", this.state.typeDisplay);
-                this.cm.ApplyFilter("ByChapter",
-                    (DefaultConfig.chapter as  {[selector:string]: number})[this.state.typeDisplay]);
+                this.cm.ApplyFilter("ByType", this.state.context.Mode);
+                this.cm.ApplyFilter("ByChapter", this.state.context.Chapter[DefaultConfig.typeDisplay]);
                 this.setState({
                     model: this.cm.GetModel()
                 });
             });
+    }
+
+    // public class fields syntax
+    setContext = (ctx: ILibraryContext) =>
+    {
+        this.setState({context: ctx});
+    };
+
+    setModel = (mdl : IModel) => {
+        this.setState({model: mdl});
+    };
+
+    // life cycle
+    ionViewWillEnter() {
+        this.cm.RestoreFilters("library");
+    }
+
+    ionViewDidLeave() {
+        this.cm.CacheFilters("library");
     }
 
     render() {
@@ -141,6 +159,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
                 <IonHeader>
                     <PopoverSelector contentManager = {this.cm}
+                                     context={this.state.context}
+                                     setContext={this.setContext}
                                      isOpen={this.state.popOpen}
                                      event={this.state.popClickEvent}
                                      onDismiss={() => {
@@ -148,7 +168,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                              popOpen: false,
                                              popClickEvent: undefined
                                          });
-                                         // this.forceUpdate();
                                      }}
                                      onUpdate={() => {
                                          this.setState({
@@ -168,7 +187,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 }}>
                                 <IonIcon slot = "icon-only" icon = {book} />
                             </IonButton>
-                            <TranslationToggle contentManager={this.cm}/>
+                            <TranslationToggle contentManager={this.cm} setModel={this.setModel}/>
                         </IonButtons>
                         <IonTitle>Library</IonTitle>
                     </IonToolbar>
@@ -178,9 +197,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 </IonHeader>
                 <IonContent className={"proverb-panel"}>
                     <Article model={{
-                            Verses: [],
-                            ID: 1
-
+                        Verses: [{
+                            Chapter: 0,
+                            VerseNumber: 1,
+                            Content: "test content"
+                        }],
+                        ID: 1
                     }}></Article>
                     <IonGrid>
                         {
@@ -197,4 +219,4 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }
 }
 
-export default Library;
+export default withIonLifeCycle(Library);

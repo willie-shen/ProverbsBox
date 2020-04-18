@@ -29,6 +29,7 @@ export default class ContentManager {
 
     private storageAssistant: StorageAssistant;
     private filters: Array<IFilter>;
+    private filterCache: {[name: string]: Array<IFilter>};
     private searchPattern: string;
     private translator: TranslationMap;
     private translatorLoading: boolean;
@@ -38,13 +39,18 @@ export default class ContentManager {
     constructor() {
         this.storageAssistant = new StorageAssistant();
         this.filters = [];
+        this.filterCache = {};
         this.searchPattern = "";
         this.translator = new TranslationMap();
         this.translatorLoading = false;
         this.componentModels = [];
         this.refinedModels = [];
 
-        this.storageAssistant.loadFile()
+        this.storageAssistant.loadFile();
+    }
+
+    IsTranslatationReady() {
+        return this.translator.IsReady();
     }
 
     async LoadTranslation(translationName: string) {
@@ -129,6 +135,43 @@ export default class ContentManager {
         this.storageAssistant.removeBookmark(verseID);
         this.ToggleSaved(verse, false);
         console.log("Unsaved verse: ", verseID, " -- Bookmarked?: ", this.storageAssistant.isBookmarked(verseID));
+    }
+
+    CacheFilters(cacheName : string) {
+        this.filterCache[cacheName] = this.filters;
+        this.filters = [];
+
+        // refresh models
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
+    }
+
+    RestoreFilters(cacheName : string) {
+        if (cacheName in this.filterCache) {
+            this.filters = this.filterCache[cacheName];
+        }
+
+        // refresh models
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
+    }
+
+    ClearFiltersNoRefresh() {
+        this.filters = [];
+    }
+
+    ClearFilters() {
+        this.filters = [];
+
+        // refresh models
+        // sentinel
+        if (this.translator.IsReady()) {
+            this.RefreshModels();
+        }
     }
 
     // Automatically updates old copy of a filter
@@ -284,13 +327,23 @@ export default class ContentManager {
 
             // Discard titles :( [fix later] (not turned into title component models)
             if (bundle[0].TitlePrefix) {
-                bundle[0].TitlePrefix = verses[0].Content.split(".")[0] + ".";
-                try {
-                    verses[0].Content = verses[0].Content.split(".")[1].trimLeft();
-                }
-                catch {
-                    throw Error("Verse " + verses[0].Chapter + " : " + verses[0].VerseNumber
-                        + " only has one sentence, expected a title and a(n) " + bundle[0].Type);
+                const titleDividers = [".", ":"];  // Config
+                let prefix = verses[0].Content;
+                let foundPrefix = false;
+
+                titleDividers.forEach((divider : string) => {
+                    let verseParts = verses[0].Content.split(divider);
+                    let n_prefix = verseParts[0] + divider;
+                    if (n_prefix.length < prefix.length && verseParts.length >= 2)
+                    {
+                        prefix = n_prefix;
+                        verses[0].Content = verseParts[1].trimLeft();
+                        foundPrefix = true;
+                    }
+                });
+                if (foundPrefix)
+                {
+                    bundle[0].TitlePrefix = prefix;
                 }
             }
 

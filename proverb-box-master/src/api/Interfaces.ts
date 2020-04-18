@@ -11,6 +11,13 @@ export type IProverb = {
     ID : number
 };
 
+export type ILibraryContext = {
+    Mode : string,
+    Chapter : {[key:string]:number},
+    SayingGroup ?: number,
+    BrowseMode ?: string
+};
+
 export type IVerseSignature = {
     Chapter: number,
     VerseNumber: number,
