@@ -177,6 +177,11 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent className={"proverb-panel"}>
+                    <Article model={{
+                            Verses: [],
+                            ID: 1
+
+                    }}></Article>
                     <IonGrid>
                         {
                             elements.map(component => (

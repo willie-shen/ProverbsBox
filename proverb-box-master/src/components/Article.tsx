@@ -21,10 +21,50 @@ class Article extends React.Component<ArticleProp, ArticleState> {
         return (
             <>
             <div className={"container"}>
-                <div className={"scripture"}>
-                    <p> Chapter 1</p>
+                <div className={"scripture-styles"}>
+                    <p></p>
+                    <div className={"title"}></div>
+                    <p><b>The Usefulness of Proverbs</b></p>
                     <div className={"verse"}>
-                        <p className={"number"}></p>
+
+                        <p className={"number"}>
+                            1
+                        </p>
+
+                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
+
+                    </div>
+                    <div className={"verse"}>
+
+                        <p className={"number"}>
+                            2
+                        </p>
+                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
+
+                    </div>
+                    <div className={"verse"}>
+
+                        <p className={"number"}>
+                            3
+                        </p>
+                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
+
+                    </div>
+                    <div className={"verse"}>
+
+                        <p className={"number"}>4</p>
+                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
+
+                    </div>
+                    <div className={"verse"}>
+
+                        <p className={"number"}>5</p>
+                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
+
+                    </div>
+                    <div className={"verse"}>
+
+                        <p className={"number"}>6</p>
                         <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
 
                     </div>

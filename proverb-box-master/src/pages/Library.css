@@ -22,10 +22,11 @@
 }
 .chapter-select {
 }
-.chapter-select .text {
+.chapter-select.text {
     font-family: "Crimson Text";
+    font-weight: bold;
+    color: #4f6aa2;
 }
-
 /* Popover */
 #select-mode-container {
     display: flex;
@@ -86,6 +87,10 @@
     margin-top: .5em;
     font-size: 1em;
 }
+
+#verse {
+    margin-top: 30px;
+}
 .selection-box {
     /*border-top: 1px solid #ccc;*/
     margin-top: 0em;
@@ -109,6 +114,7 @@
     color: #4f6aa2;
     background-color: 009900;
     width: 400px;
+
 }
 h2{
     font-size: 1.5em;
