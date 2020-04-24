@@ -2,7 +2,7 @@ import {
     IonCard
 } from '@ionic/react';
 import React from 'react';
-import {IArticle} from "../api/Interfaces";
+import {IArticle, IVerse} from "../api/Interfaces";
 
 // Styles
 import "./Proverb.scss"
@@ -20,54 +20,35 @@ class Article extends React.Component<ArticleProp, ArticleState> {
     render() {
         return (
             <>
-            <div className={"container"}>
+            <div className={"article-container"}>
                 <div className={"scripture-styles"}>
                     <p></p>
                     <div className={"title"}></div>
-                    <p><b>The Usefulness of Proverbs</b></p>
-                    <div className={"verse"}>
 
-                        <p className={"number"}>
-                            1
-                        </p>
+                    {/*
+                    this.props.model.Verses.reduce<Array<number>>((chapters:Array<number> , verse)=>{
+                        if (length == 0 || chapters[chapters.length-1] != verse.Chapter)
+                        {
+                            chapters.push(verse.Chapter);
+                        }
+                        return chapters;
+                    }, []).
+                    }*/}
 
-                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
+                    <p><b>Chapter {this.props.model.Verses[0].Chapter}</b></p>
+                        {
+                            this.props.model.Verses.map((verse: IVerse) =>
+                            (<div className={"verse"}>
 
-                    </div>
-                    <div className={"verse"}>
+                            <p className={"number"}>
+                            {verse.VerseNumber}
+                            </p>
+                            <p className={"ending-verse"}>{verse.Content}</p>
+                            </div>)
+                            )
+                        }
+                    }
 
-                        <p className={"number"}>
-                            2
-                        </p>
-                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
-
-                    </div>
-                    <div className={"verse"}>
-
-                        <p className={"number"}>
-                            3
-                        </p>
-                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
-
-                    </div>
-                    <div className={"verse"}>
-
-                        <p className={"number"}>4</p>
-                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
-
-                    </div>
-                    <div className={"verse"}>
-
-                        <p className={"number"}>5</p>
-                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
-
-                    </div>
-                    <div className={"verse"}>
-
-                        <p className={"number"}>6</p>
-                        <p className={"ending-verse"}>The proverbs of Solomon the son of David, king of Israel: for gaining wisdom and instruction; for understanding words of insight</p>
-
-                    </div>
                 </div>
             </div>
 

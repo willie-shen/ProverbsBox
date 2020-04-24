@@ -5,6 +5,7 @@
 }
 .verse {
     display:inline;
+    margin-left: 0.5em;
 }
 
 .number {
@@ -12,19 +13,19 @@
     display: inline;
     font-family: "Eagle Lake";
     font-size: 11px;
-
+    position: relative;
+    top: -0.7em;
+    margin-right: 0.2em;
 }
 .ending-verse {
     display: inline;
 }
-div {
-    width: 320 px;
-    padding-top: 10 px;
-    padding-right: 20px;
+
+.article-container {
+    padding-top: 2em;
+    padding-right: 40px;
     padding-bottom: 30px;
-    margin-left: 30px;
-    margin-right: 10px;
+    margin-left: 60px;
+    margin-right: 20px;
     line-height: 30px;
-
-
 }
