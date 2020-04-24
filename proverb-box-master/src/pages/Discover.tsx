@@ -94,18 +94,6 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
     render() {
         return (
             <>
-                <CreateAnimation
-                    ref={this.proverbCenterRef}
-                    fill="none"
-                    duration={1000}
-                    keyframes={[
-                        { offset: 0, transform: 'scale(1) rotate(0)' },
-                        { offset: 0.5, transform: 'scale(1.2) rotate(45deg)' },
-                        { offset: 1, transform: 'scale(1) rotate(0deg)' }
-                    ]}
-                >
-
-                </CreateAnimation>
                 <IonPage>
                     <IonHeader>
                         <IonToolbar>
@@ -122,14 +110,27 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                                 </IonButton>
                             </IonCol>
                             <IonCol size={"6"}>
-                                <div id={"proverb-center"}>
-                                    {
-                                        (this.state.selectedStatements.length > 0)
-                                            ? <Statement model={this.state.selectedStatements[this.state.head]} heartCallback={() => {
-                                            }}/>
-                                            : <></>
-                                    }
-                                </div>
+                                <CreateAnimation
+                                    ref={this.proverbCenterRef}
+                                    fill="none"
+                                    duration={1000}
+                                    keyframes={[
+                                        { offset: 0, transform: 'scale(1) rotate(0)' },
+                                        { offset: 0.5, transform: 'scale(1.2) rotate(45deg)' },
+                                        { offset: 1, transform: 'scale(1) rotate(0deg)' }
+                                    ]}
+                                >
+
+                                    <div id={"proverb-center"}>
+                                        {
+                                            (this.state.selectedStatements.length > 0)
+                                                ? <Statement model={this.state.selectedStatements[this.state.head]} heartCallback={() => {
+                                                }}/>
+                                                : <></>
+                                        }
+                                    </div>
+
+                                </CreateAnimation>
                             </IonCol>
                             <IonCol size={"3"} className={"button-col"}>
                                 <IonButton fill={"clear"} className={"forward-button"} onClick={this.foward}>
