@@ -113,29 +113,32 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 const statementModel = (c.Model as IStatement);
                 elements.push({
                     key: Indexer.GetVerseID(statementModel.Verse.Chapter, statementModel.Verse.VerseNumber),
-                    element: (<Statement
-                        model={statementModel}
-                        heartCallback={() => {
-                            if (statementModel.Saved) {
-                                console.log("Removing heart");
-                                this.cm.RemoveBookmark(
-                                    {
-                                        Chapter: statementModel.Verse.Chapter,
-                                        VerseNumber: statementModel.Verse.VerseNumber
-                                    }
-                                );
-                            } else {
-                                console.log("adding heart");
-                                this.cm.Bookmark(
-                                    {
-                                        Chapter: statementModel.Verse.Chapter,
-                                        VerseNumber: statementModel.Verse.VerseNumber
-                                    }
-                                );
-                            }
-                            this.setState({model: this.cm.GetModel()});
-                        }}>
-                    </Statement>)
+                    element: (
+                        <div style={{width: "20em"}} >
+                        <Statement
+                            model={statementModel}
+                            heartCallback={() => {
+                                if (statementModel.Saved) {
+                                    console.log("Removing heart");
+                                    this.cm.RemoveBookmark(
+                                        {
+                                            Chapter: statementModel.Verse.Chapter,
+                                            VerseNumber: statementModel.Verse.VerseNumber
+                                        }
+                                    );
+                                } else {
+                                    console.log("adding heart");
+                                    this.cm.Bookmark(
+                                        {
+                                            Chapter: statementModel.Verse.Chapter,
+                                            VerseNumber: statementModel.Verse.VerseNumber
+                                        }
+                                    );
+                                }
+                                this.setState({model: this.cm.GetModel()});
+                            }}>
+                        </Statement>
+                        </div>)
                 });
             }
             else if (c.Type === "Saying")

@@ -37,14 +37,14 @@
   "Sections" :
   [
     {
-      "Name": "The Usefulness of Proverbs",
-      "Start": {
-        "Ch": 1, "Vs": 1
-      },
-      "End": {
-        "Ch": 1, "Vs": 7
-      }
+    "Name": "The Usefulness of Proverbs",
+    "Start": {
+      "Ch": 1, "Vs": 1
     },
+    "End": {
+      "Ch": 1, "Vs": 7
+    }
+  },
     {
       "Name": "The Enticement of Sinners",
       "Start": {

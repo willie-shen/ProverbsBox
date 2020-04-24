@@ -20,11 +20,13 @@ class Article extends React.Component<ArticleProp, ArticleState> {
     render() {
         return (
             <>
-            <div className={"container"}>
+            <div className={"article-container"}>
                 <div className={"scripture-styles"}>
                     <p></p>
                     <div className={"title"}></div>
+
                     <p><b>The Usefulness of Proverbs</b></p>
+
                     <div className={"verse"}>
 
                         <p className={"number"}>

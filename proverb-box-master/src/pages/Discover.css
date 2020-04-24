@@ -1,0 +1,14 @@
+.forward-button {
+    margin-left: auto;
+}
+
+.back-button {
+    margin-right: auto;
+}
+
+.button-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
