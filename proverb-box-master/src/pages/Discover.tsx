@@ -101,26 +101,26 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                         </IonToolbar>
                     </IonHeader>
 
-                    <IonContent/>
-                    <IonGrid>
-                        <IonRow>
-                            <IonCol size={"3"} className={"button-col"}>
-                                <IonButton disabled={this.state.head == 0} fill={"clear"} className={"back-button"} onClick={this.back}>
-                                    <IonIcon icon={chevronBackOutline}/>
-                                </IonButton>
-                            </IonCol>
-                            <IonCol size={"6"}>
-                                <CreateAnimation
-                                    ref={this.proverbCenterRef}
-                                    fill="none"
-                                    duration={1000}
-                                    keyframes={[
-                                        { offset: 0, transform: 'scale(1) rotate(0)' },
-                                        { offset: 0.5, transform: 'scale(1.2) rotate(45deg)' },
-                                        { offset: 1, transform: 'scale(1) rotate(0deg)' }
-                                    ]}
-                                >
-
+                    <IonContent className={"discover-content"}>
+                        <IonGrid>
+                            <IonRow justify-content-center align-items-center>
+                                <IonCol size={"1"} className={"button-col"}>
+                                    <IonButton expand="full" size={"small"} disabled={this.state.head == 0} fill={"clear"} className={"back-button"} onClick={this.back}
+                                    ><IonIcon icon={chevronBackOutline}/></IonButton>
+                                </IonCol>
+                                <IonCol size={"10"} align-self-center>
+                                    { /*<CreateAnimation
+                                        ref={this.proverbCenterRef}
+                                        fill="none"
+                                        duration={1000}
+                                        keyframes={[
+                                            { offset: 0, transform: 'scale(1) rotate(0)' },
+                                            { offset: 0.5, transform: 'scale(1.2) rotate(45deg)' },
+                                            { offset: 1, transform: 'scale(1) rotate(0deg)' }
+                                        ]}
+                                    >
+                                    </CreateAnimation>
+                                    */}
                                     <div id={"proverb-center"}>
                                         {
                                             (this.state.selectedStatements.length > 0)
@@ -130,16 +130,15 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                                         }
                                     </div>
 
-                                </CreateAnimation>
-                            </IonCol>
-                            <IonCol size={"3"} className={"button-col"}>
-                                <IonButton fill={"clear"} className={"forward-button"} onClick={this.foward}>
-                                    <IonIcon icon={chevronForwardOutline}/>
-                                </IonButton>
-                            </IonCol>
-                        </IonRow>
-                    </IonGrid>
-                    <IonContent/>
+                                </IonCol>
+                                <IonCol size={"1"} className={"button-col"}>
+                                    <IonButton size={"small"} fill={"clear"} className={"forward-button"} onClick={this.foward}>
+                                        <IonIcon icon={chevronForwardOutline}/>
+                                    </IonButton>
+                                </IonCol>
+                            </IonRow>
+                        </IonGrid>
+                    </IonContent>
                 </IonPage>
             </>
         )

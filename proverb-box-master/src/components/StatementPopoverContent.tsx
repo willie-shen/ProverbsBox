@@ -38,7 +38,7 @@ const StatementPopoverContent = (props : IPopProps) => {
     return (
         <>
             <div id={"select-mode-container"}>
-                <h3 id={"mode-text"}>Statement Select</h3>
+                <h3 id={"mode-text"}>Proverbs</h3>
             </div>
             <div id={"top-shadow"}/>
             <div className={"selection-box"} onTouchStart={(e) => e.preventDefault()}>

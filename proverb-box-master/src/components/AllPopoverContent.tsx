@@ -96,7 +96,7 @@ const AllPopoverContent = (props : IPopProps) => {
                                             return (
                                                 <IonItem key={section.Start.Vs + "000" + section.Start.Ch + part}>
                                                     <IonLabel className={"chapter-select"}><span
-                                                        className={"text"}>{section.Name + ", part " + (part + 1)}</span>
+                                                        className={"text"}>{section.Name + ", pt. " + (part + 1)}</span>
                                                     </IonLabel>
                                                     <IonRadio
                                                         slot="start"
