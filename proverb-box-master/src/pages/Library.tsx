@@ -82,7 +82,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         console.log("setting context: ", ctx);
         this.cm.ClearFiltersNoRefresh();
         this.cm.ApplyFilter("ByType", ctx.Mode);
-        if (ctx.BrowseMode == "chapter") {
+        if (ctx.BrowseMode === "chapter" || ctx.Mode === "statement") {
             this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));
         }
 
@@ -124,6 +124,19 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.cm.CacheFilters("library");
     }
 
+    onSearch(text: string) {
+        this.cm.UpdateSearch(text);
+
+        // update the model
+        this.setState({
+            model: this.cm.GetModel()
+        });
+    }
+
+    onSearchClear() {
+        this.cm.UpdateSearch("");
+    }
+
     render() {
 
         let elements: Array<{
@@ -137,7 +150,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 const keyVerse = (c.Model as IArticle).Verses[0];
                 elements.push({
                     key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
-                    element: (<Article model={(c.Model as IArticle)}></Article>)
+                    element: (<Article ctx={this.state.context} model={(c.Model as IArticle)}></Article>)
                 });
             }
             else if (c.Type === "Statement")
@@ -221,7 +234,10 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         <IonTitle>Library</IonTitle>
                     </IonToolbar>
                     <IonToolbar>
-                        <IonSearchbar></IonSearchbar>
+                        <IonSearchbar
+                            onIonChange={(e)=>{this.onSearch(e.detail.value!)}}
+                            onIonClear={(e) => this.onSearchClear()}
+                        ></IonSearchbar>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent className={"proverb-panel"}>

@@ -2,7 +2,8 @@ import {
     IonCard
 } from '@ionic/react';
 import React from 'react';
-import {IArticle, IVerse} from "../api/Interfaces";
+import {IArticle, ILibraryContext, IVerse} from "../api/Interfaces";
+import ProverbsStructure from "../indexing/ProverbsStructure.json";
 
 // Styles
 import "./Proverb.scss"
@@ -10,6 +11,7 @@ import "./Article.css";
 
 type ArticleProp ={
     model: IArticle
+    ctx: ILibraryContext
 }
 
 type ArticleState = {
@@ -18,6 +20,8 @@ type ArticleState = {
 
 class Article extends React.Component<ArticleProp, ArticleState> {
     render() {
+        const section = ProverbsStructure.Sections[this.props.ctx.Section[this.props.ctx.Mode].SectionNumber];
+        const part = this.props.ctx.Section[this.props.ctx.Mode].Part;
         return (
             <>
             <div className={"article-container"}>
@@ -25,17 +29,16 @@ class Article extends React.Component<ArticleProp, ArticleState> {
                     <p></p>
                     <div className={"title"}></div>
 
-                    {/*
-                    this.props.model.Verses.reduce<Array<number>>((chapters:Array<number> , verse)=>{
-                        if (length == 0 || chapters[chapters.length-1] != verse.Chapter)
-                        {
-                            chapters.push(verse.Chapter);
+                    <>
+                        {(this.props.ctx.BrowseMode === "chapter") ?
+                            <p><b>Chapter {this.props.model.Verses[0].Chapter}</b></p>
+                            :
+                            <>
+                                <p className={"sub-title"}>Chapter {(section.Start.Ch + part)}</p>
+                                <p className={"lead-title"}><b>{ section.Name } </b></p>
+                            </>
                         }
-                        return chapters;
-                    }, []).
-                    }*/}
-
-                    <p><b>Chapter {this.props.model.Verses[0].Chapter}</b></p>
+                    </>
                         {
                             this.props.model.Verses.map((verse: IVerse) =>
                             (<div className={"verse"}>
