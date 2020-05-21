@@ -16,12 +16,13 @@ import React from 'react';
 import './Library.css';
 
 import ContentManager from "../api/ContentManager";
-import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection} from "../api/Interfaces";
+import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
 import {PopoverSelector} from "../components/PopoverSelector";
 import {TranslationToggle} from "../components/TranslationToggle";
+import ProverbsStructure from "../indexing/ProverbsStructure.json";
 
 import DefaultConfig from "./DefaultDisplayConfig";
 import Indexer from "../api/Indexer";
@@ -83,6 +84,22 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.cm.ApplyFilter("ByType", ctx.Mode);
         if (ctx.BrowseMode == "chapter") {
             this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));
+        }
+
+        // descriptor browse
+        else {
+            const span = ProverbsStructure.Sections[ctx.Section[ctx.Mode].SectionNumber];
+            const spanStart : IVerseSignature = {
+                Chapter: span.Start.Ch,
+                VerseNumber: span.Start.Vs
+            };
+            const spanEnd : IVerseSignature = {
+                Chapter: span.End.Ch,
+                VerseNumber: span.End.Vs
+            };
+            const chapter = span.Start.Ch + ctx.Section[ctx.Mode].Part;
+            this.cm.ApplyFilter("BySpan", spanStart, spanEnd);
+            this.cm.ApplyFilter("ByChapter", chapter);
         }
 
         // update the library's context
@@ -176,8 +193,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             <IonPage className={"library-page"}>
 
                 <IonHeader>
-                    <PopoverSelector contentManager = {this.cm}
-                                     context={this.state.context}
+                    <PopoverSelector context={this.state.context}
                                      setContext={this.setContext}
                                      isOpen={this.state.popOpen}
                                      event={this.state.popClickEvent}
@@ -185,11 +201,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                          this.setState({
                                              popOpen: false,
                                              popClickEvent: undefined
-                                         });
-                                     }}
-                                     onUpdate={() => {
-                                         this.setState({
-                                             model: this.cm.GetModel()
                                          });
                                      }}
                                      />

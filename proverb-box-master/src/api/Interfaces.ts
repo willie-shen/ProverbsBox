@@ -17,8 +17,8 @@ export type ISection = {
 };
 
 export type ILibraryContext = {
-    Mode : string,
-    Chapter : {[key:string]: number}, /*Index always by chapter, but sometimes a descriptor is also used.*/
+    Mode : string, /* Statement or all */
+    Chapter : {[key:string]: number}, /* Index always by chapter, but sometimes a descriptor is also used. */
     Section: {[key:string]: ISection}, /* For descriptor mode */
     SayingGroup ?: number,
     BrowseMode : string,

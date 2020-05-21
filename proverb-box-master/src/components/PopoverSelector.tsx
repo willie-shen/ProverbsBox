@@ -13,23 +13,19 @@ import {
     IonSegmentButton
 } from "@ionic/react";
 import React from "react";
-import ContentManager from "../api/ContentManager";
 import DefaultConfig from "../pages/DefaultDisplayConfig";
 import {ILibraryContext} from "../api/Interfaces";
 import {StatementPopoverContent} from "./StatementPopoverContent";
-import {SayingPopoverContent} from "./SayingPopoverContent";
 import {AllPopoverContent} from "./AllPopoverContent";
 import update from 'immutability-helper';
 
 
 type IPopProps = {
-    contentManager: ContentManager,
     context: ILibraryContext,
     setContext: (ctx: ILibraryContext) => void,
     isOpen: boolean,
     event: any,
     onDismiss: () => void,
-    onUpdate: () => void
 };
 
 const PopoverSelector = (props : IPopProps) => {
@@ -39,22 +35,10 @@ const PopoverSelector = (props : IPopProps) => {
 
     /* Set the selection box based on mode */
     if (props.context.Mode == "statement") {
-        popoverContent = (<StatementPopoverContent contentManager={props.contentManager}
-                                  context={props.context}
-                                  setContext={props.setContext}
-                                  isOpen={props.isOpen}
-                                  event={props.event}
-                                  onDismiss={props.onDismiss}
-                                  />);
+        popoverContent = (<StatementPopoverContent context={props.context} setContext={props.setContext} />);
     }
     else if (props.context.Mode == "all") {
-        popoverContent = (<AllPopoverContent contentManager={props.contentManager}
-                                                context={props.context}
-                                                setContext={props.setContext}
-                                                isOpen={props.isOpen}
-                                                event={props.event}
-                                                onDismiss={props.onDismiss}
-                                                onUpdate={props.onUpdate}/>);
+        popoverContent = (<AllPopoverContent context={props.context} setContext={props.setContext}/>);
     }
     else {
         throw("unrecognized context mode.")
@@ -71,21 +55,9 @@ const PopoverSelector = (props : IPopProps) => {
                         <IonSegment value={props.context.Mode} onIonChange={
                             e => {
                                 if (e.detail.value !== undefined) {
-                                    let mode = e.detail.value;
-                                    props.contentManager.CacheFilters(props.context.Mode);
                                     props.setContext(update(props.context, {
-                                        Mode: { $set: mode }
+                                        Mode: { $set: e.detail.value }
                                     }));
-                                    props.contentManager.RestoreFilters(mode);
-                                    props.contentManager.ApplyFilter("ByType", mode);
-
-                                    if (mode == "all")
-                                    {
-                                        props.contentManager.ApplyFilter("ByChapter", props.context.Chapter[mode]);
-                                    }
-
-                                    props.onUpdate();
-                                    console.log("Switched modes!: filter ",  e.detail.value);
                                 }
                             }
                         }>

@@ -17,11 +17,11 @@ export default {
             Part: 0
         },
         all: {
-            SectionNumber: 10,
+            SectionNumber: 0,
             Part: 0
         }
     },
     translation: "LEB",
-    browseMode: "chapter"
+    browseMode: "descriptor"
 
 }
