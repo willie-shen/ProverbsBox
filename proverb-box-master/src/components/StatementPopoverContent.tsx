@@ -1,18 +1,13 @@
 import {
-    IonButton,
-    IonContent, IonItem,
-    IonLabel,
-    IonList,
-    IonPopover, IonRadio,
+    IonButton, IonItem, IonLabel, IonList, IonRadio,
     IonRadioGroup,
-    IonSegment,
-    IonSegmentButton
 } from "@ionic/react";
 import React, {useState} from "react";
 import ContentManager from "../api/ContentManager";
 import Statements from "../indexing/Statements.json"
 import DefaultConfig from "../pages/DefaultDisplayConfig";
 import {ILibraryContext} from "../api/Interfaces";
+import update from 'immutability-helper';
 
 type IPopProps = {
     contentManager: ContentManager,
@@ -21,28 +16,50 @@ type IPopProps = {
     isOpen: boolean,
     event: any,
     onDismiss: () => void,
-    onUpdate: () => void
 };
 
 const StatementPopoverContent = (props : IPopProps) => {
 
+    // retrieve important context info
+    const currentChapter = props.context.Chapter[props.context.Mode];
+
     // config
-    const defaultChapter : {[selector:string]: number} = DefaultConfig.chapter;
     const [typeDisplay, setTypeDisplay] = useState<string>("statement");
-    const [chapterSelect, setChapterSelect] = useState<number>(defaultChapter[typeDisplay]);
+
+    const ChangeSection = (section: number, part: number) => {
+        props.setContext(update(props.context, {
+            Section: { [props.context.Mode]: { $set: { SectionNumber: section, Part: part} }}
+        }));
+    };
+
+    const ChangeChapter = (chapter: number) => {
+        props.setContext(update(props.context, {
+            Chapter: { [props.context.Mode]: { $set: chapter }}
+        }));
+    };
+
+    const ChangeBrowseMode = (bm : string) => {
+        props.setContext(update(props.context, {
+            BrowseMode: { $set: bm }
+        }));
+    };
 
     return (
         <>
             <div id={"select-mode-container"}>
                 <h3 id={"mode-text"}>Statement Select</h3>
-                <IonButton id={"mode-button"} size="small" color="dark">Select by Descriptor</IonButton>
+                {
+                    (props.context.BrowseMode == "chapter") ? (
+                        <IonButton id={"mode-button"} size="small" color="dark" onClick={()=>{ChangeBrowseMode("descriptor");}}>Select by Descriptor</IonButton>
+                    )
+                    : <IonButton id={"mode-button"} size="small" color="dark" onClick={()=>{ChangeBrowseMode("chapter");}}>Select by Chapter</IonButton>
+                }
             </div>
             <div id={"top-shadow"}/>
-            <div className={"selection-box"} onTouchStart={(e)=> e.preventDefault()}>
-                <IonRadioGroup value={chapterSelect.toString()} onIonChange={e => {
-                    props.contentManager.ApplyFilter("ByChapter", parseInt(e.detail.value));
-                    props.onUpdate();
-                    setChapterSelect(e.detail.value);
+            <div className={"selection-box"} onTouchStart={(e) => e.preventDefault()}>
+                <IonRadioGroup value={currentChapter.toString()} onIonChange={e => {
+                    // tells library to do the context update
+                    ChangeChapter(e.detail.value);
                 }}>
                     {
                         Statements.Range.map(r => (

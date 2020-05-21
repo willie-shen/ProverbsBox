@@ -1,16 +1,19 @@
+/*
+ *  The high level popover for navigation: (for use in Library.tsx)
+ *  Controlled by props.context (Library Context)
+ *  -> Changed with props.setContext (Library Context).
+ *
+ */
+
 import {
-    IonButton,
-    IonContent, IonItem,
+    IonContent,
     IonLabel,
-    IonList,
-    IonPopover, IonRadio,
-    IonRadioGroup,
+    IonPopover,
     IonSegment,
     IonSegmentButton
 } from "@ionic/react";
-import React, {useState} from "react";
+import React from "react";
 import ContentManager from "../api/ContentManager";
-import Statements from "../indexing/Statements.json"
 import DefaultConfig from "../pages/DefaultDisplayConfig";
 import {ILibraryContext} from "../api/Interfaces";
 import {StatementPopoverContent} from "./StatementPopoverContent";
@@ -33,6 +36,8 @@ const PopoverSelector = (props : IPopProps) => {
     // config
     const defaultChapter : {[selector:string]: number} = DefaultConfig.chapter;
     let popoverContent : any;
+
+    /* Set the selection box based on mode */
     if (props.context.Mode == "statement") {
         popoverContent = (<StatementPopoverContent contentManager={props.contentManager}
                                   context={props.context}
@@ -40,16 +45,7 @@ const PopoverSelector = (props : IPopProps) => {
                                   isOpen={props.isOpen}
                                   event={props.event}
                                   onDismiss={props.onDismiss}
-                                  onUpdate={props.onUpdate}/>);
-    }
-    else if (props.context.Mode == "saying") {
-        popoverContent = (<SayingPopoverContent contentManager={props.contentManager}
-                                                   context={props.context}
-                                                   setContext={props.setContext}
-                                                   isOpen={props.isOpen}
-                                                   event={props.event}
-                                                   onDismiss={props.onDismiss}
-                                                   onUpdate={props.onUpdate}/>);
+                                  />);
     }
     else if (props.context.Mode == "all") {
         popoverContent = (<AllPopoverContent contentManager={props.contentManager}
@@ -105,6 +101,7 @@ const PopoverSelector = (props : IPopProps) => {
                         </IonSegment>
                     </div>
 
+                    {/* Flexible content, configured above */}
                     { popoverContent }
                 </div> {/* End #filter-container */}
             </IonContent>

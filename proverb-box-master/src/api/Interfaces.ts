@@ -11,18 +11,24 @@ export type IProverb = {
     ID : number
 };
 
+export type ISection = {
+    SectionNumber: number,
+    Part: number
+};
+
 export type ILibraryContext = {
     Mode : string,
-    Chapter : {[key:string]:number},
+    Chapter : {[key:string]: number}, /*Index always by chapter, but sometimes a descriptor is also used.*/
+    Section: {[key:string]: ISection}, /* For descriptor mode */
     SayingGroup ?: number,
-    BrowseMode ?: string
+    BrowseMode : string,
 };
 
 export type IVerseSignature = {
     Chapter: number,
     VerseNumber: number,
     GroupID?: number,
-    Type?: string
+    Type?: string,
     TitlePrefix?: string
 };
 

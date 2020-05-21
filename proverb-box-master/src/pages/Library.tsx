@@ -16,7 +16,7 @@ import React from 'react';
 import './Library.css';
 
 import ContentManager from "../api/ContentManager";
-import {IArticle, IModel, ISaying, IStatement, ILibraryContext} from "../api/Interfaces";
+import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
@@ -58,7 +58,9 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             model: this.cm.GetModel(), // A blank model
             context: {
                 Mode: DefaultConfig.typeDisplay,
-                Chapter: (DefaultConfig.chapter as {[key: string]: number;})
+                Chapter: (DefaultConfig.chapter as {[key: string]: number;}),
+                Section: (DefaultConfig.section as {[key: string]: ISection;}),
+                BrowseMode: (DefaultConfig.browseMode)
             }
         };
 
@@ -73,10 +75,23 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             });
     }
 
-    // public class fields syntax
+    // calling setContext should update the library's view (via content manager)
     setContext = (ctx: ILibraryContext) =>
     {
+        console.log("setting context: ", ctx);
+        this.cm.ClearFiltersNoRefresh();
+        this.cm.ApplyFilter("ByType", ctx.Mode);
+        if (ctx.BrowseMode == "chapter") {
+            this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));
+        }
+
+        // update the library's context
         this.setState({context: ctx});
+
+        // update the model
+        this.setState({
+            model: this.cm.GetModel()
+        });
     };
 
     setModel = (mdl : IModel) => {
