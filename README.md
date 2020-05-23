@@ -9,3 +9,26 @@
   
   <img src="https://github.com/willie-shen/ProverbsBox/raw/master/proverb-box-master/branding/screen-shots/ss_v1_statement_save.jpg" alt="Save a Proverb" style="margin-left: 5px;" width="200">
 </div>
+
+
+Dev Notes
+------
+Before Work:
+`git pull`
+
+After Work:
+ `
+ git add -A
+ git commit -m "put a short description of the work you did here"
+ git push
+ `
+ 
+Run:
+`
+ionic serve
+`
+
+Setup Environment:
+`
+npm install
+`
