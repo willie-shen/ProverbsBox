@@ -13,15 +13,14 @@
 
 Dev Notes
 ------
+# First navigate to the folder in terminal: ProverbsBox/proverb-box-master
 Before Work:
 `git pull`
 
 After Work:
- `
- git add -A
- git commit -m "put a short description of the work you did here"
- git push
- `
+ `git add -A`
+ `git commit -m "put a short description of the work you did here"`
+ `git push`
  
 Run:
 `
