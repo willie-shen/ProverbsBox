@@ -52,6 +52,10 @@ const Bookmarked: React.FC = () => {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
+                    <IonButton>
+                        Open Folders
+                    </IonButton>
+
                     <IonList>
                         <IonItem routerLink="/bookmarked/details">
                             <IonLabel>
