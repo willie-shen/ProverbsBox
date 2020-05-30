@@ -1,13 +1,13 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
-  IonApp,
-  IonIcon,
-  IonLabel,
+  IonApp, IonContent, IonHeader,
+  IonIcon, IonItem,
+  IonLabel, IonList, IonMenu,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
-  IonTabs
+  IonTabs, IonTitle, IonToolbar
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
@@ -55,6 +55,22 @@ const App: React.FC = () => (
     <IonApp>
       <IonReactRouter>
         <IonTabs>
+          <IonMenu side="start" menuId="folders">
+            <IonHeader>
+              <IonToolbar color="primary">
+                <IonTitle>Folders</IonTitle>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent>
+              <IonList>
+                <IonItem>Wisdom Verses</IonItem>
+                <IonItem>Stewardship Verses</IonItem>
+                <IonItem>Menu Item</IonItem>
+                <IonItem>Menu Item</IonItem>
+                <IonItem>Menu Item</IonItem>
+              </IonList>
+            </IonContent>
+          </IonMenu>
           <IonRouterOutlet>
             <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true}/>
             <Route path="/bookmarked" component={Bookmarked} exact={true}/>
