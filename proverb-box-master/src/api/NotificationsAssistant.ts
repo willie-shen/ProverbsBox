@@ -1,8 +1,15 @@
 import { Plugins } from '@capacitor/core';
+//import { LocalNotifications} from "@ionic-native/local-notifications"
+
 
 import {IVerse} from "./Interfaces"
 
-import shuffle from 'shuffle.ts'
+//import shuffle from 'shuffle.ts'
+
+import * as _ from "underscore"
+//https://stackoverflow.com/questions/37569537/how-to-use-underscore-js-library-in-angular-2/37569719
+const { LocalNotifications } = Plugins;
+
 
 export default class NotificationsAssistant{
 
@@ -33,55 +40,72 @@ export default class NotificationsAssistant{
 	}
 
 
-	/*
-export type IVerse = {
-    Content : string,
-    Chapter : number,
-    VerseNumber : number,
-    Commentary ?: string,
-    SearchHighlights?: Array<ITextRange>
-};
-	*/
 	async BakeNotifications(){
 
+		//Plugins.LocalNotifications.requestPermissions()
 
-			/*
-Plugins.LocalNotifications.schedule({
-    notifications:[{
-      title:'title', Proverbs Chapter:Verse
-      body:'text', Actual Proverbs
-      id:1,
-      schedule: { at: new Date(Date.now() + 10) }
-    }]
-*/		
+		//console.log(Plugins.LocalNotifications.getPending())
+
+
+		var dateToday = new Date()
+
+		console.log(dateToday)
+
+		dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate()) 
+		//want to set today's time to 00H00M00S
+
+		console.log(dateToday)
+
+	
+		var indexes:Array<number> = []
+
+		for(var i = 0; i<this.verses.length; ++i){
+			indexes.push(i)
+		}
 
 		//shuffle the listOfVerses
 		var listOfVerses = this.verses
-		shuffle(listOfVerses)
+		_.shuffle(indexes) //need to fix the shuffle; it's not shuffling
+
+		console.log(indexes)
 
 		var currIndex = 0
 		
-		var interval = (this.end - this.start)/this.frequency
+		//convert end and start to millisecond
+		//https://stackoverflow.com/questions/18928117/how-to-do-integer-division-in-javascript-getting-division-answer-in-int-not-flo/19296059
+		var endHour:number = Math.floor(this.end/100)
+		var endMinute:number = this.end%100
+		
+		var startHour:number = Math.floor(this.start/100)
+		var startMinute:number = this.start%100
+		
 
-		var time = this.start
+		var endMillisecond = (endHour*60*60*1000) + (endMinute*60*1000) //+ (dateToday.getTimezoneOffset() * 60 * 1000 ) 
+		var startMillisecond = (startHour*60*60*1000) + (startMinute*60*1000) //+ (dateToday.getTimezoneOffset() * 60 * 1000 ) 
+
+
+		var interval = (endMillisecond - startMillisecond)/this.frequency
+
+
 		var notifications:any = []
 
-		var dateToday = new Date()
-		dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDay()) 
-		//want to set today's time to 0000
 		
-		for(var day=0; day<60; ++day){
-			while(time <= this.end){
+		console.log(new Date(dateToday.getTime() + (endHour*60*60*1000) + (endMinute*60*1000) ))
+		console.log(new Date(dateToday.getTime() + (startHour*60*60*1000) + (startMinute*60*1000) ))
+		
+		for(var day=0; day<1; ++day){
+			var time = startMillisecond
 
-			var randomVerse = listOfVerses[currIndex] //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+			while(time <= endMillisecond){
+
+			var randomVerse = listOfVerses[indexes[currIndex]] //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 			//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/length
 			
 			//https://www.tutorialspoint.com/typescript/typescript_string_concat.htm
 			var title = "Proverbs " + randomVerse.Chapter + ":" + randomVerse.VerseNumber
 			var body = randomVerse.Content
 
-			var hour = time/100
-			var minute = time%100
+			
 
 			//Each day has 24 hours
 			//Each hour has 60 minute
@@ -89,32 +113,27 @@ Plugins.LocalNotifications.schedule({
 			//1 second = 1000 milliseconds
 
 			//https://www.w3schools.com/js/js_dates.asp
-			var dayMillisecond = (day*24*60*60*100) + (hour*60*60*1000) + (minute*60*1000)
-		 	//need to add the computed milliseconds to today's millsecond starting from 0000
-			notifications.append({
+			/*notifications.push({
 				title:title,
-				body:body,
+				text:body,
 				id:this.id,
-				schedule:{at: new Date(dateToday.getTime() + dayMillisecond)}
+				trigger:{at: new Date(dateToday.getTime() + (day*24*60*60*1000) + time )} //https://stackoverflow.com/questions/6525538/convert-utc-date-time-to-local-date-time
 			}) //https://www.w3schools.com/js/js_date_methods.asp
+			*/
+			LocalNotifications.schedule({
+			notifications:[
+				{
+					title:title,
+					body:body,
+					id:new Date(dateToday.getTime() + (day*24*60*60*1000) + time ).getTime(),
+					schedule:{at: new Date(dateToday.getTime() + (day*24*60*60*1000) + time )}
+				}
+			]
+			});
 
+			console.log(new Date(dateToday.getTime() + (day*24*60*60*1000) + time )) //need to convert our time to Local Time
 			//increase time
 			time += interval
-
-			//need to check the time if it's past 59 or 24 for 
-
-			hour = time/100
-			minute = time%100
-			if(hour >=24){ //if it is past hour 24
-				hour = hour-24 //wrap it back (0 for 24, 1 for 25, etc)
-			}
-
-			if(minute >= 60){ //if it is greater than 60 min, then it's greater than 1 hour
-				minute = minute-60
-				hour++
-			}
-
-			time = (hour)*100 + minute
 
 
 			//increment id
@@ -124,20 +143,22 @@ Plugins.LocalNotifications.schedule({
 
 			if(currIndex == listOfVerses.length){
 				currIndex = 0
-				shuffle(listOfVerses)
+				//shuffle(listOfVerses)
+				_.shuffle(indexes)
 			}
 
 		}
 		}
-		
-
-		
-
-		//interval:Number = (this.end - this.start)
-
-		await Plugins.LocalNotifications.schedule({notifications:notifications})
 
 
+		//await LocalNotifications.schedule(notifications)
+
+		//console.log("The Notifications")
+
+		//console.log(LocalNotifications.getAll())
+
+		//console.log(await Plugins.LocalNotifications.areEnabled())
+		console.log(LocalNotifications.getPending())
 	}
 
 	async ClearNotifications(){
