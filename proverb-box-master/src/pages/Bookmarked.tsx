@@ -53,7 +53,7 @@ const Bookmarked: React.FC = () => {
                 </IonHeader>
                 <IonContent>
                     <IonButton>
-                        Open Folders
+                        <IonMenuButton menu={"folders"}>Open Folders</IonMenuButton>
                     </IonButton>
 
                     <IonList>
