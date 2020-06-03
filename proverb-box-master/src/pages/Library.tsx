@@ -36,7 +36,8 @@ type ILibraryState = {
     popClickEvent: any,
     popOpen: boolean,
     model: IModel,
-    context: ILibraryContext
+    context: ILibraryContext,
+    scrollStamp: number,
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
@@ -62,7 +63,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 Chapter: (DefaultConfig.chapter as {[key: string]: number;}),
                 Section: (DefaultConfig.section as {[key: string]: ISection;}),
                 BrowseMode: (DefaultConfig.browseMode)
-            }
+            },
+            scrollStamp: 0
         };
 
         // Non-persistant translation for now.
@@ -137,6 +139,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.cm.UpdateSearch("");
     }
 
+    scrollHandler = (e: any) => {
+        this.setState({
+            scrollStamp: e.timeStamp
+        });
+    }
+
     render() {
 
         let elements: Array<{
@@ -181,7 +189,9 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                     );
                                 }
                                 this.setState({model: this.cm.GetModel()});
-                            }}>
+                            }}
+                            scrollStamp={this.state.scrollStamp}
+                            >
                         </Statement>
                         </div>)
                 });
@@ -240,8 +250,11 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         ></IonSearchbar>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent className={"proverb-panel"}>
-                    <IonGrid>
+                <IonContent className={"proverb-panel"}
+                    scrollEvents={true}
+                    onIonScrollStart={this.scrollHandler}
+                >
+                    <IonGrid >
                         {
                             elements.map(component => (
                                 <IonRow key={component.key} className={"ion-justify-content-center"}>

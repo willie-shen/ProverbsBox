@@ -125,7 +125,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                                         {
                                             (this.state.selectedStatements.length > 0)
                                                 ? <Statement model={this.state.selectedStatements[this.state.head]} heartCallback={() => {
-                                                }}/>
+                                                }} scrollStamp={0}/>
                                                 : <></>
                                         }
                                     </div>

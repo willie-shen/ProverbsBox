@@ -14,12 +14,14 @@ import {heartCircle, heartCircleOutline} from 'ionicons/icons';
 
 type StatementProps = {
     model: IStatement,
-    heartCallback: () => void
+    heartCallback: () => void,
+    scrollStamp: number
 };
 
 type StatementState = {
     holdingTimer: any, // A delay event
-    touchState: string // 'n' - none, 't' - tap, 'h' - hold
+    touchState: string, // 'n' - none, 't' - tap, 'h' - hold
+    scrollStamp: number
 }
 
 class Statement extends React.Component<StatementProps, StatementState> {
@@ -30,50 +32,90 @@ class Statement extends React.Component<StatementProps, StatementState> {
         // init state
         this.state = {
             holdingTimer: undefined,
-            touchState: 'n'
+            touchState: 'n',
+            scrollStamp: 0
         };
     }
 
+    componentDidUpdate(prevProps: StatementProps) {
+        
+        // if touching
+        if (this.state.touchState !== 'n') {
+
+            // detect scroll
+            if (this.props.scrollStamp !== prevProps.scrollStamp) {
+                console.log("Scroll Detected: ", this.props.scrollStamp);
+                
+                // clear timed model open
+                clearTimeout(this.state.holdingTimer);
+                this.setState({
+                    holdingTimer: null,
+                    touchState: 'n',
+                    scrollStamp: this.props.scrollStamp
+                });
+            }
+        }
+    }
+
     /* config */
-    longPressDuration = 1000;
+    tapDuration = 250;
+    longPressDuration = 500;
 
     /* folder model open */
     openModel = () => {
         console.log("Opening model");
-        this.holdEnd();
+        this.gestureEnd();
     }
 
+    gestureStart = () => {
+        this.touchStart();
+    }
+
+    gestureEnd = () => {
+        if (this.state.touchState !== 'n') { // Copy paste code from scroll
+            // clear timed model open
+            clearTimeout(this.state.holdingTimer);
+            this.setState({
+                holdingTimer: null,
+                touchState: 'n'
+            });
+        }
+    }
+
+    /* To be called by gestureStart */
     touchStart = () => {
-        
+        let timeout = setTimeout( this.holdStart,  this.tapDuration);
+        this.setState({
+            holdingTimer: timeout,
+            touchState: 't'
+        });
     }
 
     holdStart = () => {
         let timeout = setTimeout( this.openModel,  this.longPressDuration);
-        this.setState({holdingTimer: timeout});
-    }
-
-    holdEnd = () => {
-        if (this.state.holdingTimer) {
-            // clear timed model open
-            clearTimeout(this.state.holdingTimer);
-            this.setState({holdingTimer: null});
-        }
+        this.setState({
+            holdingTimer: timeout,
+            touchState: 'h'
+        });
     }
 
     saveTapped = () => {
 
-    }
+    }      
 
     render() {
         return (
             <span
                 className={"statement"}
-                onTouchStart={this.holdStart}
-                onTouchEnd={this.holdEnd}
-                onMouseDown={this.holdStart}
-                onMouseUp={this.holdEnd}                
+                onTouchStart={this.gestureStart}
+                onTouchEnd={this.gestureEnd}
+                onMouseDown={this.gestureStart}
+                onMouseUp={this.gestureEnd}                
             >
-                <div className={"statement-view" + ((this.state.holdingTimer) ? " shrinking" : "")}>
+                <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
+                    onDrag={()=>{console.log("Dragging");}}
+                    onScroll={()=>{console.log("scrolling");}}
+                >
                     <h3 className={"verse-content"}>{this.props.model.Verse.Content}</h3>
                     <div className={"bar"}/>
                     <div className={"info-bar"}>
