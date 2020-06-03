@@ -1,6 +1,6 @@
 
 export default {
-    typeDisplay: "all",
+    typeDisplay: "statement",
     filterFormat: "chapter",
     chapter: {
         statement: 10,

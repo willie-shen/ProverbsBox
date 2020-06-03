@@ -1,5 +1,4 @@
 #proverb {
-
   ion-grid {
     width: 90%;
 
@@ -12,5 +11,18 @@
     display: flex;
     align-self: end;
     justify-content: flex-end;
+  }
+}
+
+.statement {
+  .statement-view {
+    transition: 0.25s;
+    transition-timing-function: ease-in;
+  }
+  .shrinking {
+    transition: 1s;
+    box-shadow: 0px 0px 4px 4px #777;
+    transform: scale(0.95);
+    transition-timing-function: ease-out;
   }
 }

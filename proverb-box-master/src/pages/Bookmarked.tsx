@@ -2,58 +2,80 @@ import React, {useState} from 'react';
 import {
     IonMenu,
     IonPopover,
-    IonSearchbar,
     IonIcon,
     IonButton,
-    IonCol,
-    IonRow,
-    IonGrid,
     IonContent,
     IonHeader,
     IonItem,
     IonLabel,
     IonList,
     IonPage,
+    IonToolbar,
+    IonButtons,
+    IonMenuButton,
     IonTitle,
-    IonToolbar, IonRouterOutlet, IonButtons, IonMenuButton
+    IonMenuToggle
 } from '@ionic/react';
 
 import { Plugins } from '@capacitor/core';
 
-import {funnel} from 'ionicons/icons'
+import {funnel, folder} from 'ionicons/icons'
 const Bookmarked: React.FC = () => {
 
     const [showPopover, setShowPopover] = useState(false);
     return (
         <>
             <IonPage>
+                {/* Folder Menu */}
+                <IonMenu side="start" contentId="folders-menu-content">
+                    <IonHeader>
+                        <IonToolbar color="primary">
+                            <IonTitle>Folders</IonTitle>
+                        </IonToolbar>
+                    </IonHeader>
+                    <IonContent id="folders-menu-content">
+                        <IonList>
+                            <IonItem>Wisdom Verses</IonItem>
+                            <IonItem>Stewardship Verses</IonItem>
+                            <IonItem>Menu Item</IonItem>
+                            <IonItem>Menu Item</IonItem>
+                            <IonItem>Menu Item</IonItem>
+                        </IonList>
+                    </IonContent>
+                </IonMenu>
 
-                <IonPopover isOpen={showPopover} onDidDismiss={e => {
-                    setShowPopover(false);
-                    Plugins.LocalNotifications.schedule({
-                        notifications:[{
-                        title:'title',
-                        body:'text',
-                        id:1,
-                        schedule: { at: new Date(Date.now() + 10) }
-                    }]
-                    });
-                }}>
-                <p>This is popover</p>
-                </IonPopover>
+                {/* Bookmarks Page */}
                 <IonHeader>
                     <IonToolbar>
                         <IonButtons slot="start">
-                            <IonButton onClick={() => setShowPopover(true)}>
-                                <IonIcon icon = {funnel}/> {/*https://github.com/ionic-team/ionic/issues/18847*/}
-                            </IonButton>
+                            <IonMenuToggle>
+                                <IonButton>
+                                    <IonIcon slot="icon-only" icon={folder} />
+                                </IonButton>
+                            </IonMenuToggle>
                         </IonButtons>
-                        <IonMenuButton menu={"first"}><IonIcon icon = {funnel}/></IonMenuButton>
+                        <IonTitle> Bookmarks </IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
-                    <IonButton>
-                        <IonMenuButton menu={"folders"}>Open Folders</IonMenuButton>
+
+                    <IonPopover isOpen={showPopover} onDidDismiss={e => {
+                        setShowPopover(false);
+                        Plugins.LocalNotifications.schedule({
+                            notifications:[{
+                            title:'title',
+                            body:'text',
+                            id:1,
+                            schedule: { at: new Date(Date.now() + 10) }
+                        }]
+                        });
+                    }}>
+                        <p>This is popover</p>
+                    </IonPopover>
+
+                    <IonMenuToggle><IonButton expand="full">Open Menu</IonButton></IonMenuToggle>
+                    <IonButton expand="full" onClick={() => setShowPopover(true)}>
+                        Open Popover
                     </IonButton>
 
                     <IonList>
