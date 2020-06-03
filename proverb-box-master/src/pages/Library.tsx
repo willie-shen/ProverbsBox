@@ -9,14 +9,14 @@ import {
     IonButton,
     IonButtons,
     IonGrid,
-    IonRow, withIonLifeCycle
+    IonRow, withIonLifeCycle, IonModal
 } from '@ionic/react';
 import { book } from 'ionicons/icons';
-import React from 'react';
+import React, { RefObject, Ref, createRef } from 'react';
 import './Library.css';
 
 import ContentManager from "../api/ContentManager";
-import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature} from "../api/Interfaces";
+import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature, IVerse} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";
@@ -38,6 +38,7 @@ type ILibraryState = {
     model: IModel,
     context: ILibraryContext,
     scrollStamp: number,
+    showVerseOptions: boolean
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
@@ -64,7 +65,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 Section: (DefaultConfig.section as {[key: string]: ISection;}),
                 BrowseMode: (DefaultConfig.browseMode)
             },
-            scrollStamp: 0
+            scrollStamp: 0,
+            showVerseOptions: false
         };
 
         // Non-persistant translation for now.
@@ -116,6 +118,13 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     setModel = (mdl : IModel) => {
         this.setState({model: mdl});
     };
+
+    /* Verse model for saving verse in folder */
+    openVerseOptions = (verseID: number) => {
+        this.setState({
+            showVerseOptions: true
+        })
+    }
 
     // life cycle
     ionViewWillEnter() {
@@ -191,6 +200,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 this.setState({model: this.cm.GetModel()});
                             }}
                             scrollStamp={this.state.scrollStamp}
+                            openVerseOptions={this.openVerseOptions}
                             >
                         </Statement>
                         </div>)
@@ -211,9 +221,10 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
         });*/
         console.log("rendering library");
-
+        let pageRef = React.createRef<any>();
+        
         return (
-            <IonPage className={"library-page"}>
+            <IonPage className={"library-page"} ref={pageRef}>
 
                 <IonHeader>
                     <PopoverSelector context={this.state.context}
@@ -254,7 +265,20 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     scrollEvents={true}
                     onIonScrollStart={this.scrollHandler}
                 >
-                    <IonGrid >
+                    <IonModal
+                        isOpen={this.state.showVerseOptions}
+                        swipeToClose={true}
+                        presentingElement={pageRef.current}
+                        onDidDismiss={()=>{this.setState({showVerseOptions: false})}}>
+
+                        {/* Erase and redesign modal ___*/}
+                        <IonButton onClick={()=>{this.setState({showVerseOptions: false})}}>Close Example</IonButton>
+                        <p>Model content (A)</p>
+                        <p>Model content (B)</p>
+                        {/* Erase and redesign modal ^^^ */}
+                        
+                    </IonModal>
+                    <IonGrid>
                         {
                             elements.map(component => (
                                 <IonRow key={component.key} className={"ion-justify-content-center"}>

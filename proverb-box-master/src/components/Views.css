@@ -1,5 +1,6 @@
 .statement-view {
     margin: 2em auto;
+    margin-bottom: 1em;
     box-shadow: 0px 0px 8px 8px #ddd;
     border-radius: 4px;
     padding: 1em 2em;
@@ -13,16 +14,13 @@
 .verse-name {
     /* Font options */
     /*
-    font-family: "Bilbo Swash Caps";
-    font-size: 1.4em;
-     */
-
+        font-family: "Bilbo Swash Caps";
+        font-size: 1.4em;
+    */
     font-family: "Eagle Lake";
     font-size: .85em;
 }
 .verse-content {
-    /*padding-bottom: .5em;
-    border-bottom: black 2px solid;*/
     color: black;
     font-weight: 600;
 }
@@ -49,41 +47,3 @@
     font-size: 1.7em;
     margin-right: 0.5em;
 }
-/*
-#container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.txt {
-    margin-left: 1em;
-}
-#item-add {
-    font-family: 'Crimson Text';
-    width: 100%;
-    padding: .5em 0;
-    margin: 0;
-    margin-bottom: 1em;
-    border: 0px;
-    border-top: 1px black solid;
-    border-bottom: 1px black solid;
-}
-#item-add:focus {
-    outline-width: 0;
-}
-#items-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-#items-list li {
-    padding-left: 4px;
-    border-radius: 2px;
-}
-#items-list li:hover {
-    background-color: black;
-    color: white;
-}
-*/

@@ -15,13 +15,13 @@ import {heartCircle, heartCircleOutline} from 'ionicons/icons';
 type StatementProps = {
     model: IStatement,
     heartCallback: () => void,
-    scrollStamp: number
+    scrollStamp: number,
+    openVerseOptions: (id: number) => void
 };
 
 type StatementState = {
     holdingTimer: any, // A delay event
     touchState: string, // 'n' - none, 't' - tap, 'h' - hold
-    scrollStamp: number
 }
 
 class Statement extends React.Component<StatementProps, StatementState> {
@@ -32,8 +32,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
         // init state
         this.state = {
             holdingTimer: undefined,
-            touchState: 'n',
-            scrollStamp: 0
+            touchState: 'n'
         };
     }
 
@@ -50,8 +49,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
                 clearTimeout(this.state.holdingTimer);
                 this.setState({
                     holdingTimer: null,
-                    touchState: 'n',
-                    scrollStamp: this.props.scrollStamp
+                    touchState: 'n'
                 });
             }
         }
@@ -64,6 +62,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
     /* folder model open */
     openModel = () => {
         console.log("Opening model");
+        this.props.openVerseOptions(this.props.model.ID);
         this.gestureEnd();
     }
 
