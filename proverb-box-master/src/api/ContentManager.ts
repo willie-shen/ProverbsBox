@@ -254,6 +254,33 @@ export default class ContentManager {
         });
     }
 
+    private ClearHighlights() {
+        this.componentModels.forEach(m => {
+
+            // Saying search (all in or all out)
+            if (m.Type === "Saying") {
+                const model = m.Model as ISaying;
+                model.Verses.forEach(v => {
+                    v.SearchHighlights = undefined;
+                });
+            }
+
+            // Statement search (in or out)
+            else if (m.Type === "Statement") {
+                const model = m.Model as IStatement;
+                model.Verse.SearchHighlights = undefined;
+            }
+
+            // Article search (filter by verse)
+            else if (m.Type === "Article") {
+                const model = m.Model as IArticle;
+                model.Verses.forEach(v => {
+                    v.SearchHighlights = undefined;
+                });
+            }
+        })
+    }
+
     private RefreshModels() {
 
         // filter verses
@@ -411,8 +438,12 @@ export default class ContentManager {
     }
 
     private RefineSearch(): void {
-        if (this.searchPattern === "")
+
+        const sanitizedSearch = this.searchPattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+        if (sanitizedSearch === "")
         {
+            this.ClearHighlights();
             this.refinedModels = this.componentModels;
             return;
         }
@@ -424,7 +455,7 @@ export default class ContentManager {
                 const model = m.Model as ISaying;
                 const keepSaying = model.Verses.map(verse => { // replace with for loop?
                     Indexer.SearchVerseClear(verse);
-                    Indexer.SearchVerseHighlight(verse, this.searchPattern);
+                    Indexer.SearchVerseHighlight(verse, sanitizedSearch);
                     return verse;
                 })
                     .some(isHighlighted => isHighlighted);
@@ -443,7 +474,7 @@ export default class ContentManager {
             else if (m.Type === "Statement") {
                 const model = m.Model as IStatement;
                 Indexer.SearchVerseClear(model.Verse);
-                if (Indexer.SearchVerseHighlight(model.Verse, this.searchPattern)) {
+                if (Indexer.SearchVerseHighlight(model.Verse, sanitizedSearch)) {
                     return m;
                 }
                 else {
@@ -455,7 +486,7 @@ export default class ContentManager {
             else if (m.Type === "Article") {
                 const model = m.Model as IArticle;
                 const refinedVerses = model.Verses.filter(v => {
-                    return Indexer.SearchVerseHighlight(v, this.searchPattern);
+                    return Indexer.SearchVerseHighlight(v, sanitizedSearch);
                 });
 
                 if (refinedVerses.length === 0) {

@@ -25,4 +25,16 @@
     transform: scale(0.95);
     transition-timing-function: ease-out;
   }
+
+  /* highlights */
+  span.highlight {
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+    margin-top: 0.1em;
+  }
 }

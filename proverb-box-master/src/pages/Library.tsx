@@ -154,6 +154,27 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         });
     }
 
+    heartHandler = (statementModel : IStatement) => {
+        if (statementModel.Saved) {
+            console.log("Removing heart");
+            this.cm.RemoveBookmark(
+                {
+                    Chapter: statementModel.Verse.Chapter,
+                    VerseNumber: statementModel.Verse.VerseNumber
+                }
+            );
+        } else {
+            console.log("adding heart");
+            this.cm.Bookmark(
+                {
+                    Chapter: statementModel.Verse.Chapter,
+                    VerseNumber: statementModel.Verse.VerseNumber
+                }
+            );
+        }
+        this.setState({model: this.cm.GetModel()});
+    }
+
     render() {
 
         let elements: Array<{
@@ -179,28 +200,10 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         <div style={{width: "20em"}} >
                         <Statement
                             model={statementModel}
-                            heartCallback={() => {
-                                if (statementModel.Saved) {
-                                    console.log("Removing heart");
-                                    this.cm.RemoveBookmark(
-                                        {
-                                            Chapter: statementModel.Verse.Chapter,
-                                            VerseNumber: statementModel.Verse.VerseNumber
-                                        }
-                                    );
-                                } else {
-                                    console.log("adding heart");
-                                    this.cm.Bookmark(
-                                        {
-                                            Chapter: statementModel.Verse.Chapter,
-                                            VerseNumber: statementModel.Verse.VerseNumber
-                                        }
-                                    );
-                                }
-                                this.setState({model: this.cm.GetModel()});
-                            }}
+                            heartCallback={() => {this.heartHandler(statementModel)}}
                             scrollStamp={this.state.scrollStamp}
                             openVerseOptions={this.openVerseOptions}
+                            searchHighlights={statementModel.Verse.SearchHighlights}
                             >
                         </Statement>
                         </div>)
@@ -276,7 +279,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         <p>Model content (A)</p>
                         <p>Model content (B)</p>
                         {/* Erase and redesign modal ^^^ */}
-                        
+
                     </IonModal>
                     <IonGrid>
                         {
