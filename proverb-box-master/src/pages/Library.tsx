@@ -11,7 +11,7 @@ import {
     IonGrid,
     IonRow, withIonLifeCycle, IonModal
 } from '@ionic/react';
-import { book } from 'ionicons/icons';
+import { book, chevronDownOutline, ellipsisVerticalOutline } from 'ionicons/icons';
 import React, { RefObject, Ref, createRef } from 'react';
 import './Library.css';
 
@@ -288,10 +288,15 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                     {component.element}
                                 </IonRow>
                             ))
-
-                            <ion-icon name="chevron-down-outline"></ion-icon>
                         }
+                        
                     </IonGrid>
+                    <div className="next-button-container">
+                        <IonButton fill={"clear"} className="next-button">
+                            <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
+                        </IonButton>
+                    </div>
+                    
                 </IonContent>
             </IonPage>
         );

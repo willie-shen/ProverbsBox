@@ -55,10 +55,6 @@ class Article extends React.Component<ArticleProp, ArticleState> {
                 </div>
             </div>
 
-            <IonCard class={"article"}>
-                <p> </p>
-            </IonCard>
-
         {/*
                 <div>
 
