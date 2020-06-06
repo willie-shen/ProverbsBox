@@ -24,6 +24,11 @@
     font-weight: bold;
     color: #4f6aa2;
 }
+
+.chevron-down-outline {
+    font-size: large;
+}
+
 /* Popover */
 #select-mode-container {
     display: flex;

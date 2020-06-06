@@ -288,6 +288,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                     {component.element}
                                 </IonRow>
                             ))
+
+                            <ion-icon name="chevron-down-outline"></ion-icon>
                         }
                     </IonGrid>
                 </IonContent>
