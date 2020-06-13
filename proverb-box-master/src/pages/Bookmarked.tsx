@@ -30,7 +30,7 @@ const Bookmarked: React.FC = () => {
                 <IonMenu side="start" contentId="folders-menu-content">
                     <IonHeader>
                         <IonToolbar color="primary">
-                            <IonTitle>Folders</IonTitle>
+                            <IonTitle>Folder</IonTitle>
                         </IonToolbar>
                     </IonHeader>
                     <IonContent id="folders-menu-content">

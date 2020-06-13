@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "^2.2.0",
     "@capacitor/core": "1.5.0",
     "@ionic-native/local-notifications": "^5.22.0",
     "@ionic/react": "^5.0.4",
@@ -15,6 +16,8 @@
     "@types/react-router-dom": "^5.1.0",
     "@types/react-transition-group": "^4.4.0",
     "@types/underscore": "^1.10.0",
+    "cordova-plugin-badge": "^0.8.8",
+    "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "immutability-helper": "^3.0.2",
     "ionicons": "^5.0.1",

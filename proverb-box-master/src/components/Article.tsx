@@ -43,10 +43,10 @@ class Article extends React.Component<ArticleProp, ArticleState> {
                             this.props.model.Verses.map((verse: IVerse) =>
                             (<div className={"verse"}>
 
-                            <p className={"number"}>
-                            {verse.VerseNumber}
-                            </p>
-                            <p className={"ending-verse"}>{verse.Content}</p>
+                                <p className={"number"}>
+                                {verse.VerseNumber}
+                                </p>
+                                <p className={"ending-verse"}>{verse.Content}</p>
                             </div>)
                             )
                         }

@@ -10,7 +10,7 @@ import "./Proverb.scss"
 import "./Views.css"
 
 // Icons
-import {heartCircle, heartCircleOutline} from 'ionicons/icons';
+import {albumsOutline, heartCircle, heartCircleOutline} from 'ionicons/icons';
 
 type StatementProps = {
     model: IStatement,
@@ -222,10 +222,10 @@ class Statement extends React.Component<StatementProps, StatementState> {
                     <div className={"bar"}/>
                     <div className={"info-bar"}>
                         <p className={"verse-name"}>Proverbs {this.props.model.Verse.Chapter}:{this.props.model.Verse.VerseNumber}</p>
-                        <IonIcon 
-                            onTouchStart={(e)=>{e.stopPropagation()}}
-                            onMouseDown={(e)=>{e.stopPropagation()}}
-                            onClick={this.props.heartCallback} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
+                            <IonIcon
+                                onTouchStart={(e)=>{e.stopPropagation()}}
+                                onMouseDown={(e)=>{e.stopPropagation()}}
+                                onClick={this.props.heartCallback} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
                     </div>
                 </div>
             </span>
