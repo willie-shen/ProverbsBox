@@ -70,7 +70,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
 
     /* config */
     tapDuration = 250;
-    longPressDuration = 500;
+    longPressDuration = 200; /* Transitioned to click inlet durration */
 
     /* folder model open */
     openModel = () => {
@@ -205,10 +205,11 @@ class Statement extends React.Component<StatementProps, StatementState> {
         return (
             <span
                 className={"statement"}
-                onTouchStart={this.gestureStart}
+                /*onTouchStart={this.gestureStart}
                 onTouchEnd={this.gestureEnd}
                 onMouseDown={this.gestureStart}
-                onMouseUp={this.gestureEnd}                
+                onMouseUp={this.gestureEnd}    */  
+                onClick={this.holdStart}          
             >
                 <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
                     onDrag={()=>{console.log("Dragging");}}
