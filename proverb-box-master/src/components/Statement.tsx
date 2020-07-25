@@ -10,7 +10,7 @@ import "./Proverb.scss"
 import "./Views.css"
 
 // Icons
-import {heartCircle, heartCircleOutline} from 'ionicons/icons';
+import {albumsOutline, heartCircle, heartCircleOutline} from 'ionicons/icons';
 
 type StatementProps = {
     model: IStatement,
@@ -70,7 +70,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
 
     /* config */
     tapDuration = 250;
-    longPressDuration = 500;
+    longPressDuration = 200; /* Transitioned to click inlet durration */
 
     /* folder model open */
     openModel = () => {
@@ -205,10 +205,11 @@ class Statement extends React.Component<StatementProps, StatementState> {
         return (
             <span
                 className={"statement"}
-                onTouchStart={this.gestureStart}
+                /*onTouchStart={this.gestureStart}
                 onTouchEnd={this.gestureEnd}
                 onMouseDown={this.gestureStart}
-                onMouseUp={this.gestureEnd}                
+                onMouseUp={this.gestureEnd}    */  
+                onClick={this.holdStart}          
             >
                 <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
                     onDrag={()=>{console.log("Dragging");}}
@@ -222,10 +223,10 @@ class Statement extends React.Component<StatementProps, StatementState> {
                     <div className={"bar"}/>
                     <div className={"info-bar"}>
                         <p className={"verse-name"}>Proverbs {this.props.model.Verse.Chapter}:{this.props.model.Verse.VerseNumber}</p>
-                        <IonIcon 
-                            onTouchStart={(e)=>{e.stopPropagation()}}
-                            onMouseDown={(e)=>{e.stopPropagation()}}
-                            onClick={this.props.heartCallback} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
+                            <IonIcon
+                                onTouchStart={(e)=>{e.stopPropagation()}}
+                                onMouseDown={(e)=>{e.stopPropagation()}}
+                                onClick={this.props.heartCallback} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
                     </div>
                 </div>
             </span>
