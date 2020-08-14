@@ -48,39 +48,56 @@ import ContentManager from "./api/ContentManager"
 // TestScript hook.
 //if (conf.test2) {TestScript2()}
 
+// notifications
+import { Plugins, AppState } from '@capacitor/core';
+import NotificationsAssistant from "./api/NotificationsAssistant"
+
 // init content manager
 let cm = new ContentManager();
 
-const App: React.FC = () => (
-  <>
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true}/>
-            <Route path="/bookmarked" component={Bookmarked} exact={true}/>
-            <Route path="/bookmarked/details" component={Details}/>
-            <Route path="/discover" component={() => <Discover contentManager={cm}/>} exact={true}/>
-            <Route path="/" render={() => <Redirect to="/library"/>} exact={true}/>
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="library" href="/library">
-              <IonIcon icon={libraryOutline}/>
-              <IonLabel>Library</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="bookmarked" href="/bookmarked">
-              <IonIcon icon={bookmarkOutline}/>
-              <IonLabel>Bookmarked</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="discover" href="/discover">
-              <IonIcon icon={shuffleOutline}/>
-              <IonLabel>Discover</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
-  </>
-);
+const App: React.FC = () => {
+
+  // capacitor notifications setup
+  Plugins.App.addListener("appStateChange", (state: AppState) => {
+     if (state.isActive) {
+        // call the notification setup
+        let notificationAssistant = new NotificationsAssistant();
+        notificationAssistant.NotificationSetter();
+     }
+  });
+ 
+  // root of the proverbs box app
+  return (
+    <>
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true}/>
+              <Route path="/bookmarked" component={Bookmarked} exact={true}/>
+              <Route path="/bookmarked/details" component={Details}/>
+              <Route path="/discover" component={() => <Discover contentManager={cm}/>} exact={true}/>
+              <Route path="/" render={() => <Redirect to="/library"/>} exact={true}/>
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="library" href="/library">
+                <IonIcon icon={libraryOutline}/>
+                <IonLabel>Library</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="bookmarked" href="/bookmarked">
+                <IonIcon icon={bookmarkOutline}/>
+                <IonLabel>Bookmarked</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="discover" href="/discover">
+                <IonIcon icon={shuffleOutline}/>
+                <IonLabel>Discover</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+    </>
+  );
+}
 
 export default App;
