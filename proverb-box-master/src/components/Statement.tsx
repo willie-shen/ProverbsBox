@@ -226,7 +226,10 @@ class Statement extends React.Component<StatementProps, StatementState> {
                             <IonIcon
                                 onTouchStart={(e)=>{e.stopPropagation()}}
                                 onMouseDown={(e)=>{e.stopPropagation()}}
-                                onClick={this.props.heartCallback} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.props.heartCallback();
+                                }} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
                     </div>
                 </div>
             </span>

@@ -300,7 +300,9 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         
                     </IonGrid>
                     <div className="next-button-container">
-                        <IonButton fill={"clear"} className="next-button">
+                        <IonButton fill={"clear"} className="next-button"
+                            onClick={()=>{console.log("Hello")}}
+                        >
                             <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
                         </IonButton>
                     </div>

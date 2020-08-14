@@ -19,28 +19,132 @@ import {
 
 import { Plugins } from '@capacitor/core';
 
-import {funnel, folder} from 'ionicons/icons'
+import {folder, notifications, notificationsOutline, notificationsCircleOutline} from 'ionicons/icons';
+import "./Bookmarked.css";
+
 const Bookmarked: React.FC = () => {
 
     const [showPopover, setShowPopover] = useState(false);
+    const [notificationToggle, setNotificationToggle] = useState(false);
+    const [newFolderMode, setNewFolderMode] = useState(false);
     return (
         <>
-            <IonPage>
+            <IonPage className={"bookmarked-page"}>
+
                 {/* Folder Menu */}
                 <IonMenu side="start" contentId="folders-menu-content">
-                    <IonHeader>
+                    <IonHeader mode={"md"}>
                         <IonToolbar color="primary">
-                            <IonTitle>Folder</IonTitle>
+                            <IonButtons slot="start">
+                                <IonButton>
+                                    <IonIcon icon={folder} />
+                                </IonButton>
+                            </IonButtons>
+                            <IonButtons slot="end">
+                                <IonButton onClick={() => setNotificationToggle(!notificationToggle)}>
+                                    {
+                                        (notificationToggle) ? <IonIcon icon={notifications}/>
+                                                             : <IonIcon icon={notificationsOutline}/>
+                                    }
+                                </IonButton>
+                            </IonButtons>
+                            <IonTitle slot="start">Folder</IonTitle>
                         </IonToolbar>
+                        <div className={`select-all-default ${notificationToggle ? "select-all-revealed" : ""}`}>
+                            <div className="half-container-left">
+                                <IonButton mode={"ios"} fill="clear" expand="block" size="small">Select All</IonButton>
+                            </div>
+                            <div className="half-container-right">
+                                <IonButton mode={"ios"} fill="clear" expand="block" size="small">Deselect All</IonButton>
+                            </div>
+                        </div>
+                        <div className={`new-folder-default 
+                            ${(notificationToggle) ? "new-folder-hidden" : ""}
+                            ${(newFolderMode) ? "blink" : ""}`
+                        }
+                            onClick={() => {setNewFolderMode(true); console.log("entering new folder mode.")}}>
+                            <h3>New Folder</h3>
+                        </div>
                     </IonHeader>
-                    <IonContent id="folders-menu-content">
-                        <IonList>
-                            <IonItem>Wisdom Verses</IonItem>
-                            <IonItem>Stewardship Verses</IonItem>
-                            <IonItem>Menu Item</IonItem>
-                            <IonItem>Menu Item</IonItem>
-                            <IonItem>Menu Item</IonItem>
-                        </IonList>
+                    <IonContent id="folders-menu-content" onClick={()=>{console.log("clicked!!!")}}>
+                        <div className="category-list-container ion-activateable" style={{pointerEvents: "auto"}}>
+                            <IonList className="folder-list">
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Wisdom Verses
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Stewardship Verses
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Menu Item
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Stewardship Verses
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Menu Item
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Stewardship Verses
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Menu Item
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Stewardship Verses
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Menu Item
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Stewardship Verses
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Menu Item
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Menu Item
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Stewardship Verses
+                                </IonItem>
+                                <IonItem button detail>
+                                    <IonIcon icon={notificationsCircleOutline}
+                                        className={`notification-default ${(notificationToggle) ? 'notification-revealed' : ''}`}></IonIcon>
+                                    Menu Item
+                                </IonItem>
+                            </IonList>
+                        </div>
+                        <div className={"button-holder"}>
+                            <IonButton shape={"round"} class={"set-notification-button"}>Set Notifications</IonButton>  
+                        </div>
+                        
                     </IonContent>
                 </IonMenu>
 
