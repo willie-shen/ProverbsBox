@@ -273,12 +273,20 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         swipeToClose={true}
                         presentingElement={pageRef.current}
                         onDidDismiss={()=>{this.setState({showVerseOptions: false})}}>
+                        <div id={"parentmodeldiv"}>
+                            <div id={"modeldiv"}>
+                                <p>Folder 1</p>
+                                <p>Folder 2</p>
+                                <p>Folder 3</p>
+                                <IonButton onClick={()=>{this.setState({showVerseOptions: false})}}>Close Example</IonButton>
+                            </div>
+                        </div>
 
-                        {/* Erase and redesign modal ___*/}
-                        <IonButton onClick={()=>{this.setState({showVerseOptions: false})}}>Close Example</IonButton>
-                        <p>Model content (A)</p>
-                        <p>Model content (B)</p>
-                        {/* Erase and redesign modal ^^^ */}
+                        {/*/!* Erase and redesign modal ___*!/*/}
+                        {/*<IonButton onClick={()=>{this.setState({showVerseOptions: false})}}>Close Example</IonButton>*/}
+                        {/*<p>Model content (A)</p>*/}
+                        {/*<p>Model content (B)</p>*/}
+                        {/*/!* Erase and redesign modal ^^^ *!/*/}
 
                     </IonModal>
                     <IonGrid>
