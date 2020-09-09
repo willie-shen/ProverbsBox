@@ -1,21 +1,24 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { IonReactRouter } from '@ionic/react-router';
+
 import {
-  IonApp, IonContent, IonHeader,
-  IonIcon, IonItem,
-  IonLabel, IonList, IonMenu,
+  IonApp,
+  IonIcon,
+  IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
-  IonTabs, IonTitle, IonToolbar
+  IonTabs,
+  useIonViewDidEnter
 } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
 
 import {
   libraryOutline,
   bookmarkOutline,
   shuffleOutline
 } from 'ionicons/icons';
+
 import Library from './pages/Library';
 import Bookmarked from './pages/Bookmarked';
 import Discover from './pages/Discover';
@@ -41,12 +44,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './fonts/font-config.css';
 
-// Test API Functionality
-import TestScript2 from "./api/TestScript2"
-//import conf from "./api/TestScriptConfig.json"
 import ContentManager from "./api/ContentManager"
-// TestScript hook.
-//if (conf.test2) {TestScript2()}
 
 // notifications
 import { Plugins, AppState } from '@capacitor/core';
@@ -58,12 +56,15 @@ let cm = new ContentManager();
 const App: React.FC = () => {
 
   // capacitor notifications setup
-  Plugins.App.addListener("appStateChange", (state: AppState) => {
-     if (state.isActive) {
+  useIonViewDidEnter(() => {
+    // refresh notifications on app enter
+    Plugins.App.addListener("appStateChange", (state: AppState) => {
+      if (state.isActive) {
         // call the notification setup
         let notificationAssistant = new NotificationsAssistant();
         notificationAssistant.NotificationSetter();
-     }
+      }
+    });
   });
  
   // root of the proverbs box app

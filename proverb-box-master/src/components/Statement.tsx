@@ -2,15 +2,20 @@ import {
     IonIcon
 } from '@ionic/react';
 import React from 'react';
-import { IStatement, ITextRange } from "../api/Interfaces";
-import { Transition } from "react-transition-group";
+import {
+    IStatement,
+    ITextRange
+} from "../api/Interfaces";
 
 // Styles
 import "./Proverb.scss"
 import "./Views.css"
 
 // Icons
-import {albumsOutline, heartCircle, heartCircleOutline} from 'ionicons/icons';
+import {
+    heartCircle,
+    heartCircleOutline
+} from 'ionicons/icons';
 
 type StatementProps = {
     model: IStatement,

@@ -6,7 +6,7 @@ import {
     IonRadio,
     IonRadioGroup
 } from "@ionic/react";
-import React, {useState} from "react";
+import React from "react";
 import {ILibraryContext} from "../api/Interfaces";
 import ProverbsStructure from "../indexing/ProverbsStructure.json"
 import update from 'immutability-helper'
@@ -30,7 +30,7 @@ const AllPopoverContent = (props : IPopProps) => {
             <div id={"select-mode-container"}>
                 <h3 id={"mode-text"}>Proverbs</h3>
                 {
-                    (props.context.BrowseMode == "chapter") ? (
+                    (props.context.BrowseMode === "chapter") ? (
                         <IonButton id={"mode-button"} size="small" color="dark" onClick={()=>{ChangeBrowseMode("descriptor");}}>Select by Descriptor</IonButton>
                     )
                     : <IonButton id={"mode-button"} size="small" color="dark" onClick={()=>{ChangeBrowseMode("chapter");}}>Select by Chapter</IonButton>

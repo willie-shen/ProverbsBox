@@ -93,8 +93,6 @@ export default class Indexer {
                 return v;
             }
         , []);
-        console.log("Verses: ", verses);
-        console.log("All verses: ", JSON.stringify(verses.map(v => {return this.GetVerseID(v.Chapter, v.VerseNumber)})));
         return verses;
     }
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
     IonIcon,
     IonHeader,
@@ -16,7 +16,7 @@ import {Statement} from "../components/Statement"
 import {IStatement} from "../api/Interfaces";
 import update from "immutability-helper";
 import "./Discover.css";
-import {bookmarkOutline, chevronBackOutline, chevronForward, chevronForwardOutline} from "ionicons/icons";
+import {chevronBackOutline, chevronForwardOutline} from "ionicons/icons";
 
 type IDiscoverProps = {
     contentManager: ContentManager
@@ -49,7 +49,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
     // life cycle
     ionViewWillEnter() {
         if (this.props.contentManager.IsTranslatationReady()) {
-            if (this.state.allStatements.length == 0) {
+            if (this.state.allStatements.length === 0) {
 
                 this.props.contentManager.ClearFiltersNoRefresh();
                 this.props.contentManager.ApplyFilter("ByType", "statement");
@@ -67,7 +67,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
     foward = () => {
         this.setState(cur => {
-            if (cur.head == cur.selectedStatements.length - 1) {
+            if (cur.head === cur.selectedStatements.length - 1) {
                 return {
                     selectedStatements: update(cur.selectedStatements, {$push: [SelectRandom(this.state.allStatements)]}),
                     head: (cur.head) + 1
@@ -105,7 +105,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                         <IonGrid>
                             <IonRow justify-content-center align-items-center>
                                 <IonCol size={"1"} className={"button-col"}>
-                                    <IonButton expand="full" size={"small"} disabled={this.state.head == 0} fill={"clear"} className={"back-button"} onClick={this.back}
+                                    <IonButton expand="full" size={"small"} disabled={this.state.head === 0} fill={"clear"} className={"back-button"} onClick={this.back}
                                     ><IonIcon icon={chevronBackOutline}/></IonButton>
                                 </IonCol>
                                 <IonCol size={"10"} align-self-center>

@@ -11,12 +11,12 @@ import {
     IonGrid,
     IonRow, withIonLifeCycle, IonModal
 } from '@ionic/react';
-import { book, chevronDownOutline, ellipsisVerticalOutline } from 'ionicons/icons';
-import React, { RefObject, Ref, createRef } from 'react';
+import { book, ellipsisVerticalOutline } from 'ionicons/icons';
+import React from 'react';
 import './Library.css';
 
 import ContentManager from "../api/ContentManager";
-import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature, IVerse} from "../api/Interfaces";
+import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature} from "../api/Interfaces";
 import {Article} from "../components/Article";
 import {Saying} from "../components/Saying";
 import {Statement} from "../components/Statement";

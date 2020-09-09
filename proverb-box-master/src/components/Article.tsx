@@ -1,6 +1,3 @@
-import {
-    IonCard
-} from '@ionic/react';
 import React from 'react';
 import {IArticle, ILibraryContext, IVerse} from "../api/Interfaces";
 import ProverbsStructure from "../indexing/ProverbsStructure.json";

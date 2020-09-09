@@ -12,7 +12,6 @@ import {
     IonPage,
     IonToolbar,
     IonButtons,
-    IonMenuButton,
     IonTitle,
     IonMenuToggle
 } from '@ionic/react';

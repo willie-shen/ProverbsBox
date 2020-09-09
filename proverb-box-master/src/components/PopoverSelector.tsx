@@ -13,7 +13,6 @@ import {
     IonSegmentButton
 } from "@ionic/react";
 import React from "react";
-import DefaultConfig from "../pages/DefaultDisplayConfig";
 import {ILibraryContext} from "../api/Interfaces";
 import {StatementPopoverContent} from "./StatementPopoverContent";
 import {AllPopoverContent} from "./AllPopoverContent";
@@ -30,18 +29,17 @@ type IPopProps = {
 
 const PopoverSelector = (props : IPopProps) => {
     // config
-    const defaultChapter : {[selector:string]: number} = DefaultConfig.chapter;
     let popoverContent : any;
 
     /* Set the selection box based on mode */
-    if (props.context.Mode == "statement") {
+    if (props.context.Mode === "statement") {
         popoverContent = (<StatementPopoverContent context={props.context} setContext={props.setContext} />);
     }
-    else if (props.context.Mode == "all") {
+    else if (props.context.Mode === "all") {
         popoverContent = (<AllPopoverContent context={props.context} setContext={props.setContext}/>);
     }
     else {
-        throw("unrecognized context mode.")
+        throw new Error("unrecognized context mode.")
     }
 
     return (

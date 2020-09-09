@@ -1,5 +1,5 @@
 {
-  "name": "ProverbBox",
+  "name": "proverbs-box",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -14,11 +14,6 @@
     "@types/react-dom": "^16.9.1",
     "@types/react-router": "^5.1.1",
     "@types/react-router-dom": "^5.1.0",
-    "@types/react-transition-group": "^4.4.0",
-    "@types/underscore": "^1.10.0",
-    "cordova-plugin-badge": "^0.8.8",
-    "cordova-plugin-device": "^2.0.3",
-    "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "immutability-helper": "^3.0.2",
     "ionicons": "^5.0.1",
     "jest-fetch-mock": "^3.0.1",
@@ -28,10 +23,7 @@
     "react-dom": "^16.10.2",
     "react-router": "^5.1.0",
     "react-router-dom": "^5.1.0",
-    "react-transition-group": "^4.4.1",
-    "shuffle.ts": "^1.0.1",
-    "typescript": "3.6.3",
-    "underscore": "^1.10.2"
+    "typescript": "3.6.3"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,8 +1,11 @@
 import {
-    IonButton, IonItem, IonLabel, IonList, IonRadio,
+    IonItem,
+    IonLabel,
+    IonList,
+    IonRadio,
     IonRadioGroup,
 } from "@ionic/react";
-import React, {useState} from "react";
+import React from "react";
 import Statements from "../indexing/Statements.json"
 import {ILibraryContext} from "../api/Interfaces";
 import update from 'immutability-helper';
@@ -17,11 +20,15 @@ const StatementPopoverContent = (props : IPopProps) => {
     // retrieve important context info
     const currentChapter = props.context.Chapter[props.context.Mode];
 
+    /*
+    Potentially important in the future
+
     const ChangeSection = (section: number, part: number) => {
         props.setContext(update(props.context, {
             Section: { [props.context.Mode]: { $set: { SectionNumber: section, Part: part} }}
         }));
     };
+    */
 
     const ChangeChapter = (chapter: number) => {
         props.setContext(update(props.context, {
@@ -29,11 +36,14 @@ const StatementPopoverContent = (props : IPopProps) => {
         }));
     };
 
+    /*
+    Potentially important in the future
     const ChangeBrowseMode = (bm : string) => {
         props.setContext(update(props.context, {
             BrowseMode: { $set: bm }
         }));
     };
+    */
 
     return (
         <>
