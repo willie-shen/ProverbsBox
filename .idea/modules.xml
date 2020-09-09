@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ProverbsBox.iml" filepath="$PROJECT_DIR$/.idea/ProverbsBox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/proverb-box-master.iml" filepath="$PROJECT_DIR$/.idea/proverb-box-master.iml" />
     </modules>
   </component>
 </project>

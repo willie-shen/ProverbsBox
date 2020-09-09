@@ -14,6 +14,7 @@
 /build
 /android
 /ios
+/electron
 
 # misc
 .DS_Store
