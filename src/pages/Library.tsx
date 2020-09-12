@@ -1,3 +1,8 @@
+/* QUESTION: How do u know what chapter it's on? Is there a bookmark?
+High-level, how is your data stored? 
+What does ContentManager do? 
+*Is there a way to generate a context ctx object for a given chapter n? 
+*/
 import {
     IonContent,
     IonHeader,
@@ -8,12 +13,13 @@ import {
     IonSearchbar,
     IonButton,
     IonButtons,
-    IonGrid,
+    IonGrid, IonCol, CreateAnimation,
     IonRow, withIonLifeCycle, IonModal
 } from '@ionic/react';
 import { book, ellipsisVerticalOutline } from 'ionicons/icons';
 import React from 'react';
 import './Library.css';
+import update from "immutability-helper";
 
 import ContentManager from "../api/ContentManager";
 import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature} from "../api/Interfaces";
@@ -27,10 +33,13 @@ import ProverbsStructure from "../indexing/ProverbsStructure.json";
 import DefaultConfig from "./DefaultDisplayConfig";
 import Indexer from "../api/Indexer";
 
+import {chevronBackOutline, chevronForwardOutline} from "ionicons/icons";
+
 type ILibraryProps = {
   contentManager: ContentManager
 }
 
+//We'll be getting a new model w/ getModel() and setting that to state.
 type ILibraryState = {
     searchContent: string,
     popClickEvent: any,
@@ -46,18 +55,21 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     /* Member data */
     private cm : ContentManager;
     private ref : any;
+    private INCREASE : number; //number of chapters we need to skip ahead, based on the back button
 
     constructor(props: ILibraryProps) {
         super(props);
 
         this.cm = this.props.contentManager;
         this.ref = React.createRef();
+        this.INCREASE = 0;
 
         this.state = {
             //proverbs: this.props.proverbProvider.GetAllOneLiners(),
+            
             searchContent: "",
             popClickEvent: undefined,
-            popOpen: false,
+            popOpen: false, 
             model: this.cm.GetModel(), // A blank model
             context: {
                 Mode: DefaultConfig.typeDisplay,
@@ -80,14 +92,14 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             });
     }
 
-    // calling setContext should update the library's view (via content manager)
+    // calling setContext should update the library's view (via content manager); this is what ACTUALLY makes the cards change.
     setContext = (ctx: ILibraryContext) =>
     {
         console.log("setting context: ", ctx);
         this.cm.ClearFiltersNoRefresh();
         this.cm.ApplyFilter("ByType", ctx.Mode);
         if (ctx.BrowseMode === "chapter" || ctx.Mode === "statement") {
-            this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));
+            this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));                //BC: maybe this is impt?? 
         }
 
         // descriptor browse
@@ -113,6 +125,27 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.setState({
             model: this.cm.GetModel()
         });
+    };
+
+    //DISGUSTING, PASTED FROM DISCOVER.TSX
+    foward = () => {
+        
+        //this.cm.ref
+        //this.setContext() //TODO: send context to next one. 
+        //this.setState({model: this.cm.GetModel()});
+        /*this.setState(cur => {
+            if (cur.head === cur.selectedStatements.length - 1) {
+                return {
+                    selectedStatements: update(cur.selectedStatements, {$push: [SelectRandom(this.state.allStatements)]}),
+                    head: (cur.head) + 1
+                };
+            }
+
+            return {
+                selectedStatements: cur.selectedStatements,
+                head: (cur.head) + 1
+            };
+        });*/
     };
 
     setModel = (mdl : IModel) => {
@@ -154,6 +187,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         });
     }
 
+    //Adding/Removing heart for card statementModel
     heartHandler = (statementModel : IStatement) => {
         if (statementModel.Saved) {
             console.log("Removing heart");
@@ -177,6 +211,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
     render() {
 
+        //Declare empty elements dictionary-array, for storing key(type=number) : element(type=any)
+        //This is the verse number/ID mapped to the verse text
         let elements: Array<{
             key: number,
             element: any
@@ -185,6 +221,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.state.model.ComponentModels.forEach((c) => {
             if (c.Type === "Article")
             {
+                console.log("It's an article")
+                //
                 const keyVerse = (c.Model as IArticle).Verses[0];
                 elements.push({
                     key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
@@ -192,10 +230,15 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 });
             }
             else if (c.Type === "Statement")
-            {
+            {   
+                //For now, we're in statement mode.
+                console.log("It's a statement")
+
                 const statementModel = (c.Model as IStatement);
+
+                //Populate elements array with the chapers, verse numbers, and the verse
                 elements.push({
-                    key: Indexer.GetVerseID(statementModel.Verse.Chapter, statementModel.Verse.VerseNumber),
+                    key: Indexer.GetVerseID(statementModel.Verse.Chapter+this.INCREASE, statementModel.Verse.VerseNumber),
                     element: (
                         <div style={{width: "20em"}} >
                         <Statement
@@ -299,12 +342,84 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         }
                         
                     </IonGrid>
+                    
                     <div className="next-button-container">
-                        <IonButton fill={"clear"} className="next-button"
-                            onClick={()=>{console.log("Hello")}}
+                    <IonButton fill={"clear"} className="next-button"
+                            onClick={()=>{
+
+                                //THIS SHALL BE THE PREVIOUS BUTTON
+                                console.log("prev < Library.tsx")
+                                
+                                console.log(this.state.context.Chapter.statement);
+
+                                //Get current chapter#, which is also SectionNumber.
+                                var curNum = this.state.context.Chapter.statement;
+
+                                //Slappin' a bandaid on a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT rip
+                                //TODO: fix AllPopoverContent
+                                if(typeof curNum === 'string'){
+                                    curNum = parseInt(curNum);
+                                }
+
+                                //This is the next button, so we wanna go to next chapter (+ check edge cases)
+                                if(curNum == 10){
+                                    //Do nothing, at the beginning.
+                                }else if(curNum == 25){
+                                    curNum = 22
+                                }else{
+                                    curNum--;
+                                }
+                                var newContext = {
+                                    Mode: DefaultConfig.typeDisplay,
+                                    Chapter: ({all: 1, saying: 15, statement: curNum}),
+                                    Section: ({all: {Part: 0, SectionNumber: 0}, saying: {Part: 0, SectionNumber: curNum}, statement: {Part: 0, SectionNumber: curNum} }),
+                                    BrowseMode: (DefaultConfig.browseMode)
+                                };
+                                this.setContext(newContext);
+                                   
+                            }}
                         >
                             <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
                         </IonButton>
+                        <IonButton fill={"clear"} className="next-button"
+                            onClick={()=>{
+
+                                //THIS SHALL BE THE NEXT BUTTON
+                                console.log("Library.tsx > next")
+                                
+                                console.log(this.state.context.Chapter.statement);
+
+                                //Get current chapter#, which is also SectionNumber.
+                                var curNum = this.state.context.Chapter.statement;
+
+                                //Slappin' a bandaid on a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT rip
+                                //TODO: fix AllPopoverContent
+                                if(typeof curNum === 'string'){
+                                    curNum = parseInt(curNum);
+                                }
+
+                                //This is the next button, so we wanna go to next chapter (+ check edge cases)
+                                if(curNum == 22){
+                                    curNum = 25;
+                                }else if(curNum == 29){
+                                    //Do nothing, we're at the end. Maybe put a nice message saying that you've reached the end?
+                                }else{
+                                    //Not an edge case, just advance
+                                    curNum++;
+                                }
+                                var newContext = {
+                                    Mode: DefaultConfig.typeDisplay,
+                                    Chapter: ({all: 1, saying: 15, statement: curNum}),
+                                    Section: ({all: {Part: 0, SectionNumber: 0}, saying: {Part: 0, SectionNumber: curNum}, statement: {Part: 0, SectionNumber: curNum} }),
+                                    BrowseMode: (DefaultConfig.browseMode)
+                                };
+                                this.setContext(newContext);
+                                   
+                            }}
+                        >
+                            <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
+                        </IonButton>
+                        
                     </div>
                     
                 </IonContent>
