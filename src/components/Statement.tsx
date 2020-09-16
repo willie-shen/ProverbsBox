@@ -28,7 +28,7 @@ type StatementProps = {
 type StatementState = {
     holdingTimer: any, // A delay event
     touchState: string, // 'n' - none, 't' - tap, 'h' - hold
-    bubbleAnimation: boolean
+    bubbleAnimation: boolean // Controls displaying of heart animation on click
 }
 
 class Statement extends React.Component<StatementProps, StatementState> {
@@ -76,9 +76,11 @@ class Statement extends React.Component<StatementProps, StatementState> {
     }
 
     toggleAnimation = () => {
-        console.log("HI");
-
+        // Display animation on click
         this.setState({ bubbleAnimation: !this.state.bubbleAnimation });
+
+        // Stop animation when it is done fully executing
+        // Refer to .bubble-animation in Views.css (animation-duration: 0.5s)
         setTimeout(() => {
           this.setState({ bubbleAnimation: !this.state.bubbleAnimation });
         }, 500);
