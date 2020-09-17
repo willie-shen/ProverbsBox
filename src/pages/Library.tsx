@@ -29,9 +29,6 @@ import ProverbsStructure from "../indexing/ProverbsStructure.json";
 import DefaultConfig from "./DefaultDisplayConfig";
 import Indexer from "../api/Indexer";
 
-import {chevronBackOutline, chevronForwardOutline} from "ionicons/icons";
-import { AnyMxRecord } from 'dns';
-
 type ILibraryProps = {
   contentManager: ContentManager
 }
