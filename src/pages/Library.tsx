@@ -349,14 +349,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
                                 //THIS SHALL BE THE PREVIOUS BUTTON
                                 console.log("prev < Library.tsx")
-                                
                                 console.log(this.state.context.Chapter.statement);
 
                                 //Get current chapter#, which is also SectionNumber.
                                 var curNum = this.state.context.Chapter.statement;
 
-                                //Slappin' a bandaid on a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT rip
-                                //TODO: fix AllPopoverContent
+                                //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT 
                                 if(typeof curNum === 'string'){
                                     curNum = parseInt(curNum);
                                 }
@@ -386,14 +384,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
                                 //THIS SHALL BE THE NEXT BUTTON
                                 console.log("Library.tsx > next")
-                                
                                 console.log(this.state.context.Chapter.statement);
 
                                 //Get current chapter#, which is also SectionNumber.
                                 var curNum = this.state.context.Chapter.statement;
 
-                                //Slappin' a bandaid on a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT rip
-                                //TODO: fix AllPopoverContent
+                                //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT
                                 if(typeof curNum === 'string'){
                                     curNum = parseInt(curNum);
                                 }
