@@ -1,8 +1,4 @@
-/* QUESTION: How do u know what chapter it's on? Is there a bookmark?
-High-level, how is your data stored? 
-What does ContentManager do? 
-*Is there a way to generate a context ctx object for a given chapter n? 
-*/
+
 import {
     IonContent,
     IonHeader,
@@ -34,6 +30,7 @@ import DefaultConfig from "./DefaultDisplayConfig";
 import Indexer from "../api/Indexer";
 
 import {chevronBackOutline, chevronForwardOutline} from "ionicons/icons";
+import { AnyMxRecord } from 'dns';
 
 type ILibraryProps = {
   contentManager: ContentManager
@@ -55,14 +52,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     /* Member data */
     private cm : ContentManager;
     private ref : any;
-    private INCREASE : number; //number of chapters we need to skip ahead, based on the back button
 
     constructor(props: ILibraryProps) {
         super(props);
 
         this.cm = this.props.contentManager;
         this.ref = React.createRef();
-        this.INCREASE = 0;
 
         this.state = {
             //proverbs: this.props.proverbProvider.GetAllOneLiners(),
@@ -127,27 +122,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         });
     };
 
-    //DISGUSTING, PASTED FROM DISCOVER.TSX
-    foward = () => {
-        
-        //this.cm.ref
-        //this.setContext() //TODO: send context to next one. 
-        //this.setState({model: this.cm.GetModel()});
-        /*this.setState(cur => {
-            if (cur.head === cur.selectedStatements.length - 1) {
-                return {
-                    selectedStatements: update(cur.selectedStatements, {$push: [SelectRandom(this.state.allStatements)]}),
-                    head: (cur.head) + 1
-                };
-            }
-
-            return {
-                selectedStatements: cur.selectedStatements,
-                head: (cur.head) + 1
-            };
-        });*/
-    };
-
     setModel = (mdl : IModel) => {
         this.setState({model: mdl});
     };
@@ -185,6 +159,14 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.setState({
             scrollStamp: e.timeStamp
         });
+    }
+    //Change the chapter shown to new chapter of curNum.
+    setChapter(chapter: any){
+        console.log(this.state.context);
+        this.setContext(update(this.state.context,{
+            Chapter: {statement: {$set:chapter}},
+            Section: {saying: {SectionNumber: {$set: chapter}}, statement: {SectionNumber: {$set: chapter}}}, 
+        }));
     }
 
     //Adding/Removing heart for card statementModel
@@ -238,7 +220,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
                 //Populate elements array with the chapers, verse numbers, and the verse
                 elements.push({
-                    key: Indexer.GetVerseID(statementModel.Verse.Chapter+this.INCREASE, statementModel.Verse.VerseNumber),
+                    key: Indexer.GetVerseID(statementModel.Verse.Chapter, statementModel.Verse.VerseNumber),
                     element: (
                         <div style={{width: "20em"}} >
                         <Statement
@@ -262,10 +244,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             }
         });
 
-        /*if this.state.model ==
-            let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
-            return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
-        });*/
         console.log("rendering library");
         let pageRef = React.createRef<any>();
         
@@ -346,11 +324,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     <div className="next-button-container">
                     <IonButton fill={"clear"} className="next-button"
                             onClick={()=>{
-
                                 //THIS SHALL BE THE PREVIOUS BUTTON
-                                console.log("prev < Library.tsx")
-                                console.log(this.state.context.Chapter.statement);
-
                                 //Get current chapter#, which is also SectionNumber.
                                 var curNum = this.state.context.Chapter.statement;
 
@@ -367,24 +341,16 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 }else{
                                     curNum--;
                                 }
-                                var newContext = {
-                                    Mode: DefaultConfig.typeDisplay,
-                                    Chapter: ({all: 1, saying: 15, statement: curNum}),
-                                    Section: ({all: {Part: 0, SectionNumber: 0}, saying: {Part: 0, SectionNumber: curNum}, statement: {Part: 0, SectionNumber: curNum} }),
-                                    BrowseMode: (DefaultConfig.browseMode)
-                                };
-                                this.setContext(newContext);
-                                   
+                                
+                                //Turn to chapter curNum
+                                this.setChapter(curNum);
                             }}
                         >
                             <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
                         </IonButton>
                         <IonButton fill={"clear"} className="next-button"
                             onClick={()=>{
-
-                                //THIS SHALL BE THE NEXT BUTTON
-                                console.log("Library.tsx > next")
-                                console.log(this.state.context.Chapter.statement);
+                                //THIS SHALL BE THE NEXT BUTTON.
 
                                 //Get current chapter#, which is also SectionNumber.
                                 var curNum = this.state.context.Chapter.statement;
@@ -403,14 +369,9 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                     //Not an edge case, just advance
                                     curNum++;
                                 }
-                                var newContext = {
-                                    Mode: DefaultConfig.typeDisplay,
-                                    Chapter: ({all: 1, saying: 15, statement: curNum}),
-                                    Section: ({all: {Part: 0, SectionNumber: 0}, saying: {Part: 0, SectionNumber: curNum}, statement: {Part: 0, SectionNumber: curNum} }),
-                                    BrowseMode: (DefaultConfig.browseMode)
-                                };
-                                this.setContext(newContext);
-                                   
+
+                                //Turn to chapter curNum
+                                this.setChapter(curNum);
                             }}
                         >
                             <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
