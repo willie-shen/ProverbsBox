@@ -94,7 +94,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.cm.ClearFiltersNoRefresh();
         this.cm.ApplyFilter("ByType", ctx.Mode);
         if (ctx.BrowseMode === "chapter" || ctx.Mode === "statement") {
-            this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));                //BC: maybe this is impt?? 
+            this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));                
         }
 
         // descriptor browse
@@ -203,8 +203,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.state.model.ComponentModels.forEach((c) => {
             if (c.Type === "Article")
             {
-                console.log("It's an article")
-                //
+                
                 const keyVerse = (c.Model as IArticle).Verses[0];
                 elements.push({
                     key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
@@ -213,8 +212,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             }
             else if (c.Type === "Statement")
             {   
-                //For now, we're in statement mode.
-                console.log("It's a statement")
+                //At least in Library view, we're in this (statement) mode; will be using this.state.context. -> info about statement
 
                 const statementModel = (c.Model as IStatement);
 
