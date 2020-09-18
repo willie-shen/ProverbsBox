@@ -243,4 +243,57 @@ describe("Folder memory tests", () => {
 		})
 		.then(() => { done(); })
 	});
-})
+
+	test("Add verse & get verse Ids", async done => {
+		sa.getFolders()
+		.then(folders => {
+			expect(folders).toEqual([]);
+		})
+		.then(() => sa.createFolder("folder1"))
+		.then(() => sa.createFolder("folder2"))
+		.then(() => sa.createFolder("folder3"))
+		.then(() => sa.createFolder("folder4"))
+		.then(() => sa.createFolder("folder5"))
+		.then(() => sa.getFolders())
+		.then(() => sa.getFolders())
+		.then(folders => {
+			sa.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1});
+			sa.addVerseToFolder(folders[0], {Chapter: 5, VerseNumber: 2});
+			sa.addVerseToFolder(folders[0], {Chapter: 10, VerseNumber: 1});
+
+			sa.addVerseToFolder(folders[3], {Chapter: 2, VerseNumber: 2});
+			sa.addVerseToFolder(folders[3], {Chapter: 4, VerseNumber: 13});
+			sa.addVerseToFolder(folders[3], {Chapter: 7, VerseNumber: 8});
+			return folders;
+		})
+		.then(folders => {
+			return {
+				f1: sa.getFolderVerseIds(folders[0]),
+				f2: sa.getFolderVerseIds(folders[1]),
+				f4: sa.getFolderVerseIds(folders[3])
+			};
+		})
+		.then(({f1, f2, f4}) => {
+			expect(f1).toBe(
+				[
+					{Chapter: 1, VerseNumber: 1},
+					{Chapter: 5, VerseNumber: 2},
+					{Chapter: 10, VerseNumber: 1}
+				]
+			);
+
+			expect(f4).toBe(
+				[
+					{Chapter: 2, VerseNumber: 2},
+					{Chapter: 4, VerseNumber: 13},
+					{Chapter: 7, VerseNumber: 8}
+				]
+			);
+
+			expect(f2).toBe(
+				[]
+			);
+		})
+		.then(() => {done();});
+	});
+});

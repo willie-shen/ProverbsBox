@@ -224,18 +224,30 @@ export default class StorageAssistant{
 	// get list of folder verse ids
 	async getFolderVerseIds(folder : IFolder) : Promise<Array<IVerseSignature>> {
 		return Storage.get({ key: folder.memoryLocation })
-		.then (data => (data.value) ? JSON.parse(data.value) : [])
+		.then (data => {
+			if (!data.value) { throw new Error("verses not found"); }
+			return (data.value) ? JSON.parse(data.value) : [];
+		});
 	}
 
 	// add a verse id to folder. rejects on verse already exists
 	async addVerseToFolder(folder : IFolder, verseSignature : IVerseSignature) {
-		return this.getFolderVerseIds(folder)
-		.then(verseArray => verseArray.push(verseSignature)) // append to list
-		.then(verseArray => { // add to storage
-			Storage.set({
+		// refresh folder data
+		return this.getFolders()
+
+		.then(folders => {
+			const f = folders.find(f => f.id === folder.id)
+			if (!f) { throw new Error("folder not found"); }
+			return f;
+		})
+		.then(f => this.getFolderVerseIds(f))
+		.then(verseArray => {
+			verseArray.push(verseSignature) // append to list
+			console.log(verseArray);
+			return Storage.set({
 				key: folder.memoryLocation,
 				value: JSON.stringify(verseArray)
-			})
+			});
 		})
 	}
 }

@@ -2,16 +2,11 @@
     --notification-mode-transition-time: 1s;
 }
 .select-all-default {
-    transition: height 1s ease;
     display: flex;
     flex-direction: row;
     overflow: hidden;
-    height: 0;
     padding-top: 0.5em;
     padding-bottom: 0.25em;
-}
-.select-all-revealed {
-    height: auto !important;
 }
 .half-container-left {
     border-right: solid 1px #ccc;
@@ -29,7 +24,7 @@
     padding-top: 1em;
     padding-bottom: 6em;
 }
-.new-folder-default {
+.new-folder {
     height: auto;
     overflow: hidden;
     transition-property: height var(--notification-mode-transition-time) ease;
@@ -37,11 +32,9 @@
 .new-folder-hidden {
     height: 0;
 }
-.new-folder-default > h3 {
+.new-folder > h3 {
     margin: 0;
-    padding: 0;
-    padding-bottom: 0.5em;
-    padding-left: 0.75em;
+    padding: 0.5em 0.75em;
     font-weight: bold;
 }
 @keyframes touchable-opacity {
