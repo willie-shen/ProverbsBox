@@ -221,19 +221,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
         }
 
         return (
-          <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
-              onDrag={()=>{console.log("Dragging");}}
-              onScroll={()=>{console.log("scrolling");}}
-          >
-              <h3 className={"verse-content"}>
-              {
-                  cardContent
-              }
-              </h3>
-
-              // This Span moved for now (previous place ment as the parent of all divs here
-              // was causing Library menu to show up)
-              <span
+            <span
                   className={"statement"}
                   /*onTouchStart={this.gestureStart}
                   onTouchEnd={this.gestureEnd}
@@ -241,21 +229,30 @@ class Statement extends React.Component<StatementProps, StatementState> {
                   onMouseUp={this.gestureEnd}    */
                   onClick={this.holdStart}
               >
-              </span>
+                <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
+                    onDrag={()=>{console.log("Dragging");}}
+                    onScroll={()=>{console.log("scrolling");}}
+                >
+                    <h3 className={"verse-content"}>
+                    {
+                        cardContent
+                    }
+                    </h3>
 
-              <div className={"bar"}/>
-              <div className={"info-bar"}>
-                  <p className={"verse-name"}>Proverbs {this.props.model.Verse.Chapter}:{this.props.model.Verse.VerseNumber}</p>
-                      <IonIcon
-                          onTouchStart={(e)=>{e.stopPropagation()}}
-                          onMouseDown={(e)=>{e.stopPropagation()}}
-                          onClick={(e) => {
-                              e.preventDefault();
-                              this.props.heartCallback();
-                              this.toggleAnimation();
-                          }} className={`save-icon ${this.state.bubbleAnimation ? "bubble-animation" : ""}`} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
-              </div>
-          </div>
+                    <div className={"bar"}/>
+                    <div className={"info-bar"}>
+                        <p className={"verse-name"}>Proverbs {this.props.model.Verse.Chapter}:{this.props.model.Verse.VerseNumber}</p>
+                            <IonIcon
+                                onTouchStart={(e)=>{e.stopPropagation()}}
+                                onMouseDown={(e)=>{e.stopPropagation()}}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    this.props.heartCallback();
+                                    this.toggleAnimation();
+                                }} className={`save-icon ${this.state.bubbleAnimation ? "bubble-animation" : ""}`} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
+                    </div>
+                </div>
+          </span>
         );
     }
 }
