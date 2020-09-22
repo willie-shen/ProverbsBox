@@ -32,7 +32,7 @@ const SelectRandom = (pool: Array<IStatement>) => {
 
 class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
-    private animationRef: React.RefObject<CreateAnimation> = React.createRef();
+    private proverbCenterRef: React.RefObject<CreateAnimation> = React.createRef();
 
     constructor(props : IDiscoverProps) {
         super(props);
@@ -64,9 +64,10 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
     forward = () => {
 
+        // This is to prevent the animation from triggering for the first time forward() is called from ionViewWillEnter()
         if (this.state.head !== -1) {
-            let animation = this.animationRef.current!.animation;
-            animation.play();
+            let proverbCenterAnimation = this.proverbCenterRef.current!.animation;
+            proverbCenterAnimation.play();
         }
 
         this.setState(cur => {
@@ -86,8 +87,8 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
     back = () => {
 
-        let animation = this.animationRef.current!.animation;
-        animation.play();
+        let proverbCenterAnimation = this.proverbCenterRef.current!.animation;
+        proverbCenterAnimation.play();
 
         if (this.state.head > 0) {
             this.setState(cur => {
@@ -117,7 +118,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                                 </IonCol>
                                 <IonCol size={"10"} align-self-center>
                                     <CreateAnimation
-                                        ref={this.animationRef}
+                                        ref={this.proverbCenterRef}
                                         duration={100}
                                         keyframes={[
                                             { offset: 0, transform: 'scale(1)', opacity: '1' },
