@@ -1,0 +1,30 @@
+.forward-button {
+    margin-left: auto;
+}
+
+.back-button {
+    margin-right: auto;
+}
+.button-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    overflow: hidden;
+}
+.button-col ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+}
+.discover-content ion-grid, .discover-content ion-row {
+     height: 100%;
+ }
+.discover-content ion-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+}
+.discover-content .statement-view {
+    max-width: 97.5%;
+}

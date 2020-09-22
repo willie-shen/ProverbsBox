@@ -1,0 +1,88 @@
+.bookmarked-page {
+    --notification-mode-transition-time: 1s;
+}
+.select-all-default {
+    transition: height 1s ease;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    height: 0;
+    padding-top: 0.5em;
+    padding-bottom: 0.25em;
+}
+.select-all-revealed {
+    height: auto !important;
+}
+.half-container-left {
+    border-right: solid 1px #ccc;
+    flex: 1;
+}
+.half-container-right {
+    border-left: solid 1px #ccc;
+    flex: 1;
+}
+.category-list-container ion-list {
+    --padding-bottom: 5em;
+    height: 100%;
+}
+.folder-list {
+    padding-top: 1em;
+    padding-bottom: 6em;
+}
+.new-folder-default {
+    height: auto;
+    overflow: hidden;
+    transition-property: height var(--notification-mode-transition-time) ease;
+}
+.new-folder-hidden {
+    height: 0;
+}
+.new-folder-default > h3 {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 0.5em;
+    padding-left: 0.75em;
+    font-weight: bold;
+}
+@keyframes touchable-opacity {
+    0%{opacity: 1}
+    5%{opacity: .2}
+    100%{opacity: 1}
+}
+.blink {
+    animation: touchable-opacity 1s 1;
+}
+.notification-default {
+    transition: all 1s ease 0.2s;
+    /*transition: opacity 0.2s ease;*/
+    transition-property: width, padding-left, padding-right, opacity;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    width: 0px;
+    opacity: 0;
+}
+.notification-revealed {
+    width: 2em;
+    padding-right: 1em;
+    padding-left: 0.25em;
+    opacity: 1;
+}
+.button-holder {
+    position: fixed;
+    padding-bottom: 1.25em;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.set-notification-button {
+    --box-shadow: 0 0 5px 5px #fff;
+}
+.folder-list {
+
+}
+.folders-menu-content {
+    height: 100%;
+}

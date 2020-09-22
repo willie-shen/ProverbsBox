@@ -1,0 +1,40 @@
+#proverb {
+  ion-grid {
+    width: 90%;
+
+    ion-row {
+      justify-content: space-between;
+    }
+  }
+
+  #buttons {
+    display: flex;
+    align-self: end;
+    justify-content: flex-end;
+  }
+}
+
+.statement {
+  .statement-view {
+    transition: 0.25s;
+    transition-timing-function: ease-in;
+  }
+  .shrinking {
+    transition: 0.5s;
+    box-shadow: 0px 0px 4px 4px #777;
+    transform: scale(0.95);
+    transition-timing-function: ease-out;
+  }
+
+  /* highlights */
+  span.highlight {
+    color: white;
+    background-color: black;
+    border-radius: 2px;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+    margin-top: 0.1em;
+  }
+}

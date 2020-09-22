@@ -123,6 +123,8 @@ export default class NotificationsAssistant{
 		//Get today's date
 		//want to set today's time to 00H00M00S
 		var dateToday = new Date()
+		dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate()) 
+
 		
 		//convert end and start to millisecond
 		var endHour:number = Math.floor(this.end/100)

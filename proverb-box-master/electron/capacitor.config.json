@@ -1,0 +1,8 @@
+{
+  "appId": "com.code4christ.proverbsbox",
+  "appName": "Proverbs Box",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {}
+}
