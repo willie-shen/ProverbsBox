@@ -62,6 +62,24 @@
     padding-left: 0.25em;
     opacity: 1;
 }
+.delete-default {
+    transition: all 1s ease 0.2s;
+    /*transition: opacity 0.2s ease;*/
+    transition-property: width, padding-left, padding-right, opacity;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    width: 0px;
+    opacity: 0;
+    height: 0.85em;
+}
+.delete-revealed {
+    width: 1em;
+    padding-right: 1em;
+    padding-left: 0.25em;
+    opacity: 1;
+}
 .button-holder {
     position: fixed;
     padding-bottom: 1.25em;

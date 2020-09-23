@@ -54,12 +54,12 @@ export default class StorageAssistant{
 	}
 
 	// a unique key name in memory to store a folder's verses
-	getFolderKey(folderName:string) : string {
+	static getFolderKey(folderName:string) : string {
 		return "folder-memory-key-"+folderName;
 	}
 
 	// get list of folders
-	async getFolders() : Promise<Array<IFolder>> {
+	static async getFolders() : Promise<Array<IFolder>> {
 		return Storage.get({key: "folders"})
 			.then((json) : Promise<Array<IFolder>> => (json.value) ?
 				JSON.parse(json.value): // folders do exist
@@ -67,7 +67,7 @@ export default class StorageAssistant{
 	}
 
 	// set list of folders
-	async setFolders(existingFolders : Array<IFolder>) {
+	static async setFolders(existingFolders : Array<IFolder>) {
 		// persist the folders
 		return Storage.set({
 			key: "folders",
@@ -76,7 +76,7 @@ export default class StorageAssistant{
 	}
 
 	// creates a new folder. throws an error if folder already exists
-	async createFolder(folderName:string) {
+	static async createFolder(folderName:string) {
 
 		// append new folder
 		return this.getFolders()
@@ -115,7 +115,7 @@ export default class StorageAssistant{
 		.then(existingFolders => this.setFolders(existingFolders));
 	}
 
-	async deleteFolder(folder : IFolder) {
+	static async deleteFolder(folder : IFolder) {
 		// refresh folder data
 		return this.getFolders()
 		.then((folders : Array<IFolder>) => {
@@ -154,7 +154,7 @@ export default class StorageAssistant{
 	}
 
 	// rename a folder
-	async renameFolder(folder : IFolder, name : string) {
+	static async renameFolder(folder : IFolder, name : string) {
 
 		// refresh folder data
 		return this.getFolders()
@@ -170,7 +170,7 @@ export default class StorageAssistant{
 	}
 
 	// reorder the folders
-	async reorderFolders(folder : IFolder, newOrder : number) {
+	static async reorderFolders(folder : IFolder, newOrder : number) {
 		// refresh folder data
 		return this.getFolders()
 		.then((folders : Array<IFolder>) => {
@@ -222,7 +222,7 @@ export default class StorageAssistant{
 	}
 	
 	// get list of folder verse ids
-	async getFolderVerseIds(folder : IFolder) : Promise<Array<IVerseSignature>> {
+	static async getFolderVerseIds(folder : IFolder) : Promise<Array<IVerseSignature>> {
 		return Storage.get({ key: folder.memoryLocation })
 		.then (data => {
 			if (!data.value) { throw new Error("verses not found"); }
@@ -231,7 +231,7 @@ export default class StorageAssistant{
 	}
 
 	// add a verse id to folder. rejects on verse already exists
-	async addVerseToFolder(folder : IFolder, verseSignature : IVerseSignature) {
+	static async addVerseToFolder(folder : IFolder, verseSignature : IVerseSignature) {
 		// refresh folder data
 		return this.getFolders()
 
