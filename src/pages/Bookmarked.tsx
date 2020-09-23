@@ -171,6 +171,10 @@ const Bookmarked: React.FC = () => {
                         setShowPopover(false);
 
                         //Use this popover to test the notification temporarily
+                        
+                        console.log("Pop")
+
+                        //Use this popover to test the notification temporarily
                         let notificationAssistant = new NotificationsAssistant();
                         
                         //get current date
@@ -182,10 +186,16 @@ const Bookmarked: React.FC = () => {
                         //end is the start plus some random time 
                         var end = start + 1;
 
-                        var verses:IVerse[] = [];
+                        //var verses:IVerse[] = [];
+
+                        var verses = [{Chapter:1, VerseNumber:10, Content:"My son, if sinful men entice you, do not give in to them"},
+        {Chapter:1, VerseNumber:15, Content: "my son, do not go along with them, do not set foot on their paths"}
+        ]
 
                        
                         notificationAssistant.BakeNotification(2, start, end, verses);
+
+
 
 
                         /*Plugins.LocalNotifications.schedule({

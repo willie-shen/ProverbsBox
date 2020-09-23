@@ -17,6 +17,7 @@ export default class NotificationsAssistant{
 
 	BakeNotification(frequency:Number, start:Number, end:Number, listOfVerses:Array<IVerse>){
 
+		
 		//start and end in military time in HHMM format from 0000 to 2359
 		this.SetFrequency(frequency)
 		this.SetNotificationHourRange(start,end)
@@ -98,7 +99,10 @@ export default class NotificationsAssistant{
 	async ClearNotifications(){
 
 		const pending = await Plugins.LocalNotifications.getPending()
-		Plugins.LocalNotifications.cancel(pending) //clear all the pending notifications
+		if(pending.notifications.length != 0){
+			Plugins.LocalNotifications.cancel(pending)
+		}
+		 //clear all the pending notifications
 		this.frequency = 0
 		this.start = 0
 		this.end = 0
@@ -110,10 +114,10 @@ export default class NotificationsAssistant{
 		//Plugins.LocalNotifications.requestPermissions()
 
 		//Clear pending notifications
-		this.ClearNotifications()
+		await this.ClearNotifications()
 	
 		//Get the information from the storage
-		this.LoadParams()
+		await this.LoadParams()
 
 		// ensure that notifications have been set
 		if (this.verses.length === 0) {

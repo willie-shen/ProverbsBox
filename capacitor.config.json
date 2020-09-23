@@ -1,6 +1,6 @@
 {
-  "appId": "com.code4christ.proverbsbox",
-  "appName": "Proverbs Box",
+  "appId": "io.ionic.starter",
+  "appName": "proverbBox",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",
