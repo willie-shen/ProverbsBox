@@ -6,11 +6,8 @@ import {
     IonPage,
     IonTitle,
     IonContent,
-    IonGrid, IonCol, IonRow, withIonLifeCycle, IonButton
+    IonGrid, IonCol, IonRow, withIonLifeCycle, IonButton, CreateAnimation
 } from '@ionic/react';
-import {
-    CreateAnimation
-} from "@ionic/react";
 import ContentManager from "../api/ContentManager";
 import {Statement} from "../components/Statement"
 import {IStatement} from "../api/Interfaces";
@@ -61,11 +58,18 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                 });
             }
 
-            this.foward();
+            this.forward();
         }
     };
 
-    foward = () => {
+    forward = () => {
+
+        // This is to prevent the animation from triggering for the first time forward() is called from ionViewWillEnter()
+        if (this.state.head !== -1) {
+            let proverbCenterAnimation = this.proverbCenterRef.current!.animation;
+            proverbCenterAnimation.play();
+        }
+
         this.setState(cur => {
             if (cur.head === cur.selectedStatements.length - 1) {
                 return {
@@ -82,10 +86,14 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
     };
 
     back = () => {
+
+        let proverbCenterAnimation = this.proverbCenterRef.current!.animation;
+        proverbCenterAnimation.play();
+
         if (this.state.head > 0) {
             this.setState(cur => {
                 return {
-                    head: (cur.head) - 1
+                    head: (cur.head) - 1,
                 }
             });
         }
@@ -109,34 +117,31 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                                     ><IonIcon icon={chevronBackOutline}/></IonButton>
                                 </IonCol>
                                 <IonCol size={"10"} align-self-center>
-                                    { /*<CreateAnimation
+                                    <CreateAnimation
                                         ref={this.proverbCenterRef}
-                                        fill="none"
-                                        duration={1000}
+                                        duration={100}
                                         keyframes={[
-                                            { offset: 0, transform: 'scale(1) rotate(0)' },
-                                            { offset: 0.5, transform: 'scale(1.2) rotate(45deg)' },
-                                            { offset: 1, transform: 'scale(1) rotate(0deg)' }
+                                            { offset: 0, transform: 'scale(1)', opacity: '1' },
+                                            { offset: 0.1, transform: 'scale(1.2)', opacity: '0'},
+                                            { offset: 1, transform: 'scale(1)', opacity: '1' }
                                         ]}
                                     >
+                                        <div id={"proverb-center"}>
+                                            {
+                                                (this.state.selectedStatements.length > 0)
+                                                    ? <Statement
+                                                        model={this.state.selectedStatements[this.state.head]}
+                                                        heartCallback={() => {}}
+                                                        scrollStamp={0}
+                                                        openVerseOptions={() => {}}
+                                                        />
+                                                    : <></>
+                                            }
+                                        </div>
                                     </CreateAnimation>
-                                    */}
-                                    <div id={"proverb-center"}>
-                                        {
-                                            (this.state.selectedStatements.length > 0)
-                                                ? <Statement
-                                                    model={this.state.selectedStatements[this.state.head]}
-                                                    heartCallback={() => {}}
-                                                    scrollStamp={0}
-                                                    openVerseOptions={() => {}}
-                                                    />
-                                                : <></>
-                                        }
-                                    </div>
-
                                 </IonCol>
                                 <IonCol size={"1"} className={"button-col"}>
-                                    <IonButton size={"small"} fill={"clear"} className={"forward-button"} onClick={this.foward}>
+                                    <IonButton size={"small"} fill={"clear"} className={"forward-button"} onClick={this.forward}>
                                         <IonIcon icon={chevronForwardOutline}/>
                                     </IonButton>
                                 </IonCol>
