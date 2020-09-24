@@ -220,6 +220,16 @@ export default class StorageAssistant{
 		// persist the folders
 		.then(reorderedFolders => this.setFolders(reorderedFolders));
 	}
+
+	static async setFolderNotifications(folder : IFolder, notificationsOn : boolean) {
+		return this.getFolders()
+		.then(folders => {
+			return folders.map(f => (f.id === folder.id) ? {...f, notificationsOn} : f)
+		})
+		.then(folders => {
+			this.setFolders(folders);
+		});
+	}
 	
 	// get list of folder verse ids
 	static async getFolderVerseIds(folder : IFolder) : Promise<Array<IVerseSignature>> {

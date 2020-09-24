@@ -81,18 +81,26 @@
     opacity: 1;
 }
 .button-holder {
-    position: fixed;
+    /*position: fixed;
     padding-bottom: 1.25em;
     bottom: 0;
-    width: 100%;
+    width: 100%;*/
     display: flex;
     justify-content: center;
+    width: 75%;
 }
 .set-notification-button {
     --box-shadow: 0 0 5px 5px #fff;
 }
-.folder-list {
-
+.visible {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s ease-in;
+}
+.hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s ease-out;
 }
 .folders-menu-content {
     height: 100%;

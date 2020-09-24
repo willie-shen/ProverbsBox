@@ -4,7 +4,8 @@ import FolderMode from '../components/FolderModes';
 import "./FolderPanel.scss"
 
 type IFolderPanelProps = {
-    folderMode:FolderMode // "browse", "edit", "notifications"
+    folderMode: FolderMode // "browse", "edit", "notifications"
+    toggleAll: (on:boolean)=>void
     createFolder: ()=>void
 }
 
@@ -57,10 +58,12 @@ const FolderPanel: React.FC<IFolderPanelProps> = (props:IFolderPanelProps) => {
             return (
             <div className={`select-all-default`}>
                 <div className="half-container-left">
-                    <IonButton mode={"ios"} fill="clear" expand="block" size="small">Select All</IonButton>
+                    <IonButton mode={"ios"} fill="clear" expand="block" size="small"
+                        onClick={()=>{props.toggleAll(true);}}>Select All</IonButton>
                 </div>
                 <div className="half-container-right">
-                    <IonButton mode={"ios"} fill="clear" expand="block" size="small">Deselect All</IonButton>
+                    <IonButton mode={"ios"} fill="clear" expand="block" size="small"
+                        onClick={()=>{props.toggleAll(false);}}>Deselect All</IonButton>
                 </div>
             </div>);
         }

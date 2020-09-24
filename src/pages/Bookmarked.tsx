@@ -18,7 +18,7 @@ import {
 
 import { Plugins } from '@capacitor/core';
 
-import {folder, notifications, notificationsOutline, notificationsCircleOutline, closeOutline, trashOutline} from 'ionicons/icons';
+import {folder, notifications, notificationsOutline, notificationsCircleOutline, closeOutline, trashOutline, notificationsCircle} from 'ionicons/icons';
 import FolderMode from '../components/FolderModes';
 import "./Bookmarked.css";
 import FolderPanel from '../components/FolderPanel';
@@ -56,24 +56,7 @@ const Bookmarked: React.FC = () => {
 
     // update folder list
     useIonViewWillEnter(() => {
-        const fetchFoldersAsync = async () => {
-            console.log("waiting to get folders");
-            const folders = await StorageAssistant.getFolders();
-            console.log("folders aquired!", folders);
-            const sortedFolders = folders.sort((folder1, folder2) => folder1.order - folder2.order);
-            setFolders(sortedFolders);
-            console.log(sortedFolders);
-        };
-
-        console.log("calling fetch folders async");
-        fetchFoldersAsync();
-        /*const s = new StorageAssistant();
-        .then(folders => {
-
-            // sort the folders by order
-            //const sortedFolders = folders.sort((folder1, folder2) => folder1.order - folder2.order);
-            setFolders(folders)
-        });*/
+        refreshFolders()
     });
 
     // create a new folder
@@ -121,6 +104,26 @@ const Bookmarked: React.FC = () => {
         })
     }
 
+    const toggleFolderNotifications = (folder : IFolder, e : React.MouseEvent) => {
+        e.stopPropagation();
+
+        StorageAssistant.setFolderNotifications(folder, !folder.notificationsOn)
+        .then(() => {
+            refreshFolders();
+        })
+    }
+
+    const toggleAllNotifications = (on : boolean) => {
+        
+        folders.reduce(async (prevPromise, folder) => {
+            await prevPromise;
+            return StorageAssistant.setFolderNotifications(folder, on);
+        }, Promise.resolve())
+        .then(() => {
+            refreshFolders();
+        });
+    }
+
     return (
         <>
             <IonPage className={"bookmarked-page"}>
@@ -128,7 +131,6 @@ const Bookmarked: React.FC = () => {
                 <IonAlert
                     isOpen={newFolderPromptActivated}
                     onDidDismiss={(dismiss) => {
-                        createFolder(dismiss.detail.data.values["folderName"]);
                         setNewFolderPromptActivated(false)
                     }}
                     header={'Create a New Folder'}
@@ -144,14 +146,11 @@ const Bookmarked: React.FC = () => {
                         text: 'Cancel',
                         role: 'cancel',
                         cssClass: 'secondary',
-                        handler: () => {
-                            console.log('Confirm Cancel');
-                        }
                         },
                         {
                         text: 'Ok',
-                        handler: () => {
-                            console.log('Confirm Ok');
+                        handler: (dismiss) => {
+                            createFolder(dismiss["folderName"]);
                         }
                         }
                     ]}
@@ -203,7 +202,7 @@ const Bookmarked: React.FC = () => {
                             </IonButtons>
                             <IonTitle slot="start">Folders</IonTitle>
                         </IonToolbar>
-                        <FolderPanel createFolder={() => setNewFolderPromptActivated(true)} folderMode={folderMode}/>
+                        <FolderPanel toggleAll={toggleAllNotifications} createFolder={() => setNewFolderPromptActivated(true)} folderMode={folderMode}/>
                     </IonHeader>
                     <IonContent id="folders-menu-content" onClick={()=>{console.log("clicked!!!")}}>
                         <div className="category-list-container ion-activateable" style={{pointerEvents: "auto"}}>
@@ -213,7 +212,9 @@ const Bookmarked: React.FC = () => {
                                     folders.map(folder => {
                                         return (
                                             <IonItem button detail key={folder.id}>
-                                                <IonIcon icon={notificationsCircleOutline}
+                                                <IonIcon
+                                                    icon={ (folder.notificationsOn) ? notificationsCircle : notificationsCircleOutline } 
+                                                    onClick={ (e) => { toggleFolderNotifications(folder, e) }}
                                                     className={`notification-default ${(folderMode === FolderMode.updateNotifications) ? 'notification-revealed' : ''}`}>
                                                 </IonIcon>
                                                 <IonIcon icon={trashOutline} onClick={(e)=>{triggerDelete(folder, e)}}
@@ -229,10 +230,29 @@ const Bookmarked: React.FC = () => {
                                 }                                
                             </IonReorderGroup>
                         </div>
-                        <div className={"button-holder"}>
-                            <IonButton shape={"round"} class={"set-notification-button"}>Set Notifications</IonButton>  
+                        <div style={{
+                                display: "flex",
+                                flexDirection: "column",
+                                position: "fixed",
+                                paddingBottom: "1.25em",
+                                bottom: 0,
+                                width: "100%",
+                                justifyContent: "center",
+                                alignItems: "center"
+                            }}
+                            className={(folderMode===FolderMode.updateNotifications) ? "visible" : "hidden"}
+                            >
+                            <p style={{
+                                width: "70%",
+                                fontSize: "0.75em",
+                                textAlign: "center",
+                                fontStyle: "italic",
+                                color: "#777"
+                            }}>Proverb notifications are set from 5:00am to 7:00pm, 5 times daily.</p>
+                            <div className={`button-holder`}>
+                                <IonButton shape={"round"} class={"set-notification-button"}>Set Notifications</IonButton>  
+                            </div>
                         </div>
-                        
                     </IonContent>
                 </IonMenu>
 
