@@ -55,16 +55,19 @@ let cm = new ContentManager();
 
 const App: React.FC = () => {
 
-  // capacitor notifications setup
-  useIonViewDidEnter(() => {
-    // refresh notifications on app enter
-    Plugins.App.addListener("appStateChange", (state: AppState) => {
+      Plugins.App.addListener("appStateChange", (state: AppState) => {
       if (state.isActive) {
         // call the notification setup
+        console.log("App is now active")
         let notificationAssistant = new NotificationsAssistant();
         notificationAssistant.NotificationSetter();
       }
     });
+
+  // capacitor notifications setup
+  useIonViewDidEnter(() => {
+    // refresh notifications on app enter
+
   });
  
   // root of the proverbs box app

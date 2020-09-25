@@ -17,7 +17,7 @@ export default class NotificationsAssistant{
 
 	BakeNotification(frequency:Number, start:Number, end:Number, listOfVerses:Array<IVerse>){
 
-		
+
 		//start and end in military time in HHMM format from 0000 to 2359
 		this.SetFrequency(frequency)
 		this.SetNotificationHourRange(start,end)
@@ -148,7 +148,7 @@ export default class NotificationsAssistant{
 			var time = startMillisecond
 
 			for(let f=0; f < this.frequency; ++f){
-
+				console.log(f)
 				// retrieve random verse content
 				var randomVerse = this.verses[this.getRandomIndex(this.verses.length)]
 				var verseTitle = "Proverbs " + randomVerse.Chapter + ":" + randomVerse.VerseNumber
