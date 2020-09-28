@@ -47,9 +47,6 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
     // life cycle
     ionViewWillEnter() {
-
-        console.log(this.props.contentManager.GetTranslationName());
-
         if (this.props.contentManager.IsTranslatationReady()) {
 
             if (this.state.translation !== this.props.contentManager.GetTranslationName()) {
@@ -59,7 +56,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                     head: -1
                 });
             }
-            
+
             if (this.state.allStatements.length === 0) {
 
                 this.props.contentManager.ClearFiltersNoRefresh();
@@ -76,7 +73,6 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
             }
         }
 
-        console.log(this.state.translation);
     };
 
     forward = () => {
