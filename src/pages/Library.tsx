@@ -26,6 +26,7 @@ import ProverbsStructure from "../indexing/ProverbsStructure.json";
 
 import DefaultConfig from "./DefaultDisplayConfig";
 import Indexer from "../api/Indexer";
+import ProverbView from '../components/ProverbView';
 
 type ILibraryProps = {
   contentManager: ContentManager
@@ -37,7 +38,6 @@ type ILibraryState = {
     popOpen: boolean,
     model: IModel,
     context: ILibraryContext,
-    scrollStamp: number,
     showVerseOptions: boolean
 }
 
@@ -65,7 +65,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 Section: (DefaultConfig.section as {[key: string]: ISection;}),
                 BrowseMode: (DefaultConfig.browseMode)
             },
-            scrollStamp: 0,
             showVerseOptions: false
         };
 
@@ -149,29 +148,9 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }
 
     scrollHandler = (e: any) => {
-        this.setState({
-            scrollStamp: e.timeStamp
-        });
     }
 
-    heartHandler = (statementModel : IStatement) => {
-        if (statementModel.Saved) {
-            console.log("Removing heart");
-            this.cm.RemoveBookmark(
-                {
-                    Chapter: statementModel.Verse.Chapter,
-                    VerseNumber: statementModel.Verse.VerseNumber
-                }
-            );
-        } else {
-            console.log("adding heart");
-            this.cm.Bookmark(
-                {
-                    Chapter: statementModel.Verse.Chapter,
-                    VerseNumber: statementModel.Verse.VerseNumber
-                }
-            );
-        }
+    refreshComponentModels = () => {
         this.setState({model: this.cm.GetModel()});
     }
 
@@ -200,8 +179,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         <div style={{width: "20em"}} >
                         <Statement
                             model={statementModel}
-                            heartCallback={() => {this.heartHandler(statementModel)}}
-                            scrollStamp={this.state.scrollStamp}
+                            heartCallback={() => {}}
                             openVerseOptions={this.openVerseOptions}
                             searchHighlights={statementModel.Verse.SearchHighlights}
                             >
@@ -289,16 +267,13 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         {/*/!* Erase and redesign modal ^^^ *!/*/}
 
                     </IonModal>
-                    <IonGrid>
-                        {
-                            elements.map(component => (
-                                <IonRow key={component.key} className={"ion-justify-content-center"}>
-                                    {component.element}
-                                </IonRow>
-                            ))
-                        }
-                        
-                    </IonGrid>
+
+                    <ProverbView componentModels={this.state.model.ComponentModels}
+                        contentManager={this.cm}
+                        refreshComponentModels={this.refreshComponentModels}
+                        openVerseOptions={this.openVerseOptions}
+                    />
+
                     <div className="next-button-container">
                         <IonButton fill={"clear"} className="next-button"
                             onClick={()=>{console.log("Hello")}}

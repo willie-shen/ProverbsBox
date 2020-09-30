@@ -20,7 +20,6 @@ import {
 type StatementProps = {
     model: IStatement,
     heartCallback: () => void,
-    scrollStamp: number,
     openVerseOptions: (id: number) => void,
     searchHighlights ?: Array<ITextRange>
 };
@@ -42,53 +41,25 @@ class Statement extends React.Component<StatementProps, StatementState> {
         };
     }
 
-    // Render optimization
-    shouldComponentUpdate(nextProps: StatementProps, nextState: StatementState) {
-
-        // Don't rerender on scroll
-        if (this.state.touchState === 'n') {
-            if (this.props.scrollStamp !== nextProps.scrollStamp) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    componentDidUpdate(prevProps: StatementProps) {
-        
-        // if touching
-        if (this.state.touchState !== 'n') {
-
-            // detect scroll
-            if (this.props.scrollStamp !== prevProps.scrollStamp) {
-                console.log("Scroll Detected: ", this.props.scrollStamp);
-                
-                // clear timed model open
-                clearTimeout(this.state.holdingTimer);
-                this.setState({
-                    holdingTimer: null,
-                    touchState: 'n'
-                });
-            }
-        }
-    }
-
     /* config */
     tapDuration = 250;
     longPressDuration = 200; /* Transitioned to click inlet durration */
 
     /* folder model open */
+    shrinkStart = () => {
+        let timeout = setTimeout( this.openModel,  this.longPressDuration);
+        this.setState({
+            holdingTimer: timeout,
+            touchState: 'h'
+        });
+    }   
+
     openModel = () => {
-        console.log("Opening model");
         this.props.openVerseOptions(this.props.model.ID);
-        this.gestureEnd();
+        this.shrinkEnd();
     }
 
-    gestureStart = () => {
-        this.touchStart();
-    }
-
-    gestureEnd = () => {
+    shrinkEnd = () => {
         if (this.state.touchState !== 'n') { // Copy paste code from scroll
             // clear timed model open
             clearTimeout(this.state.holdingTimer);
@@ -99,30 +70,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
         }
     }
 
-    /* To be called by gestureStart */
-    touchStart = () => {
-        let timeout = setTimeout( this.holdStart,  this.tapDuration);
-        this.setState({
-            holdingTimer: timeout,
-            touchState: 't'
-        });
-    }
-
-    holdStart = () => {
-        let timeout = setTimeout( this.openModel,  this.longPressDuration);
-        this.setState({
-            holdingTimer: timeout,
-            touchState: 'h'
-        });
-    }
-
-    saveTapped = () => {
-
-    }      
-
     render() {
-
-        console.log("rendering card");
 
         type ICardEncoding = {
             payload: any[],
@@ -210,16 +158,9 @@ class Statement extends React.Component<StatementProps, StatementState> {
         return (
             <span
                 className={"statement"}
-                /*onTouchStart={this.gestureStart}
-                onTouchEnd={this.gestureEnd}
-                onMouseDown={this.gestureStart}
-                onMouseUp={this.gestureEnd}    */  
-                onClick={this.holdStart}          
+                onClick={this.shrinkStart}          
             >
-                <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
-                    onDrag={()=>{console.log("Dragging");}}
-                    onScroll={()=>{console.log("scrolling");}}
-                >
+                <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}>
                     <h3 className={"verse-content"}>
                     {
                         cardContent
