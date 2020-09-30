@@ -15,8 +15,11 @@ export default class NotificationsAssistant{
 	//list of verses
 	verses:Array<IVerse> = []
 
+
+
 	BakeNotification(frequency:Number, start:Number, end:Number, listOfVerses:Array<IVerse>){
 
+	
 
 		//start and end in military time in HHMM format from 0000 to 2359
 		this.SetFrequency(frequency)

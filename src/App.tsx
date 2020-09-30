@@ -10,7 +10,8 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  useIonViewDidEnter
+  useIonViewDidEnter, 
+  useIonViewWillEnter
 } from '@ionic/react';
 
 import {
@@ -55,20 +56,41 @@ let cm = new ContentManager();
 
 const App: React.FC = () => {
 
-      Plugins.App.addListener("appStateChange", (state: AppState) => {
+  // capacitor notifications setup
+  useIonViewWillEnter(() => {
+    // refresh notifications on app enter
+   
+  });
+
+   Plugins.App.addListener("appStateChange", (state: AppState) => {
       if (state.isActive) {
         // call the notification setup
         console.log("App is now active")
+
+        /*
+        Idea for the implementation
+
+        We need to check if there are any remaining notifications, either those that have not been received
+        Or those that have not been scheduled (if we take that route of allowing unlimited notifications)
+
+        If there are still scheduled notifications that have not been received, return out of the function (do nothing)
+        If there are notifications that need to be scheduled but are not yet scheduled, schedule any of them as long as the time has not been passed
+        
+        If no notifications, check to see if the start and end time has passed already
+          -If it has, do nothing
+          -If it has not passed, call the notification setter
+        */
         let notificationAssistant = new NotificationsAssistant();
         notificationAssistant.NotificationSetter();
       }
     });
 
-  // capacitor notifications setup
-  useIonViewDidEnter(() => {
-    // refresh notifications on app enter
-
-  });
+   /*
+    Plugins.LocalNotifications.addListener('localNotificationReceived', (notification) =>{
+      console.log("received a Local Notification")
+    })
+  */
+  //Looks like this notification callback function would not work unless we are in the foreground
  
   // root of the proverbs box app
   return (
