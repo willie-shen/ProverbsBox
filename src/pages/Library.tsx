@@ -1,3 +1,4 @@
+
 import {
     IonContent,
     IonHeader,
@@ -8,12 +9,13 @@ import {
     IonSearchbar,
     IonButton,
     IonButtons,
-    IonGrid,
+    IonGrid, IonCol, CreateAnimation,
     IonRow, withIonLifeCycle, IonModal
 } from '@ionic/react';
 import { book, ellipsisVerticalOutline } from 'ionicons/icons';
 import React from 'react';
 import './Library.css';
+import update from "immutability-helper";
 
 import ContentManager from "../api/ContentManager";
 import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature} from "../api/Interfaces";
@@ -31,6 +33,7 @@ type ILibraryProps = {
   contentManager: ContentManager
 }
 
+//We'll be getting a new model w/ getModel() and setting that to state.
 type ILibraryState = {
     searchContent: string,
     popClickEvent: any,
@@ -55,9 +58,10 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
         this.state = {
             //proverbs: this.props.proverbProvider.GetAllOneLiners(),
+            
             searchContent: "",
             popClickEvent: undefined,
-            popOpen: false,
+            popOpen: false, 
             model: this.cm.GetModel(), // A blank model
             context: {
                 Mode: DefaultConfig.typeDisplay,
@@ -80,14 +84,14 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             });
     }
 
-    // calling setContext should update the library's view (via content manager)
+    // calling setContext should update the library's view (via content manager); this is what ACTUALLY makes the cards change.
     setContext = (ctx: ILibraryContext) =>
     {
         console.log("setting context: ", ctx);
         this.cm.ClearFiltersNoRefresh();
         this.cm.ApplyFilter("ByType", ctx.Mode);
         if (ctx.BrowseMode === "chapter" || ctx.Mode === "statement") {
-            this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));
+            this.cm.ApplyFilter("ByChapter", Number(ctx.Chapter[ctx.Mode]));                
         }
 
         // descriptor browse
@@ -153,7 +157,16 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             scrollStamp: e.timeStamp
         });
     }
+    //Change the chapter shown to new chapter of curNum.
+    setChapter(chapter: any){
+        console.log(this.state.context);
+        this.setContext(update(this.state.context,{
+            Chapter: {statement: {$set:chapter}},
+            Section: {saying: {SectionNumber: {$set: chapter}}, statement: {SectionNumber: {$set: chapter}}}, 
+        }));
+    }
 
+    //Adding/Removing heart for card statementModel
     heartHandler = (statementModel : IStatement) => {
         if (statementModel.Saved) {
             console.log("Removing heart");
@@ -177,6 +190,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
     render() {
 
+        //Declare empty elements dictionary-array, for storing key(type=number) : element(type=any)
+        //This is the verse number/ID mapped to the verse text
         let elements: Array<{
             key: number,
             element: any
@@ -185,6 +200,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.state.model.ComponentModels.forEach((c) => {
             if (c.Type === "Article")
             {
+                
                 const keyVerse = (c.Model as IArticle).Verses[0];
                 elements.push({
                     key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
@@ -192,8 +208,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 });
             }
             else if (c.Type === "Statement")
-            {
+            {   
+                //At least in Library view, we're in this (statement) mode; will be using this.state.context. -> info about statement
+
                 const statementModel = (c.Model as IStatement);
+
+                //Populate elements array with the chapers, verse numbers, and the verse
                 elements.push({
                     key: Indexer.GetVerseID(statementModel.Verse.Chapter, statementModel.Verse.VerseNumber),
                     element: (
@@ -219,10 +239,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             }
         });
 
-        /*if this.state.model ==
-            let proverbDisplay :any = this.state.proverbs.slice(0, 30).map((prov:IProverb) => {
-            return (<Proverb key={prov.ID} Proverb={prov}></Proverb>);
-        });*/
         console.log("rendering library");
         let pageRef = React.createRef<any>();
         
@@ -299,12 +315,63 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         }
                         
                     </IonGrid>
+                    
                     <div className="next-button-container">
-                        <IonButton fill={"clear"} className="next-button"
-                            onClick={()=>{console.log("Hello")}}
+                    <IonButton fill={"clear"} className="next-button"
+                            onClick={()=>{
+                                //THIS SHALL BE THE PREVIOUS BUTTON
+                                //Get current chapter#, which is also SectionNumber.
+                                var curNum = this.state.context.Chapter.statement;
+
+                                //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT 
+                                if(typeof curNum === 'string'){
+                                    curNum = parseInt(curNum);
+                                }
+
+                                //This is the next button, so we wanna go to next chapter (+ check edge cases)
+                                if(curNum == 10){
+                                    //Do nothing, at the beginning.
+                                }else if(curNum == 25){
+                                    curNum = 22
+                                }else{
+                                    curNum--;
+                                }
+                                
+                                //Turn to chapter curNum
+                                this.setChapter(curNum);
+                            }}
                         >
                             <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
                         </IonButton>
+                        <IonButton fill={"clear"} className="next-button"
+                            onClick={()=>{
+                                //THIS SHALL BE THE NEXT BUTTON.
+
+                                //Get current chapter#, which is also SectionNumber.
+                                var curNum = this.state.context.Chapter.statement;
+
+                                //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT
+                                if(typeof curNum === 'string'){
+                                    curNum = parseInt(curNum);
+                                }
+
+                                //This is the next button, so we wanna go to next chapter (+ check edge cases)
+                                if(curNum == 22){
+                                    curNum = 25;
+                                }else if(curNum == 29){
+                                    //Do nothing, we're at the end. Maybe put a nice message saying that you've reached the end?
+                                }else{
+                                    //Not an edge case, just advance
+                                    curNum++;
+                                }
+
+                                //Turn to chapter curNum
+                                this.setChapter(curNum);
+                            }}
+                        >
+                            <IonIcon icon = {ellipsisVerticalOutline}></IonIcon>
+                        </IonButton>
+                        
                     </div>
                     
                 </IonContent>
