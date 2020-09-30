@@ -28,6 +28,7 @@ type StatementProps = {
 type StatementState = {
     holdingTimer: any, // A delay event
     touchState: string, // 'n' - none, 't' - tap, 'h' - hold
+    bubbleAnimation: boolean // Controls displaying of heart animation on click
 }
 
 class Statement extends React.Component<StatementProps, StatementState> {
@@ -38,7 +39,8 @@ class Statement extends React.Component<StatementProps, StatementState> {
         // init state
         this.state = {
             holdingTimer: undefined,
-            touchState: 'n'
+            touchState: 'n',
+            bubbleAnimation: false
         };
     }
 
@@ -55,14 +57,14 @@ class Statement extends React.Component<StatementProps, StatementState> {
     }
 
     componentDidUpdate(prevProps: StatementProps) {
-        
+
         // if touching
         if (this.state.touchState !== 'n') {
 
             // detect scroll
             if (this.props.scrollStamp !== prevProps.scrollStamp) {
                 console.log("Scroll Detected: ", this.props.scrollStamp);
-                
+
                 // clear timed model open
                 clearTimeout(this.state.holdingTimer);
                 this.setState({
@@ -72,6 +74,17 @@ class Statement extends React.Component<StatementProps, StatementState> {
             }
         }
     }
+
+    toggleAnimation = () => {
+        // Display animation on click
+        this.setState({ bubbleAnimation: !this.state.bubbleAnimation });
+
+        // Stop animation when it is done fully executing
+        // Refer to .bubble-animation in Views.css (animation-duration: 0.5s)
+        setTimeout(() => {
+          this.setState({ bubbleAnimation: !this.state.bubbleAnimation });
+        }, 500);
+    };
 
     /* config */
     tapDuration = 250;
@@ -118,7 +131,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
 
     saveTapped = () => {
 
-    }      
+    }
 
     render() {
 
@@ -142,7 +155,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
                 this.props.searchHighlights[this.props.searchHighlights.length-1].iEnd
                 : 0;
             cardContent = this.props.searchHighlights.reduce((encode: ICardEncoding, range: ITextRange) => {
-                
+
                 const nonhighlight = cardText.substring(encode.head, range.iStart);
                 const highlight = cardText.substring(range.iStart, range.iEnd);
 
@@ -199,7 +212,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
                 head: firstHighlight
             })
             // retrieve payload
-            .payload;            
+            .payload;
         }
 
         // no highlights
@@ -209,13 +222,13 @@ class Statement extends React.Component<StatementProps, StatementState> {
 
         return (
             <span
-                className={"statement"}
-                /*onTouchStart={this.gestureStart}
-                onTouchEnd={this.gestureEnd}
-                onMouseDown={this.gestureStart}
-                onMouseUp={this.gestureEnd}    */  
-                onClick={this.holdStart}          
-            >
+                  className={"statement"}
+                  /*onTouchStart={this.gestureStart}
+                  onTouchEnd={this.gestureEnd}
+                  onMouseDown={this.gestureStart}
+                  onMouseUp={this.gestureEnd}    */
+                  onClick={this.holdStart}
+              >
                 <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
                     onDrag={()=>{console.log("Dragging");}}
                     onScroll={()=>{console.log("scrolling");}}
@@ -225,6 +238,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
                         cardContent
                     }
                     </h3>
+
                     <div className={"bar"}/>
                     <div className={"info-bar"}>
                         <p className={"verse-name"}>Proverbs {this.props.model.Verse.Chapter}:{this.props.model.Verse.VerseNumber}</p>
@@ -232,12 +246,13 @@ class Statement extends React.Component<StatementProps, StatementState> {
                                 onTouchStart={(e)=>{e.stopPropagation()}}
                                 onMouseDown={(e)=>{e.stopPropagation()}}
                                 onClick={(e) => {
-                                    e.preventDefault();
+                                    e.stopPropagation();
                                     this.props.heartCallback();
-                                }} className={"save-icon"} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
+                                    this.toggleAnimation();
+                                }} className={`save-icon ${this.state.bubbleAnimation ? "bubble-animation" : ""}`} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
                     </div>
                 </div>
-            </span>
+          </span>
         );
     }
 }
