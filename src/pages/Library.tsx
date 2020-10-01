@@ -29,7 +29,6 @@ type ILibraryProps = {
   contentManager: ContentManager
 }
 
-//We'll be getting a new model w/ getModel() and setting that to state.
 type ILibraryState = {
     searchContent: string,
     popClickEvent: any,
@@ -41,19 +40,14 @@ type ILibraryState = {
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
 {
-    /* Member data */
-    private cm : ContentManager;
-    private ref : any;
+    // ContentManager handles retrieving verses of multiple versions
+    private cm : ContentManager; // short syntax
 
     constructor(props: ILibraryProps) {
         super(props);
 
         this.cm = this.props.contentManager;
-        this.ref = React.createRef();
-
         this.state = {
-            //proverbs: this.props.proverbProvider.GetAllOneLiners(),
-            
             searchContent: "",
             popClickEvent: undefined,
             popOpen: false, 
@@ -117,12 +111,11 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.setState({model: mdl});
     };
 
-    // life cycle
+    // Cache and restore library filters when leaving and entering the page
     ionViewWillEnter() {
         this.cm.RestoreFilters("library");
     }
-
-    ionViewDidLeave() {
+    ionViewWillLeave() {
         this.cm.CacheFilters("library");
     }
 
@@ -139,8 +132,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.cm.UpdateSearch("");
     }
 
-    scrollHandler = (e: any) => {
-    }
     //Change the chapter shown to new chapter of curNum.
     setChapter(chapter: any){
         console.log(this.state.context);
@@ -190,21 +181,19 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </IonToolbar>
                     <IonToolbar>
                         <IonSearchbar
-                            onIonChange={(e)=>{this.onSearch(e.detail.value!)}}
-                            onIonClear={(e) => this.onSearchClear()}
+                            onIonChange={(e : any)=>{this.onSearch(e.detail.value!)}}
+                            onIonClear={(e : any) => this.onSearchClear()}
                         ></IonSearchbar>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent className={"proverb-panel"}
-                    scrollEvents={true}
-                    onIonScrollStart={this.scrollHandler}
-                >
+                <IonContent className={"proverb-panel"}>
 
                     <ProverbView
                         containerPageRef={pageRef}
                         componentModels={this.state.model.ComponentModels}
                         contentManager={this.cm}
                         refreshComponentModels={this.refreshComponentModels}
+                        context={this.state.context}
                     />
 
                     <div className="next-button-container">
@@ -215,16 +204,16 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 var curNum = this.state.context.Chapter.statement;
 
                                 //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT 
-                                if(typeof curNum === 'string'){
+                                if (typeof curNum === 'string') {
                                     curNum = parseInt(curNum);
                                 }
 
                                 //This is the next button, so we wanna go to next chapter (+ check edge cases)
-                                if(curNum === 10){
+                                if (curNum === 10) {
                                     //Do nothing, at the beginning.
-                                }else if(curNum === 25){
+                                } else if (curNum === 25) {
                                     curNum = 22
-                                }else{
+                                } else {
                                     curNum--;
                                 }
                                 
@@ -242,16 +231,16 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 var curNum = this.state.context.Chapter.statement;
 
                                 //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT
-                                if(typeof curNum === 'string'){
+                                if (typeof curNum === 'string') {
                                     curNum = parseInt(curNum);
                                 }
 
                                 //This is the next button, so we wanna go to next chapter (+ check edge cases)
-                                if(curNum === 22){
+                                if (curNum === 22) {
                                     curNum = 25;
-                                }else if(curNum === 29){
+                                } else if (curNum === 29) {
                                     //Do nothing, we're at the end. Maybe put a nice message saying that you've reached the end?
-                                }else{
+                                } else {
                                     //Not an edge case, just advance
                                     curNum++;
                                 }

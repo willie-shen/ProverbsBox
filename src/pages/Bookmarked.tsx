@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     IonMenu,
     IonPopover,
@@ -8,7 +8,6 @@ import {
     IonHeader,
     IonItem,
     IonLabel,
-    IonList,
     IonPage,
     IonToolbar,
     IonButtons,
@@ -18,16 +17,26 @@ import {
 
 import { Plugins } from '@capacitor/core';
 
-import {folder, notifications, notificationsOutline, notificationsCircleOutline, trashOutline, notificationsCircle} from 'ionicons/icons';
+import {folder, heartCircle, notifications, notificationsOutline, notificationsCircleOutline, trashOutline, notificationsCircle} from 'ionicons/icons';
 import FolderMode from '../components/FolderModes';
 import FolderPanel from '../components/FolderPanel';
 import StorageAssistant, { IFolder } from '../api/StorageAssistant';
 import "./Bookmarked.css";
+import ProverbView from '../components/ProverbView';
+import ContentManager from '../api/ContentManager';
+import { IModel } from '../api/Interfaces';
+import { IonSpinner } from '@ionic/react';
 
-const Bookmarked: React.FC = () => {
+type IProps = {
+    contentManager: ContentManager
+}
+
+const Bookmarked: React.FC<IProps> = (props) => {
 
     const [showPopover, setShowPopover] = useState(false);
     const [folderMode, setFolderMode] = useState(FolderMode.browse); // "browse", "edit", "set-notifications"
+    const [folderContext, setFolderContext] = useState<IFolder | null>(null); // let null = favorites folder
+    const [model, setModel] = useState<IModel | undefined>(undefined);
     const [folders, setFolders] = useState<Array<IFolder>>([]);
     const [newFolderPromptActivated, setNewFolderPromptActivated] = useState(false);
     const [deleteActivated, setDeleteActivated] = useState<IFolder | undefined>(undefined);
@@ -51,11 +60,41 @@ const Bookmarked: React.FC = () => {
             setFolderMode(FolderMode.browse);
         }
     }
+    
+    const refreshComponentModels = useCallback(() => {
+
+        // normal folder
+        if (folderContext) {
+            props.contentManager.CacheFilters("PreBookmark");
+            props.contentManager.ClearFiltersNoRefresh()
+            StorageAssistant.getFolderVerseIds(folderContext)
+            .then((verseIds) => {
+                console.log("Verse IDs: ", verseIds);
+                props.contentManager.ApplyFilter("ByFolder", verseIds)
+                setModel(props.contentManager.GetModel())
+                props.contentManager.RestoreFilters("PreBookmark");
+            });
+        }
+
+        // favorites folder
+        else {
+            props.contentManager.CacheFilters("PreBookmark");
+            props.contentManager.ClearFiltersNoRefresh()
+            props.contentManager.ApplyFilter("BySaved", props.contentManager.IsBookmarked);
+            setModel(props.contentManager.GetModel())
+            props.contentManager.RestoreFilters("PreBookmark");
+        }
+    }, [folderContext, props.contentManager]);
 
     // update folder list
     useIonViewWillEnter(() => {
-        refreshFolders()
+        console.log("folder context: ", folderContext);
+        refreshFolders();
     });
+
+    useEffect(() => {
+        refreshComponentModels();
+    }, [folderContext, refreshComponentModels])
 
     // create a new folder
     const createFolder = (folderName:string) => {
@@ -122,13 +161,14 @@ const Bookmarked: React.FC = () => {
         });
     }
 
+    let pageRef = React.createRef<any>();
     return (
         <>
-            <IonPage className={"bookmarked-page"}>
+            <IonPage className={"bookmarked-page"} ref={pageRef}>
 
                 <IonAlert
                     isOpen={newFolderPromptActivated}
-                    onDidDismiss={(dismiss) => {
+                    onDidDismiss={(dismiss:any) => {
                         setNewFolderPromptActivated(false)
                     }}
                     header={'Create a New Folder'}
@@ -147,7 +187,7 @@ const Bookmarked: React.FC = () => {
                         },
                         {
                         text: 'Ok',
-                        handler: (dismiss) => {
+                        handler: (dismiss:any) => {
                             createFolder(dismiss["folderName"]);
                         }
                         }
@@ -156,7 +196,7 @@ const Bookmarked: React.FC = () => {
 
                 <IonAlert
                     isOpen={deleteActivated !== undefined}
-                    onDidDismiss={(dismiss) => {
+                    onDidDismiss={(dismiss:any) => {
                         setDeleteActivated(undefined)
                     }}
                     header={`Are you sure you would like to delete "${(deleteActivated) ? deleteActivated.name : ""}?"`}
@@ -205,17 +245,45 @@ const Bookmarked: React.FC = () => {
                     <IonContent id="folders-menu-content" onClick={()=>{console.log("clicked!!!")}}>
                         <div className="category-list-container ion-activateable" style={{pointerEvents: "auto"}}>
                             <IonReorderGroup disabled={folderMode !== FolderMode.edit} onIonItemReorder={reorderFolders} className="folder-list">
-
+                                
+                                {/* Heart folder */}
+                                <IonItem
+                                    button
+                                    detail={(folderMode === FolderMode.browse)}
+                                    disabled={(folderMode !== FolderMode.browse)}
+                                    onClick={() => {
+                                        if (folderMode === FolderMode.browse) {
+                                            setFolderContext(null);
+                                        }
+                                    }}
+                                    color={(folderContext === null) ? "light" : ""}
+                                >
+                                    <IonLabel>
+                                        Favorites
+                                    </IonLabel>
+                                </IonItem>
                                 {
+                                    
                                     folders.map(folder => {
                                         return (
-                                            <IonItem button detail key={folder.id}>
+                                            <IonItem
+                                            button
+                                            detail={(folderMode === FolderMode.browse)}
+                                            key={folder.id}
+                                            color={(folderContext === folder) ? "light" : ""}
+                                                onClick={() => {
+                                                    if (folderMode === FolderMode.browse)
+                                                    {
+                                                        setFolderContext(folder);
+                                                    }
+                                                }}
+                                            >
                                                 <IonIcon
                                                     icon={ (folder.notificationsOn) ? notificationsCircle : notificationsCircleOutline } 
-                                                    onClick={ (e) => { toggleFolderNotifications(folder, e) }}
+                                                    onClick={ (e:any) => { toggleFolderNotifications(folder, e) }}
                                                     className={`notification-default ${(folderMode === FolderMode.updateNotifications) ? 'notification-revealed' : ''}`}>
                                                 </IonIcon>
-                                                <IonIcon icon={trashOutline} onClick={(e)=>{triggerDelete(folder, e)}}
+                                                <IonIcon icon={trashOutline} onClick={(e:any)=>{triggerDelete(folder, e)}}
                                                     className={`delete-default ${(folderMode === FolderMode.edit) ? 'delete-revealed' : ''}`}
                                                 />
                                                 <IonLabel>
@@ -283,18 +351,41 @@ const Bookmarked: React.FC = () => {
                         <p>This is popover</p>
                     </IonPopover>
 
-                    <IonMenuToggle><IonButton expand="full">Open Menu</IonButton></IonMenuToggle>
-                    <IonButton expand="full" onClick={() => setShowPopover(true)}>
-                        Open Popover
-                    </IonButton>
-
-                    <IonList>
-                        <IonItem routerLink="/bookmarked/details">
-                            <IonLabel>
-                                <h2>Go to detail</h2>
-                            </IonLabel>
-                        </IonItem>
-                    </IonList>
+                    <div className={"title-container"}>
+                        {
+                            (folderContext)
+                            ? <IonIcon icon={folder} className={"bookmark-icon"}/>
+                            : <IonIcon icon={heartCircle} className={"bookmark-icon"}/>
+                        }
+                        <h1 className={"title-text"}>
+                            {(folderContext !== null) ? folderContext.name : "Favorites"}
+                        </h1>
+                        <img
+                            src={"\\assets\\filigree-divider_16_lg.gif"}
+                            className={"title-filigree"}
+                            alt={"filigree"}
+                            />
+                    </div>
+                    
+                    {
+                        (!model) ?
+                        <div style={{
+                            display:"flex",
+                            flexDirection: "column",
+                            paddingTop: "2em"
+                            }}>
+                            <IonSpinner style={{alignSelf:"center"}}/>
+                        </div>
+                        :
+                        <ProverbView
+                            containerPageRef={pageRef}
+                            componentModels={model.ComponentModels}
+                            contentManager={props.contentManager}
+                            refreshComponentModels={refreshComponentModels}
+                            heartAndVanish={(folderContext === null) ? true : undefined}
+                        />
+                    }
+                    
                 </IonContent>
             </IonPage>
         </>

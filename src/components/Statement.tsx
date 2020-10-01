@@ -21,13 +21,15 @@ type StatementProps = {
     model: IStatement,
     heartCallback: () => void,
     openVerseOptions: (id: number) => void,
-    searchHighlights ?: Array<ITextRange>
+    searchHighlights ?: Array<ITextRange>,
+    heartAndVanish ?: boolean
 };
 
 type StatementState = {
     holdingTimer: any, // A delay event
     touchState: string, // 'n' - none, 't' - tap, 'h' - hold
-    bubbleAnimation: boolean // Controls displaying of heart animation on click
+    bubbleAnimation: boolean, // Controls displaying of heart animation on click
+    vanishAnimation: boolean
 }
 
 class Statement extends React.Component<StatementProps, StatementState> {
@@ -39,7 +41,8 @@ class Statement extends React.Component<StatementProps, StatementState> {
         this.state = {
             holdingTimer: undefined,
             touchState: 'n',
-            bubbleAnimation: false
+            bubbleAnimation: false,
+            vanishAnimation: false
         };
     }
 
@@ -47,6 +50,9 @@ class Statement extends React.Component<StatementProps, StatementState> {
     toggleAnimation = () => {
         // Display animation on click
         this.setState((cur) => {return { bubbleAnimation: !cur.bubbleAnimation }});
+        if (this.props.heartAndVanish) {
+            this.setState((cur) => {return { vanishAnimation: true }});
+        }
 
         // Stop animation when it is done fully executing
         // Refer to .bubble-animation in Views.css (animation-duration: 0.5s)
@@ -171,10 +177,12 @@ class Statement extends React.Component<StatementProps, StatementState> {
 
         return (
             <span
-                className={"statement"}
+                className={`statement`}
                 onClick={this.shrinkStart}          
             >
-                <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}>
+                <div className={"statement-view" + 
+                    (this.state.vanishAnimation ? " vanish-animation" : "") +
+                    ((this.state.touchState === 'h') ? " shrinking" : "")}>
                     <h3 className={"verse-content"}>
                     {
                         cardContent
@@ -189,7 +197,13 @@ class Statement extends React.Component<StatementProps, StatementState> {
                                 onMouseDown={(e)=>{e.stopPropagation()}}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    this.props.heartCallback();
+                                    if (this.props.heartAndVanish) {
+                                        // wait 500 seconds for card to disapear. then call the heart callback
+                                        setTimeout(this.props.heartCallback, 500)
+                                    }
+                                    else {
+                                        this.props.heartCallback();
+                                    }
                                     this.toggleAnimation();
                                 }} className={`save-icon ${this.state.bubbleAnimation ? "bubble-animation" : ""}`} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
                     </div>

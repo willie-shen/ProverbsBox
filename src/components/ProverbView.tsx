@@ -1,8 +1,9 @@
 import { IonButton, IonGrid, IonModal, IonRow } from '@ionic/react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ContentManager from '../api/ContentManager';
 import Indexer from '../api/Indexer';
-import { IArticle, IComponentModel, ILibraryContext, ISaying, IStatement } from '../api/Interfaces';
+import { IArticle, IComponentModel, ILibraryContext, ISaying, IStatement, IVerse } from '../api/Interfaces';
+import StorageAssistant, { IFolder } from '../api/StorageAssistant';
 import { Article } from './Article';
 import { Saying } from './Saying';
 import { Statement } from './Statement';
@@ -12,12 +13,25 @@ type IProps = {
   contentManager: ContentManager,
   refreshComponentModels: ()=>void,
   containerPageRef: React.RefObject<any>,
-  context?: ILibraryContext
+  context?: ILibraryContext,
+  heartAndVanish?: Boolean
 }
 
 const ProverbView : React.FC<IProps> = (props) => {
 
-  const [viewFolderModal, setViewFolderModal] = useState(false);
+  const [viewFolderModal, setViewFolderModal] = useState<IVerse | null>(null); // null for closed, IFolder for open
+  const [folders, setFolders] = useState<Array<IFolder>>([]);
+
+  // refresh folders hook
+  useEffect(() => {
+    refreshFolders();
+  }, [props.context, props.componentModels])
+
+  const refreshFolders = () => {
+    StorageAssistant.getFolders()
+    .then(folders => folders.sort((folder1, folder2) => folder1.order - folder2.order))
+    .then(sortedFolders => setFolders(sortedFolders));
+  }
 
   // store heart to memory
   const heartHandler = (statementModel : IStatement) => {
@@ -43,8 +57,8 @@ const ProverbView : React.FC<IProps> = (props) => {
   }
 
   /* Verse model for saving verse in folder */
-  const openVerseOptions = (verseID: number) => {
-    setViewFolderModal(true);
+  const openVerseOptions = (verse: IVerse) => {
+    setViewFolderModal(verse);
   }
 
   // Generate Verse Components
@@ -75,8 +89,9 @@ const ProverbView : React.FC<IProps> = (props) => {
                 <Statement
                     model={statementModel}
                     heartCallback={() => {heartHandler(statementModel)}}
-                    openVerseOptions={openVerseOptions}
+                    openVerseOptions={() => {openVerseOptions(statementModel.Verse);}}
                     searchHighlights={statementModel.Verse.SearchHighlights}
+                    heartAndVanish={(props.heartAndVanish !== undefined) ? true : false}
                     >
                 </Statement>
                 </div>)
@@ -98,16 +113,25 @@ const ProverbView : React.FC<IProps> = (props) => {
     <>
       {/* Modal to view popup folders */}
       <IonModal
-          isOpen={viewFolderModal}
+          isOpen={(viewFolderModal !== null)}
           swipeToClose={true}
           presentingElement={props.containerPageRef.current}
-          onDidDismiss={()=>{setViewFolderModal(false)}}>
+          onDidDismiss={()=>{setViewFolderModal(null)}}>
           <div id={"parentmodeldiv"}>
               <div id={"modeldiv"}>
-                  <p>Folder 1</p>
-                  <p>Folder 2</p>
-                  <p>Folder 3</p>
-                  <IonButton onClick={()=>{setViewFolderModal(false)}}>Close Example</IonButton>
+                {
+                  folders.map((f) => (
+                    <p onClick={ () => {
+                      const chapter = (viewFolderModal !== null) ? viewFolderModal.Chapter : 0;
+                      const verse = (viewFolderModal !== null) ? viewFolderModal.VerseNumber : 0;
+                      const verseSignature = Indexer.GetVerseSignature(Indexer.GetVerseID(chapter, verse));
+                      StorageAssistant.addVerseToFolder(f, verseSignature);
+                      console.log("Added verse: ", verseSignature, " to folder: ", f.name);
+                      setViewFolderModal(null)
+                    }}> {f.name} </p>
+                  ))
+                }
+                  <IonButton onClick={()=>{setViewFolderModal(null)}}>Close Example</IonButton>
               </div>
           </div>
       </IonModal>

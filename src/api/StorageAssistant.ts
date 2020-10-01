@@ -54,8 +54,8 @@ export default class StorageAssistant{
 	}
 
 	// a unique key name in memory to store a folder's verses
-	static getFolderKey(folderName:string) : string {
-		return "folder-memory-key-"+folderName;
+	static getFolderKey(folderId:number) : string {
+		return "fmk-"+ folderId.toString(); // folder memory key
 	}
 
 	// get list of folders
@@ -104,7 +104,7 @@ export default class StorageAssistant{
 			existingFolders.push({
 				id,
 				name: folderName,
-				memoryLocation: this.getFolderKey(folderName),
+				memoryLocation: this.getFolderKey(id),
 				order,
 				notificationsOn: false // by default notifications are off.
 			});
@@ -126,6 +126,9 @@ export default class StorageAssistant{
 		
 		// delete
 		.then(({folders, toRemove}) => {
+
+			// delete verses associated with folder
+			Storage.remove({key: toRemove.memoryLocation});
 
 			// recreate array
 			const removeId = toRemove.id;
@@ -235,8 +238,14 @@ export default class StorageAssistant{
 	static async getFolderVerseIds(folder : IFolder) : Promise<Array<IVerseSignature>> {
 		return Storage.get({ key: folder.memoryLocation })
 		.then (data => {
-			if (!data.value) { throw new Error("verses not found"); }
 			return (data.value) ? JSON.parse(data.value) : [];
+		});
+	}
+
+	static async setFolderVerseIds(folder : IFolder, verseArray : Array<IVerseSignature>) {
+		return Storage.set({
+			key: folder.memoryLocation,
+			value: JSON.stringify(verseArray)
 		});
 	}
 
@@ -244,21 +253,26 @@ export default class StorageAssistant{
 	static async addVerseToFolder(folder : IFolder, verseSignature : IVerseSignature) {
 		// refresh folder data
 		return this.getFolders()
-
 		.then(folders => {
 			const f = folders.find(f => f.id === folder.id)
 			if (!f) { throw new Error("folder not found"); }
 			return f;
 		})
-		.then(f => this.getFolderVerseIds(f))
-		.then(verseArray => {
-			verseArray.push(verseSignature) // append to list
-			console.log(verseArray);
-			return Storage.set({
-				key: folder.memoryLocation,
-				value: JSON.stringify(verseArray)
-			});
+		.then((f) => this.getFolderVerseIds(f))
+		.then((verseArray) => {
+
+			// check that verse doesnt already exist in the folder
+			if (!verseArray.some(v => {
+				return v.Chapter === verseSignature.Chapter && v.VerseNumber === verseSignature.VerseNumber;
+			}))
+			{
+				verseArray.push(verseSignature) // append to list
+				return Storage.set({
+					key: folder.memoryLocation,
+					value: JSON.stringify(verseArray)
+				});
+			}
 		})
+		.then(() => {return this.getFolderVerseIds(folder)})
 	}
 }
-

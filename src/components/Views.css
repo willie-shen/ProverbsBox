@@ -67,3 +67,26 @@
       transform: scale(1);
   }
 }
+.vanish-animation {
+    animation-name: cardVanish;
+    animation-duration: 0.5s;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+}
+@keyframes cardVanish {
+    0% {
+        opacity: 1;
+        max-height: 15em;
+    }
+    50% {
+        opacity: 0;
+        max-height: 15em;
+    }
+    100% {
+        opacity: 0;
+        max-height: 0 !important;
+        padding: 0;
+        margin: 0;
+    }
+}

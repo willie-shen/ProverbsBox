@@ -105,7 +105,7 @@ describe("Folder memory tests", () => {
 				name: "new folder",
 				id: 0,
 				order: 0,
-				memoryLocation: "folder-memory-key-new folder",
+				memoryLocation: "fmk-0",
 				notificationsOn: false
 			});
 		})
@@ -144,6 +144,25 @@ describe("Folder memory tests", () => {
 			expect(getIds(folders)).toEqual([2,3]);
 			return folders
 		})
+		.then(() => {done();})
+	});
+
+	test("Delete folder verses", async done => {
+		StorageAssistant.getFolders()
+		.then(folders => {
+			expect(folders).toEqual([]);
+		})
+		.then(() => StorageAssistant.createFolder("folder1"))
+		.then(() => StorageAssistant.getFolders())
+		.then(async folders => {
+			await StorageAssistant.addVerseToFolder(folders[0], { Chapter: 1, VerseNumber: 1 });
+			return folders;
+		})
+		.then(folders => StorageAssistant.deleteFolder(folders[0]))
+		.then(() => StorageAssistant.createFolder("folder1"))
+		.then(() => StorageAssistant.getFolders())
+		.then(folders => StorageAssistant.getFolderVerseIds(folders[0]))
+		.then(verseIds => {expect(verseIds).toEqual([])})
 		.then(() => {done();})
 	});
 
@@ -251,26 +270,24 @@ describe("Folder memory tests", () => {
 		.then(() => StorageAssistant.createFolder("folder4"))
 		.then(() => StorageAssistant.createFolder("folder5"))
 		.then(() => StorageAssistant.getFolders())
-		.then(() => StorageAssistant.getFolders())
-		.then(folders => {
-			StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1});
-			StorageAssistant.addVerseToFolder(folders[0], {Chapter: 5, VerseNumber: 2});
-			StorageAssistant.addVerseToFolder(folders[0], {Chapter: 10, VerseNumber: 1});
-
-			StorageAssistant.addVerseToFolder(folders[3], {Chapter: 2, VerseNumber: 2});
-			StorageAssistant.addVerseToFolder(folders[3], {Chapter: 4, VerseNumber: 13});
-			StorageAssistant.addVerseToFolder(folders[3], {Chapter: 7, VerseNumber: 8});
+		.then(async folders => {
+			await StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1})
+			.then(() => StorageAssistant.addVerseToFolder(folders[0], {Chapter: 5, VerseNumber: 2}))
+			.then(() => StorageAssistant.addVerseToFolder(folders[0], {Chapter: 10, VerseNumber: 1}))
+			.then(() => StorageAssistant.addVerseToFolder(folders[3], {Chapter: 2, VerseNumber: 2}))
+			.then(() => StorageAssistant.addVerseToFolder(folders[3], {Chapter: 4, VerseNumber: 13}))
+			.then(() =>	StorageAssistant.addVerseToFolder(folders[3], {Chapter: 7, VerseNumber: 8}));
 			return folders;
 		})
-		.then(folders => {
+		.then(async folders => {
 			return {
-				f1: StorageAssistant.getFolderVerseIds(folders[0]),
-				f2: StorageAssistant.getFolderVerseIds(folders[1]),
-				f4: StorageAssistant.getFolderVerseIds(folders[3])
+				f1: await StorageAssistant.getFolderVerseIds(folders[0]),
+				f2: await StorageAssistant.getFolderVerseIds(folders[1]),
+				f4: await StorageAssistant.getFolderVerseIds(folders[3])
 			};
 		})
 		.then(({f1, f2, f4}) => {
-			expect(f1).toBe(
+			expect(f1).toStrictEqual(
 				[
 					{Chapter: 1, VerseNumber: 1},
 					{Chapter: 5, VerseNumber: 2},
@@ -278,7 +295,7 @@ describe("Folder memory tests", () => {
 				]
 			);
 
-			expect(f4).toBe(
+			expect(f4).toStrictEqual(
 				[
 					{Chapter: 2, VerseNumber: 2},
 					{Chapter: 4, VerseNumber: 13},
@@ -286,8 +303,39 @@ describe("Folder memory tests", () => {
 				]
 			);
 
-			expect(f2).toBe(
+			expect(f2).toStrictEqual(
 				[]
+			);
+		})
+		.then(() => {done();});
+	});
+
+	test("Add duplicate verse", async done => {
+		StorageAssistant.getFolders()
+		.then(folders => {
+			expect(folders).toEqual([]);
+		})
+		.then(() => StorageAssistant.createFolder("folder1"))
+		.then(() => StorageAssistant.getFolders())
+		.then(async folders => {
+			await StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1})
+			.then(() => StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1}))
+			.then(() => StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1}))
+			.then(() => StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1}))
+			.then(() => StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1}))
+			.then(() => StorageAssistant.addVerseToFolder(folders[0], {Chapter: 1, VerseNumber: 1}))
+			return folders;
+		})
+		.then(async folders => {
+			return {
+				f1: await StorageAssistant.getFolderVerseIds(folders[0]),
+			};
+		})
+		.then(({f1}) => {
+			expect(f1).toStrictEqual(
+				[
+					{Chapter: 1, VerseNumber: 1}
+				]
 			);
 		})
 		.then(() => {done();});
