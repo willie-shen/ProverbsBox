@@ -22,7 +22,8 @@ type IDiscoverProps = {
 type IDiscoverState = {
     allStatements: Array<IStatement>,
     selectedStatements: Array<IStatement>,
-    head: number
+    head: number,
+    translation: string
 }
 
 const SelectRandom = (pool: Array<IStatement>) => {
@@ -39,13 +40,23 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
         this.state = {
             allStatements: [],
             selectedStatements: [],
-            head: -1
+            head: -1,
+            translation: ""
         };
     }
 
     // life cycle
     ionViewWillEnter() {
         if (this.props.contentManager.IsTranslatationReady()) {
+
+            if (this.state.translation !== this.props.contentManager.GetTranslationName()) {
+                this.setState({
+                    allStatements: [],
+                    selectedStatements: [],
+                    head: -1
+                });
+            }
+
             if (this.state.allStatements.length === 0) {
 
                 this.props.contentManager.ClearFiltersNoRefresh();
@@ -54,11 +65,11 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                 this.setState({
                     allStatements: this.props.contentManager.GetModel().ComponentModels.map(comp => {
                         return (comp.Model as IStatement);
-                    })
+                    }),
+                    translation: this.props.contentManager.GetTranslationName()
                 });
+                this.forward();
             }
-
-            this.forward();
         }
     };
 
