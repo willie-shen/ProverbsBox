@@ -20,13 +20,12 @@
     position:fixed;
     bottom:2%;
     height:10%;
-    opacity:0.5;
     padding-bottom:12px;
 
     padding: 0.5em;
     padding-left: 1.5em;
     width: 10.5em;
-    background-color: #c4c4c4;
+    background-color: #DDDDDD;
     border-radius: 5px 0px 0px 5px
 }
 
@@ -34,11 +33,16 @@
 #div-next-text{
     font-size: 15px;
     margin-top:0.15em;
+    color: #444444;
+}
+#div-proverbs-text{
+    color: #444444;
 }
 /*For the fab*/
 #chev{
     font-size: 12px;
     margin-left:4px;
+    color: #444444;
 }
 
 /*For page nav buttons on side*/

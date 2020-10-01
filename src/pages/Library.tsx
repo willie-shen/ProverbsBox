@@ -285,7 +285,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     }else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode != "statement"){
                         this.setState({last:true}) //for grey expanded button view
                         nextText.innerHTML = "~ The End ~"
-                        prov.innerHTML = "Back to \"The Beginning of Knowledge\"";
+                        prov.innerHTML = "Back to The Beginning of Knowledge";
                     }else{
                         nextText.innerHTML = "Next: "
                         this.setState({last:false}) //for grey expanded button view
@@ -508,6 +508,10 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }   
     //Set context to next chapter in either article or statement mode
     nextChapter(){
+        this.setState(update(this.state,{
+            last : {$set : false},
+            showFab : {$set : false}                      
+      }));
         //CALLED FROM FAB OR NEXT ARROW
         if(this.state.context.Mode === "statement"){
             var curNum = this.state.context.Chapter.statement;
@@ -616,10 +620,10 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
         //For the grey chapter buttons below.
         var translucent = {
-            opacity:0.5
+            opacity:0.8
         };
         var translucentGone = {
-            opacity:0.5,
+            opacity:0.8,
             display:"none"
         };
         //For formatting end-button all the way across screen
@@ -726,16 +730,12 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         <Fade when={this.state.showFab}>
                             <div id="fab" style={this.state.last ? beginning : {}} onClick={()=>{
                                 this.nextChapter(); 
-                                this.setState(update(this.state,{
-                                      showArrows : {$set : false}                      
-                                }));
                             }}>
-                                <div id="div-next-text" style={this.state.context.Mode == "statement" ? {} : {fontSize:"12px"}}>Next:</div>
-                                <div id="div-proverbs-text" style={this.state.context.Mode == "statement" ? {} : {fontSize:"16px"}}>P</div>
+                                <div id="div-next-text" style={this.state.context.Mode == "statement" || this.state.last ? {} : {fontSize:"12px"}}>Next:</div>
+                                <div id="div-proverbs-text" style={this.state.context.Mode == "statement" || this.state.last ? {} : {fontSize:"16px"}}>P</div>
                                 <IonIcon id="chev" style={this.state.last || this.state.context.Mode != "statement" ? {display:"none"} : {}} icon={chevronForwardSharp}></IonIcon>
                                 <IonIcon></IonIcon>
                             </div>
-                            
                         </Fade>
                     </div>
 
