@@ -69,10 +69,8 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                     translation: this.props.contentManager.GetTranslationName()
                 });
                 this.forward();
-                
             }
         }
-
     };
 
     forward = () => {
