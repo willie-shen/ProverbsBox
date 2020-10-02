@@ -74,45 +74,19 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         super(props);
 
         this.cm = this.props.contentManager;
-        this.lut = {"0_0":"The Beginning of Knowledge", 
-                    "1_0":"The Enticement of Sinners",
-                    "2_0":"The Call of Wisdom", 
-                    "3_0":"The Value of Wisdom",
-                    "4_0":"Trust in the Lord with All Your Heart", 
-                    "5_0":"Blessed is the One Who Finds Wisdom",
-                    "6_0":"A Father's Wise Instruction", 
-                    "7_0":"Warning Against Adultery",
-                    "8_0":"Practical Warnings", 
-                    "9_0":"Warnings Against Adultery",
-                    "10_0":"Warnings Against the Adulteress", 
-                    "11_0":"The Blessings of Wisdom",
-                    "12_0":"The Way of Wisdom", 
-                    "13_0":"The Way of Folly",
-                    "14_0":"The Proverbs of Solomon, pt. 1", 
-                    "14_1":"The Proverbs of Solomon, pt. 2",
-                    "14_2":"The Proverbs of Solomon, pt. 3", 
-                    "14_3":"The Proverbs of Solomon, pt. 4",
-                    "14_4":"The Proverbs of Solomon, pt. 5", 
-                    "14_5":"The Proverbs of Solomon, pt. 6",
-                    "14_6":"The Proverbs of Solomon, pt. 7", 
-                    "14_7":"The Proverbs of Solomon, pt. 8",
-                    "14_8":"The Proverbs of Solomon, pt. 9", 
-                    "14_9":"The Proverbs of Solomon, pt. 10",
-                    "14_10":"The Proverbs of Solomon, pt. 11", 
-                    "14_11":"The Proverbs of Solomon, pt. 12",
-                    "14_12":"The Proverbs of Solomon, pt. 13",
-                    "15_0":"Words of the Wise, pt. 1", 
-                    "15_1":"Words of the Wise, pt. 2",
-                    "15_2":"Words of the Wise, pt. 3",
-                    "16_0":"More Sayings of the Wise", 
-                    "17_0":"More Proverbs of Solomon, pt. 1",
-                    "17_1":"More Proverbs of Solomon, pt. 2",
-                    "17_2":"More Proverbs of Solomon, pt. 3",
-                    "17_3":"More Proverbs of Solomon, pt. 4",
-                    "17_4":"More Proverbs of Solomon, pt. 5",
-                    "18_0":"The Words of Agur",
-                    "20_0":"The Woman Who Fears the Lord",
-                }
+        
+        const lut_array = ProverbsStructure.Sections.map<string[][]>((section, i) => {
+            let usingPart : boolean = section.Start.Ch !== section.End.Ch;
+            if (usingPart) {
+            let partCount = section.End.Ch - section.Start.Ch + 1;
+            // @ts-ignore
+            return ([...Array(partCount).keys()].map<string[]>(part => [i+"_"+part, section.Name + ", pt. " + (part + 1)]));
+            }
+            else {
+                return [[i+"_0", section.Name]];
+            }
+        }).flat(1)
+        this.lut = Object.fromEntries(lut_array);
 
         this.state = {
             //proverbs: this.props.proverbProvider.GetAllOneLiners(),
@@ -153,10 +127,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         console.log("setting context: ", ctx);
         console.log(this.state.showArrows)
         
-        //Reset various
-        this.setState(update(this.state, {
-            showFab : {$set : false},
-        }));
+        //Reset necessary things for appearance of a fresh page.
+        this.setState({showFab : false});
 
         this.cm.ClearFiltersNoRefresh();
         this.cm.ApplyFilter("ByType", ctx.Mode);
@@ -228,6 +200,83 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         });
     }
 
+    //1/2 : deriving the small text for the #fab from state
+    getNextText(){
+        
+        var thisChapterNumber = this.state.context.Chapter.statement
+
+        if( typeof thisChapterNumber === 'string'){thisChapterNumber = parseInt(thisChapterNumber)}
+        if(thisChapterNumber === 29 && this.state.context.Mode === "statement" || (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode != "statement")){
+            return {
+                __html: '~ The End ~'    };
+        }else{
+            return {
+                __html: 'Next:'    };
+        }
+    }
+    //2/2 : deriving the large text for the #fab from state
+    getProverbsText(){
+        var prov = document.getElementById("div-proverbs-text")
+        var nextChapterNumber = this.getNextChapterStatement(this.state.context.Chapter.statement)
+        var thisChapterNumber = this.state.context.Chapter.statement
+        //Popover somehow converts this number to a string, so let's account for that
+        if( typeof thisChapterNumber === 'string'){
+            thisChapterNumber = parseInt(thisChapterNumber)
+        }
+        if(thisChapterNumber === 29 && this.state.context.Mode === "statement"){
+            return {
+                __html: 'Back to Proverbs 10'    };
+        }else if (this.state.context.Mode === "statement"){
+            return {
+                __html: "Proverbs " + nextChapterNumber    };
+        }
+        else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode != "statement"){
+            return {
+                __html: "Back to The Beginning of Knowledge"    };
+        }else{
+            
+            //Find the appropriate title for the next* section coming up
+            var arr = this.getNextSecPartArticle(this.state.context.Section.all.SectionNumber, this.state.context.Section.all.Part);
+            let key = "" + arr[0] + "_" + arr[1];
+            console.log("key: " + key)
+            var excitingTitle = this.lut[key];
+
+            if(prov != null){
+                prov!.innerHTML = excitingTitle
+            }
+        }
+
+    }
+    //Correctly (React-ly) set the innerhtml on the fab
+    updateIsLast(){
+        var prov = document.getElementById("div-proverbs-text")
+        var nextText = document.getElementById("div-next-text")
+        var thisChapterNumber = this.state.context.Chapter.statement
+
+        //Control flow for what to show on the fab. 
+        if(prov != null && nextText != null){
+            
+            //Popover somehow converts this number to a string, so let's account for that
+            if( typeof thisChapterNumber === 'string'){
+                thisChapterNumber = parseInt(thisChapterNumber)
+            }
+            console.log(thisChapterNumber)
+            console.log(this.state.context.Mode)
+
+            if(thisChapterNumber === 29  && this.state.context.Mode === "statement"){
+                this.setState({last:true}) //for grey expanded button view
+            }else if (this.state.context.Mode === "statement"){
+                this.setState({last:false}) 
+            }else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode !== "statement"){
+                this.setState({last:true}) //for grey expanded button view
+            }else{
+                this.setState({last:false}) //for grey expanded button view
+            }
+        }
+        console.log("is last? " + this.state.last)
+    }
+    
+
     
     //Track scroll to bottom
     onIonScroll=  (ev : any) => {
@@ -241,20 +290,14 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             
             //Control fixed arrows' appearances: if down-scroll, appear.
             var areArrowsShown = false;
-            console.log(this.state.prevHeight);
-            console.log(pos);
-            if(this.state.prevHeight > pos){ 
-               
+            
+            if(this.state.prevHeight > pos){
                 areArrowsShown = true;
-                this.setState(update(this.state,
-                    {prevHeight: {$set : pos}
-                }));
+                this.setState({prevHeight: pos});
                 
             }else{
                 areArrowsShown = false;
-                this.setState(update(this.state,
-                    {prevHeight: {$set : pos}
-                }));
+                this.setState({prevHeight:pos});
             }
             
             //We can never truly get to the bottom bc container doesn't take up 100% of screen.
@@ -263,48 +306,13 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
                 this.setState({showArrows: false, showFab: true})
 
-                var prov = document.getElementById("div-proverbs-text");
-                var nextText = document.getElementById("div-next-text")
-                var nextChapterNumber = this.getNextChapterStatement(this.state.context.Chapter.statement)
-                
                 var thisChapterNumber = this.state.context.Chapter.statement
                 if( typeof thisChapterNumber === 'string'){
                     thisChapterNumber = parseInt(thisChapterNumber)
                 }
 
-                //Control flow for what to show on the fab. 
-                if(prov != null && nextText != null){
-                    if(thisChapterNumber === 29 && this.state.context.Mode === "statement"){
-                        this.setState({last:true}) //for grey expanded button view
-                        nextText.innerHTML = "~ The End ~"
-                        prov.innerHTML = "Back to Proverbs 10";
-                    }else if (this.state.context.Mode === "statement"){
-                        this.setState({last:false}) 
-                        nextText.innerHTML = "Next: "
-                        prov.innerHTML = "Proverbs " + nextChapterNumber;
-                    }else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode != "statement"){
-                        this.setState({last:true}) //for grey expanded button view
-                        nextText.innerHTML = "~ The End ~"
-                        prov.innerHTML = "Back to The Beginning of Knowledge";
-                    }else{
-                        nextText.innerHTML = "Next: "
-                        this.setState({last:false}) //for grey expanded button view
-
-                        //It's article mode. Put new thing in.
-                        var ctx = this.state.context;
-
-                        //Find the appropriate title for the next* section coming up
-                        var arr = this.getNextSecPartArticle(this.state.context.Section.all.SectionNumber, this.state.context.Section.all.Part);
-                        let key = "" + arr[0] + "_" + arr[1];
-                        console.log("key: " + key)
-                        var excitingTitle = this.lut[key];
-
-                        if(prov != null){
-                            prov!.innerHTML = excitingTitle
-                        }
-                    }
-                   
-                }
+                //logic for updating state variable 'last'
+                this.updateIsLast()
 
             }else{
                 this.setState({showArrows: areArrowsShown, showFab: false})
@@ -508,6 +516,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }   
     //Set context to next chapter in either article or statement mode
     nextChapter(){
+       
         this.setState(update(this.state,{
             last : {$set : false},
             showFab : {$set : false}                      
@@ -516,9 +525,11 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         if(this.state.context.Mode === "statement"){
             var curNum = this.state.context.Chapter.statement;
             curNum = this.getNextChapterStatement(curNum);
-
+            
             //If it's acutally** the last chapter, turn back to 10!
-            if(this.state.context.Chapter.statement === 29) {
+            var thisChapterNumber = this.state.context.Chapter.statement
+            if( typeof thisChapterNumber === 'string'){thisChapterNumber = parseInt(thisChapterNumber)}
+            if(thisChapterNumber === 29) {
                 curNum = 10
             }
             //Turn to chapter curNum
@@ -727,17 +738,17 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </Slide>
                     
                        <div style={this.state.showFab ? translucent : translucentGone}>                   {/*/!* Div needed to allow opacity <1; Fade overrides it to 1 :(. Must be completely "gone" to not block elements beneath*!/*/}
-                        <Fade when={this.state.showFab}>
-                            <div id="fab" style={this.state.last ? beginning : {}} onClick={()=>{
-                                this.nextChapter(); 
-                            }}>
-                                <div id="div-next-text" style={this.state.context.Mode == "statement" || this.state.last ? {} : {fontSize:"12px"}}>Next:</div>
-                                <div id="div-proverbs-text" style={this.state.context.Mode == "statement" || this.state.last ? {} : {fontSize:"16px"}}>P</div>
-                                <IonIcon id="chev" style={this.state.last || this.state.context.Mode != "statement" ? {display:"none"} : {}} icon={chevronForwardSharp}></IonIcon>
-                                <IonIcon></IonIcon>
-                            </div>
-                        </Fade>
-                    </div>
+                            <Fade when={this.state.showFab}>
+                                <div id="fab" style={this.state.last ? beginning : {}} onClick={()=>{
+                                    this.nextChapter(); 
+                                }}>
+                                    <div id="div-next-text" dangerouslySetInnerHTML={this.getNextText()} style={this.state.context.Mode == "statement" || this.state.last ? {} : {fontSize:"12px"}}></div>
+                                    <div id="div-proverbs-text" dangerouslySetInnerHTML={this.getProverbsText()} style={this.state.context.Mode == "statement" || this.state.last ? {} : {fontSize:"16px"}}></div>
+                                    <IonIcon id="chev" style={this.state.last || this.state.context.Mode != "statement" ? {display:"none"} : {}} icon={chevronForwardSharp}></IonIcon>
+                                    <IonIcon></IonIcon>
+                                </div>
+                            </Fade>
+                        </div>
 
                     <div className="bottom-padding-container"></div>
                     
