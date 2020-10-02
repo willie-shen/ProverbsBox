@@ -116,7 +116,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                 <IonPage>
                     <IonHeader>
                         <IonToolbar>
-                            <IonTitle>Discover</IonTitle>
+                            <IonTitle>Discover - {this.state.translation}</IonTitle>
                         </IonToolbar>
                     </IonHeader>
 
