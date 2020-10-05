@@ -19,7 +19,7 @@ export default class NotificationsAssistant{
 
 	BakeNotification(frequency:Number, start:Number, end:Number, listOfVerses:Array<IVerse>){
 
-	
+
 
 		//start and end in military time in HHMM format from 0000 to 2359
 		this.SetFrequency(frequency)
@@ -112,6 +112,14 @@ export default class NotificationsAssistant{
 		this.verses = []		
 	}
 
+	async NoNotificationsRemaining() : Promise<Boolean>{
+		const pending = await Plugins.LocalNotifications.getPending()
+		console.log(pending)
+		console.log(pending.notifications.length)
+		console.log(pending.notifications.length == 0)
+		return pending.notifications.length == 0
+	}
+
 	async NotificationSetter(){
 
 		//Plugins.LocalNotifications.requestPermissions()
@@ -185,7 +193,7 @@ export default class NotificationsAssistant{
 			day++
 		}
 
-		console.log(LocalNotifications.getPending())
+		//console.log(LocalNotifications.getPending())
 	}
 
 	getRandomIndex(length:number) {

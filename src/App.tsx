@@ -62,11 +62,21 @@ const App: React.FC = () => {
    
   });
 
-   Plugins.App.addListener("appStateChange", (state: AppState) => {
+   //Seems to not be called during startup
+   //https://stackoverflow.com/questions/50623279/js-event-handler-async-function/50623441
+   Plugins.App.addListener("appStateChange", async (state: AppState) => {
       if (state.isActive) {
         // call the notification setup
         console.log("App is now active")
 
+         let notificationAssistant = new NotificationsAssistant();
+
+         var remaining = await notificationAssistant.NoNotificationsRemaining()
+         console.log(remaining)
+         if(!remaining){
+           console.log("There are notifications that are already scheduled");
+           return;
+         }
         /*
         Idea for the implementation
 
@@ -80,7 +90,7 @@ const App: React.FC = () => {
           -If it has, do nothing
           -If it has not passed, call the notification setter
         */
-        let notificationAssistant = new NotificationsAssistant();
+        
         notificationAssistant.NotificationSetter();
       }
     });
