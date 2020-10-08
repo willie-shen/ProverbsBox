@@ -1,6 +1,0 @@
-cd P and tab
-cd P and tab
-cd p and tab
-ionic serve
-
-http://localhost:8100/library

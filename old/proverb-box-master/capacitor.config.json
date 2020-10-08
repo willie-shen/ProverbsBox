@@ -1,9 +1,0 @@
-{
-  "appId": "io.ionic.starter",
-  "appName": "proverbBox",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "build",
-  "cordova": {}
-  
-}
