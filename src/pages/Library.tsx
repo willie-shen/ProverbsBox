@@ -9,8 +9,7 @@ import {
     IonSearchbar,
     IonButton,
     IonButtons,
-    IonGrid, IonCol, CreateAnimation,
-    IonRow, withIonLifeCycle, IonModal
+    withIonLifeCycle
 } from '@ionic/react';
 import { book, ellipsisVerticalOutline } from 'ionicons/icons';
 import React from 'react';
@@ -18,47 +17,37 @@ import './Library.css';
 import update from "immutability-helper";
 
 import ContentManager from "../api/ContentManager";
-import {IArticle, IModel, ISaying, IStatement, ILibraryContext, ISection, IVerseSignature} from "../api/Interfaces";
-import {Article} from "../components/Article";
-import {Saying} from "../components/Saying";
-import {Statement} from "../components/Statement";
+import {IModel, ILibraryContext, ISection, IVerseSignature} from "../api/Interfaces";
 import {PopoverSelector} from "../components/PopoverSelector";
 import {TranslationToggle} from "../components/TranslationToggle";
 import ProverbsStructure from "../indexing/ProverbsStructure.json";
 
 import DefaultConfig from "./DefaultDisplayConfig";
-import Indexer from "../api/Indexer";
+import ProverbView from '../components/ProverbView';
 
 type ILibraryProps = {
   contentManager: ContentManager
 }
 
-//We'll be getting a new model w/ getModel() and setting that to state.
 type ILibraryState = {
     searchContent: string,
     popClickEvent: any,
     popOpen: boolean,
     model: IModel,
     context: ILibraryContext,
-    scrollStamp: number,
     showVerseOptions: boolean
 }
 
 class Library extends React.Component<ILibraryProps, ILibraryState>
 {
-    /* Member data */
-    private cm : ContentManager;
-    private ref : any;
+    // ContentManager handles retrieving verses of multiple versions
+    private cm : ContentManager; // short syntax
 
     constructor(props: ILibraryProps) {
         super(props);
 
         this.cm = this.props.contentManager;
-        this.ref = React.createRef();
-
         this.state = {
-            //proverbs: this.props.proverbProvider.GetAllOneLiners(),
-            
             searchContent: "",
             popClickEvent: undefined,
             popOpen: false, 
@@ -69,7 +58,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 Section: (DefaultConfig.section as {[key: string]: ISection;}),
                 BrowseMode: (DefaultConfig.browseMode)
             },
-            scrollStamp: 0,
             showVerseOptions: false
         };
 
@@ -123,19 +111,11 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.setState({model: mdl});
     };
 
-    /* Verse model for saving verse in folder */
-    openVerseOptions = (verseID: number) => {
-        this.setState({
-            showVerseOptions: true
-        })
-    }
-
-    // life cycle
+    // Cache and restore library filters when leaving and entering the page
     ionViewWillEnter() {
         this.cm.RestoreFilters("library");
     }
-
-    ionViewDidLeave() {
+    ionViewWillLeave() {
         this.cm.CacheFilters("library");
     }
 
@@ -152,11 +132,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         this.cm.UpdateSearch("");
     }
 
-    scrollHandler = (e: any) => {
-        this.setState({
-            scrollStamp: e.timeStamp
-        });
-    }
     //Change the chapter shown to new chapter of curNum.
     setChapter(chapter: any){
         console.log(this.state.context);
@@ -166,82 +141,13 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         }));
     }
 
-    //Adding/Removing heart for card statementModel
-    heartHandler = (statementModel : IStatement) => {
-        if (statementModel.Saved) {
-            console.log("Removing heart");
-            this.cm.RemoveBookmark(
-                {
-                    Chapter: statementModel.Verse.Chapter,
-                    VerseNumber: statementModel.Verse.VerseNumber
-                }
-            );
-        } else {
-            console.log("adding heart");
-            this.cm.Bookmark(
-                {
-                    Chapter: statementModel.Verse.Chapter,
-                    VerseNumber: statementModel.Verse.VerseNumber
-                }
-            );
-        }
+    refreshComponentModels = () => {
         this.setState({model: this.cm.GetModel()});
     }
 
     render() {
 
-        //Declare empty elements dictionary-array, for storing key(type=number) : element(type=any)
-        //This is the verse number/ID mapped to the verse text
-        let elements: Array<{
-            key: number,
-            element: any
-        }> = [];
-
-        this.state.model.ComponentModels.forEach((c) => {
-            if (c.Type === "Article")
-            {
-                
-                const keyVerse = (c.Model as IArticle).Verses[0];
-                elements.push({
-                    key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
-                    element: (<Article ctx={this.state.context} model={(c.Model as IArticle)}></Article>)
-                });
-            }
-            else if (c.Type === "Statement")
-            {   
-                //At least in Library view, we're in this (statement) mode; will be using this.state.context. -> info about statement
-
-                const statementModel = (c.Model as IStatement);
-
-                //Populate elements array with the chapers, verse numbers, and the verse
-                elements.push({
-                    key: Indexer.GetVerseID(statementModel.Verse.Chapter, statementModel.Verse.VerseNumber),
-                    element: (
-                        <div style={{width: "20em"}} >
-                        <Statement
-                            model={statementModel}
-                            heartCallback={() => {this.heartHandler(statementModel)}}
-                            scrollStamp={this.state.scrollStamp}
-                            openVerseOptions={this.openVerseOptions}
-                            searchHighlights={statementModel.Verse.SearchHighlights}
-                            >
-                        </Statement>
-                        </div>)
-                });
-            }
-            else if (c.Type === "Saying")
-            {
-                const keyVerse = (c.Model as ISaying).Verses[0];
-                elements.push({
-                    key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
-                    element: (<Saying model={(c.Model as ISaying)}></Saying>)
-                });
-            }
-        });
-
-        console.log("rendering library");
         let pageRef = React.createRef<any>();
-        
         return (
             <IonPage className={"library-page"} ref={pageRef}>
 
@@ -275,47 +181,21 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     </IonToolbar>
                     <IonToolbar>
                         <IonSearchbar
-                            onIonChange={(e)=>{this.onSearch(e.detail.value!)}}
-                            onIonClear={(e) => this.onSearchClear()}
+                            onIonChange={(e : any)=>{this.onSearch(e.detail.value!)}}
+                            onIonClear={(e : any) => this.onSearchClear()}
                         ></IonSearchbar>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent className={"proverb-panel"}
-                    scrollEvents={true}
-                    onIonScrollStart={this.scrollHandler}
-                >
-                    <IonModal
-                        isOpen={this.state.showVerseOptions}
-                        swipeToClose={true}
-                        presentingElement={pageRef.current}
-                        onDidDismiss={()=>{this.setState({showVerseOptions: false})}}>
-                        <div id={"parentmodeldiv"}>
-                            <div id={"modeldiv"}>
-                                <p>Folder 1</p>
-                                <p>Folder 2</p>
-                                <p>Folder 3</p>
-                                <IonButton onClick={()=>{this.setState({showVerseOptions: false})}}>Close Example</IonButton>
-                            </div>
-                        </div>
+                <IonContent className={"proverb-panel"}>
 
-                        {/*/!* Erase and redesign modal ___*!/*/}
-                        {/*<IonButton onClick={()=>{this.setState({showVerseOptions: false})}}>Close Example</IonButton>*/}
-                        {/*<p>Model content (A)</p>*/}
-                        {/*<p>Model content (B)</p>*/}
-                        {/*/!* Erase and redesign modal ^^^ *!/*/}
+                    <ProverbView
+                        containerPageRef={pageRef}
+                        componentModels={this.state.model.ComponentModels}
+                        contentManager={this.cm}
+                        refreshComponentModels={this.refreshComponentModels}
+                        context={this.state.context}
+                    />
 
-                    </IonModal>
-                    <IonGrid>
-                        {
-                            elements.map(component => (
-                                <IonRow key={component.key} className={"ion-justify-content-center"}>
-                                    {component.element}
-                                </IonRow>
-                            ))
-                        }
-                        
-                    </IonGrid>
-                    
                     <div className="next-button-container">
                     <IonButton fill={"clear"} className="next-button"
                             onClick={()=>{
@@ -324,16 +204,16 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 var curNum = this.state.context.Chapter.statement;
 
                                 //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT 
-                                if(typeof curNum === 'string'){
+                                if (typeof curNum === 'string') {
                                     curNum = parseInt(curNum);
                                 }
 
                                 //This is the next button, so we wanna go to next chapter (+ check edge cases)
-                                if(curNum == 10){
+                                if (curNum === 10) {
                                     //Do nothing, at the beginning.
-                                }else if(curNum == 25){
+                                } else if (curNum === 25) {
                                     curNum = 22
-                                }else{
+                                } else {
                                     curNum--;
                                 }
                                 
@@ -351,16 +231,16 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                                 var curNum = this.state.context.Chapter.statement;
 
                                 //To compensate for a problem from AllPopoverContent <- which sets Chapter.statement to a STRING instead of an INT
-                                if(typeof curNum === 'string'){
+                                if (typeof curNum === 'string') {
                                     curNum = parseInt(curNum);
                                 }
 
                                 //This is the next button, so we wanna go to next chapter (+ check edge cases)
-                                if(curNum == 22){
+                                if (curNum === 22) {
                                     curNum = 25;
-                                }else if(curNum == 29){
+                                } else if (curNum === 29) {
                                     //Do nothing, we're at the end. Maybe put a nice message saying that you've reached the end?
-                                }else{
+                                } else {
                                     //Not an edge case, just advance
                                     curNum++;
                                 }

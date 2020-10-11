@@ -22,7 +22,6 @@ import {
 import Library from './pages/Library';
 import Bookmarked from './pages/Bookmarked';
 import Discover from './pages/Discover';
-import Details from './pages/Details';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -75,8 +74,7 @@ const App: React.FC = () => {
           <IonTabs>
             <IonRouterOutlet>
               <Route path="/library" component={() => <Library contentManager={cm}/>} exact={true}/>
-              <Route path="/bookmarked" component={Bookmarked} exact={true}/>
-              <Route path="/bookmarked/details" component={Details}/>
+              <Route path="/bookmarked" component={() => <Bookmarked contentManager={cm}/>} exact={true}/>
               <Route path="/discover" component={() => <Discover contentManager={cm}/>} exact={true}/>
               <Route path="/" render={() => <Redirect to="/library"/>} exact={true}/>
             </IonRouterOutlet>

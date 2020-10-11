@@ -12,7 +12,6 @@
 
 import {IVerseSignature, IFilter, IFilterCallback} from './Interfaces';
 import Indexer from './Indexer'
-import StorageAssistant from "./StorageAssistant";
 
 export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) => IFilter} = {
     /*
@@ -70,13 +69,26 @@ export const FilterGenerators : {[name:string] : (input1?: any, input2?: any) =>
         };
     },
 
-    BySaved : (sa : StorageAssistant) => {
+    BySaved : (isBookmarked : (verse: IVerseSignature) => boolean) => {
         const c: IFilterCallback = (verse : IVerseSignature) => {
-            return (sa.isBookmarked(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber)));
+            return (isBookmarked(verse));
         };
 
         return {
             name: "BySaved",
+            callback: c
+        }
+    },
+
+    ByFolder : (folderVerseIds: Array<IVerseSignature>) => {
+        const c: IFilterCallback = (verse : IVerseSignature) => {
+            return folderVerseIds.some(v => {
+                return verse.Chapter === v.Chapter && verse.VerseNumber === v.VerseNumber
+            });
+        };
+
+        return {
+            name: "ByFolder",
             callback: c
         }
     }

@@ -20,15 +20,16 @@ import {
 type StatementProps = {
     model: IStatement,
     heartCallback: () => void,
-    scrollStamp: number,
     openVerseOptions: (id: number) => void,
-    searchHighlights ?: Array<ITextRange>
+    searchHighlights ?: Array<ITextRange>,
+    heartAndVanish ?: boolean
 };
 
 type StatementState = {
     holdingTimer: any, // A delay event
     touchState: string, // 'n' - none, 't' - tap, 'h' - hold
-    bubbleAnimation: boolean // Controls displaying of heart animation on click
+    bubbleAnimation: boolean, // Controls displaying of heart animation on click
+    vanishAnimation: boolean
 }
 
 class Statement extends React.Component<StatementProps, StatementState> {
@@ -40,49 +41,23 @@ class Statement extends React.Component<StatementProps, StatementState> {
         this.state = {
             holdingTimer: undefined,
             touchState: 'n',
-            bubbleAnimation: false
+            bubbleAnimation: false,
+            vanishAnimation: false
         };
     }
 
-    // Render optimization
-    shouldComponentUpdate(nextProps: StatementProps, nextState: StatementState) {
-
-        // Don't rerender on scroll
-        if (this.state.touchState === 'n') {
-            if (this.props.scrollStamp !== nextProps.scrollStamp) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    componentDidUpdate(prevProps: StatementProps) {
-
-        // if touching
-        if (this.state.touchState !== 'n') {
-
-            // detect scroll
-            if (this.props.scrollStamp !== prevProps.scrollStamp) {
-                console.log("Scroll Detected: ", this.props.scrollStamp);
-
-                // clear timed model open
-                clearTimeout(this.state.holdingTimer);
-                this.setState({
-                    holdingTimer: null,
-                    touchState: 'n'
-                });
-            }
-        }
-    }
-
+    // Heart bubble animation
     toggleAnimation = () => {
         // Display animation on click
-        this.setState({ bubbleAnimation: !this.state.bubbleAnimation });
+        this.setState((cur) => {return { bubbleAnimation: !cur.bubbleAnimation }});
+        if (this.props.heartAndVanish) {
+            this.setState((cur) => {return { vanishAnimation: true }});
+        }
 
         // Stop animation when it is done fully executing
         // Refer to .bubble-animation in Views.css (animation-duration: 0.5s)
         setTimeout(() => {
-          this.setState({ bubbleAnimation: !this.state.bubbleAnimation });
+            this.setState((cur) => {return { bubbleAnimation: !cur.bubbleAnimation }});
         }, 500);
     };
 
@@ -91,17 +66,20 @@ class Statement extends React.Component<StatementProps, StatementState> {
     longPressDuration = 200; /* Transitioned to click inlet durration */
 
     /* folder model open */
+    shrinkStart = () => {
+        let timeout = setTimeout( this.openModel,  this.longPressDuration);
+        this.setState({
+            holdingTimer: timeout,
+            touchState: 'h'
+        });
+    }   
+
     openModel = () => {
-        console.log("Opening model");
         this.props.openVerseOptions(this.props.model.ID);
-        this.gestureEnd();
+        this.shrinkEnd();
     }
 
-    gestureStart = () => {
-        this.touchStart();
-    }
-
-    gestureEnd = () => {
+    shrinkEnd = () => {
         if (this.state.touchState !== 'n') { // Copy paste code from scroll
             // clear timed model open
             clearTimeout(this.state.holdingTimer);
@@ -112,30 +90,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
         }
     }
 
-    /* To be called by gestureStart */
-    touchStart = () => {
-        let timeout = setTimeout( this.holdStart,  this.tapDuration);
-        this.setState({
-            holdingTimer: timeout,
-            touchState: 't'
-        });
-    }
-
-    holdStart = () => {
-        let timeout = setTimeout( this.openModel,  this.longPressDuration);
-        this.setState({
-            holdingTimer: timeout,
-            touchState: 'h'
-        });
-    }
-
-    saveTapped = () => {
-
-    }
-
     render() {
-
-        console.log("rendering card");
 
         type ICardEncoding = {
             payload: any[],
@@ -222,17 +177,12 @@ class Statement extends React.Component<StatementProps, StatementState> {
 
         return (
             <span
-                  className={"statement"}
-                  /*onTouchStart={this.gestureStart}
-                  onTouchEnd={this.gestureEnd}
-                  onMouseDown={this.gestureStart}
-                  onMouseUp={this.gestureEnd}    */
-                  onClick={this.holdStart}
-              >
-                <div className={"statement-view" + ((this.state.touchState === 'h') ? " shrinking" : "")}
-                    onDrag={()=>{console.log("Dragging");}}
-                    onScroll={()=>{console.log("scrolling");}}
-                >
+                className={`statement`}
+                onClick={this.shrinkStart}          
+            >
+                <div className={"statement-view" + 
+                    (this.state.vanishAnimation ? " vanish-animation" : "") +
+                    ((this.state.touchState === 'h') ? " shrinking" : "")}>
                     <h3 className={"verse-content"}>
                     {
                         cardContent
@@ -247,7 +197,13 @@ class Statement extends React.Component<StatementProps, StatementState> {
                                 onMouseDown={(e)=>{e.stopPropagation()}}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    this.props.heartCallback();
+                                    if (this.props.heartAndVanish) {
+                                        // wait 500 seconds for card to disapear. then call the heart callback
+                                        setTimeout(this.props.heartCallback, 500)
+                                    }
+                                    else {
+                                        this.props.heartCallback();
+                                    }
                                     this.toggleAnimation();
                                 }} className={`save-icon ${this.state.bubbleAnimation ? "bubble-animation" : ""}`} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
                     </div>

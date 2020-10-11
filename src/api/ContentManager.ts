@@ -130,6 +130,10 @@ export default class ContentManager {
         });
     }
 
+    IsBookmarked = (verse: IVerseSignature) => {
+        return this.storageAssistant.isBookmarked(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber));
+    }
+
     RemoveBookmark(verse: IVerseSignature) {
         const verseID = Indexer.GetVerseID(verse.Chapter, verse.VerseNumber);
         this.storageAssistant.removeBookmark(verseID);
