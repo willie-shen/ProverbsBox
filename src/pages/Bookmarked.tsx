@@ -195,6 +195,34 @@ const Bookmarked: React.FC<IProps> = (props) => {
                 />
 
                 <IonAlert
+                    isOpen={newFolderPromptActivated}
+                    onDidDismiss={(dismiss:any) => {
+                        setNewFolderPromptActivated(false)
+                    }}
+                    header={'Create a New Folder'}
+                    inputs={[
+                        {
+                        name: 'folderName',
+                        type: 'text',
+                        placeholder: 'name'
+                        },
+                    ]}
+                    buttons={[
+                        {
+                        text: 'Cancel',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        },
+                        {
+                        text: 'Ok',
+                        handler: (dismiss:any) => {
+                            createFolder(dismiss["folderName"]);
+                        }
+                        }
+                    ]}
+                />
+
+                <IonAlert
                     isOpen={deleteActivated !== undefined}
                     onDidDismiss={(dismiss:any) => {
                         setDeleteActivated(undefined)
