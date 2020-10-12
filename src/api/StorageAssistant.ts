@@ -275,4 +275,8 @@ export default class StorageAssistant{
 		})
 		.then(() => {return this.getFolderVerseIds(folder)})
 	}
+
+	static async removeVerseToFolder() {
+		console.log("Folder removed!");
+	}
 }

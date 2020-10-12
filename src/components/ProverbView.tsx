@@ -1,9 +1,10 @@
-import { IonButton, IonGrid, IonItem, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
+import { IonButton, IonGrid, IonModal, IonRow, IonToolbar, IonButtons, IonTitle, IonHeader, IonContent} from '@ionic/react';
 import React, { useEffect, useState } from 'react'
 import ContentManager from '../api/ContentManager';
 import Indexer from '../api/Indexer';
 import { IArticle, IComponentModel, ILibraryContext, ISaying, IStatement, IVerse } from '../api/Interfaces';
 import StorageAssistant, { IFolder } from '../api/StorageAssistant';
+import { Accordion } from './Accordion';
 import { Article } from './Article';
 import { Saying } from './Saying';
 import { Statement } from './Statement';
@@ -106,7 +107,7 @@ const ProverbView : React.FC<IProps> = (props) => {
         return ({
             key: Indexer.GetVerseID(keyVerse.Chapter, keyVerse.VerseNumber),
             element: (<Saying model={(c.Model as ISaying)}></Saying>)
-        });
+        }); 
     }
   });
 
@@ -118,28 +119,34 @@ const ProverbView : React.FC<IProps> = (props) => {
           swipeToClose={true}
           presentingElement={props.containerPageRef.current}
           onDidDismiss={()=>{setViewFolderModal(null)}}>
-          <div id={"parentmodeldiv"}>
-              <IonList>
+          <IonHeader>
+              <IonToolbar>
+                <IonTitle>Folders</IonTitle>
+                <IonButtons slot="end">
+                  <IonButton onClick={()=>{setViewFolderModal(null)}}>Close</IonButton>
+                </IonButtons>
+              </IonToolbar>
+          </IonHeader>
+          <IonContent fullscreen>
+              <div id={"parentmodeldiv"}>
                 {
-                folders.map((f, index) => (
-                  <IonItem key= {index} >
-                    <IonLabel onClick={ () => {}}>
-                        <p> {f.name}</p>
-                    </IonLabel>
-                    <IonButton slot="end" color="light" onClick={ () => {
-                        const chapter = (viewFolderModal !== null) ? viewFolderModal.Chapter : 0;
-                        const verse = (viewFolderModal !== null) ? viewFolderModal.VerseNumber : 0;
-                        const verseSignature = Indexer.GetVerseSignature(Indexer.GetVerseID(chapter, verse));
-                        StorageAssistant.addVerseToFolder(f, verseSignature);
-                        console.log("Added verse: ", verseSignature, " to folder: ", f.name);
-                        setViewFolderModal(null)
-                      }}>Add</IonButton>
-                  </IonItem>
-                ))
-            }
-              </IonList>
-              <IonButton onClick={()=>{setViewFolderModal(null)}}>Close</IonButton>
-          </div>
+                  folders.map((f, index) => (
+                    <Accordion key={index} folder={f}></Accordion>
+                  ))
+                }
+
+                              {/* <IonButton slot="end" color="light" onClick={ () => {
+                                  console.log(f);
+                                  const chapter = (viewFolderModal !== null) ? viewFolderModal.Chapter : 0;
+                                  const verse = (viewFolderModal !== null) ? viewFolderModal.VerseNumber : 0;
+                                  const verseSignature = Indexer.GetVerseSignature(Indexer.GetVerseID(chapter, verse));
+                                  StorageAssistant.addVerseToFolder(f, verseSignature);
+                                  console.log("Added verse: ", verseSignature, " to folder: ", f.name);
+                                  setViewFolderModal(null)
+                                }}><IonIcon icon={addOutline}></IonIcon></IonButton> */}
+
+              </div>
+          </IonContent>
       </IonModal>
 
       <IonGrid>
