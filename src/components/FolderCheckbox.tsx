@@ -12,13 +12,13 @@ export const FolderCheckbox: React.FC<props> = ({folder, verseSignature}) => {
 
     const [verseCheckedState, setVersePresentState] = useState(false);
 
-    // useEffect(() => {
-    //     const getFolderSignatureList = async () => {
-    //         const folderSignatureList = await StorageAssistant.getFolderVerseIds(folder);
-    //         setVersePresentState(folderSignatureList.some(verseID => verseID === verseSignature));
-    //     };
-    //     getFolderSignatureList();
-    // })
+    useEffect(() => {
+        const getFolderSignatureList = async () => {
+            const folderSignatureList = await StorageAssistant.getFolderVerseIds(folder);
+            setVersePresentState(folderSignatureList.some(verseID => verseID === verseSignature));
+        };
+        getFolderSignatureList();
+    })
 
     function toggleVerseCheckedState() {
         if (verseCheckedState) {
