@@ -10,17 +10,18 @@ type props = {
 
 export const FolderCheckbox: React.FC<props> = ({folder, verseSignature}) => {
 
-    const [verseCheckedState, setVersePresentState] = useState(false);
+    const [verseCheckedState, setVersePresentState] = useState(true);
 
     useEffect(() => {
         const getFolderSignatureList = async () => {
             const folderSignatureList = await StorageAssistant.getFolderVerseIds(folder);
-            setVersePresentState(folderSignatureList.some(verseID => verseID === verseSignature));
+            setVersePresentState(folderSignatureList.some(verseID => verseID.Chapter === verseSignature.Chapter 
+                && verseID.VerseNumber === verseSignature.VerseNumber));
         };
         getFolderSignatureList();
-    })
+    }, [folder, verseSignature])
 
-    function toggleVerseCheckedState() {
+    const toggleVerseCheckedState = () => {
         if (verseCheckedState) {
             setVersePresentState(false);
             StorageAssistant.removeVerseToFolder(folder, verseSignature)
