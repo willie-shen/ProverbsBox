@@ -1,17 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { IonItem, IonLabel, IonCheckbox } from '@ionic/react';
 import StorageAssistant, { IFolder } from '../api/StorageAssistant';
 import { IVerseSignature } from '../api/Interfaces';
 
 type props = {
     folder: IFolder,
-    verseChecked: boolean,
     verseSignature: IVerseSignature
 }
 
-export const FolderCheckbox: React.FC<props> = ({folder, verseChecked, verseSignature}) => {
+export const FolderCheckbox: React.FC<props> = ({folder, verseSignature}) => {
 
-    const [verseCheckedState, setVersePresentState] = useState(verseChecked)
+    const [verseCheckedState, setVersePresentState] = useState(false);
+
+    // useEffect(() => {
+    //     const getFolderSignatureList = async () => {
+    //         const folderSignatureList = await StorageAssistant.getFolderVerseIds(folder);
+    //         setVersePresentState(folderSignatureList.some(verseID => verseID === verseSignature));
+    //     };
+    //     getFolderSignatureList();
+    // })
 
     function toggleVerseCheckedState() {
         if (verseCheckedState) {

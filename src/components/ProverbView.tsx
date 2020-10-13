@@ -112,7 +112,7 @@ const ProverbView : React.FC<IProps> = (props) => {
     }
   });
 
-  
+
 
   return (
     <>
@@ -140,7 +140,7 @@ const ProverbView : React.FC<IProps> = (props) => {
                         const verseSignature = Indexer.GetVerseSignature(Indexer.GetVerseID(chapter, verse));
 
                         return (
-                          <FolderCheckbox key={index} verseChecked={true} folder={f} verseSignature={verseSignature}></FolderCheckbox>
+                          <FolderCheckbox key={index} folder={f} verseSignature={verseSignature}></FolderCheckbox>
                         )
                       })
                     }
