@@ -1,11 +1,12 @@
 
 .title-container {
-    width: 100%;
+    margin-left: 2em;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: -0.75em;
-    margin-top: 2em;
+    margin-bottom: 0em;
+    margin-top: 3em;
 }
 .title-text {
     font-weight: bold;
@@ -16,7 +17,7 @@
     text-align: center
 }
 .title-filigree {
-    width: 50%;
+    width: 100%;
     max-width: 10em;
 }
 .bookmark-icon {
@@ -106,18 +107,6 @@
     padding-right: 1em;
     padding-left: 0.25em;
     opacity: 1;
-}
-.button-holder {
-    /*position: fixed;
-    padding-bottom: 1.25em;
-    bottom: 0;
-    width: 100%;*/
-    display: flex;
-    justify-content: center;
-    width: 75%;
-}
-.set-notification-button {
-    --box-shadow: 0 0 5px 5px #fff;
 }
 .visible {
     visibility: visible;

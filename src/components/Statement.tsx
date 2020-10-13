@@ -13,8 +13,7 @@ import "./Views.css"
 
 // Icons
 import {
-    heartCircle,
-    heartCircleOutline
+    heart, heartOutline
 } from 'ionicons/icons';
 
 type StatementProps = {
@@ -205,7 +204,7 @@ class Statement extends React.Component<StatementProps, StatementState> {
                                         this.props.heartCallback();
                                     }
                                     this.toggleAnimation();
-                                }} className={`save-icon ${this.state.bubbleAnimation ? "bubble-animation" : ""}`} icon={this.props.model.Saved ? heartCircle : heartCircleOutline}></IonIcon>
+                                }} className={`save-icon ${this.state.bubbleAnimation ? "bubble-animation" : ""}`} icon={this.props.model.Saved ? heart : heartOutline}></IonIcon>
                     </div>
                 </div>
           </span>
