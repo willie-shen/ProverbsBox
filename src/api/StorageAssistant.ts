@@ -275,4 +275,8 @@ export default class StorageAssistant{
 		})
 		.then(() => {return this.getFolderVerseIds(folder)})
 	}
+
+	static async removeVerseToFolder(folder : IFolder, verseSignature : IVerseSignature) {
+		console.log("STUB CODE for removeVerseToFolder() for when it is implemented");
+	}
 }

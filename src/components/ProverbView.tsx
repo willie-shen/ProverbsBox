@@ -1,4 +1,4 @@
-import { IonButton, IonGrid, IonItem, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
+import { IonButton, IonGrid, IonList, IonModal, IonRow, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent} from '@ionic/react';
 import React, { useEffect, useState } from 'react'
 import ContentManager from '../api/ContentManager';
 import Indexer from '../api/Indexer';
@@ -7,6 +7,8 @@ import StorageAssistant, { IFolder } from '../api/StorageAssistant';
 import { Article } from './Article';
 import { Saying } from './Saying';
 import { Statement } from './Statement';
+
+import {FolderCheckbox} from './FolderCheckbox';
 
 type IProps = {
   componentModels: IComponentModel[],
@@ -110,6 +112,8 @@ const ProverbView : React.FC<IProps> = (props) => {
     }
   });
 
+  
+
   return (
     <>
       {/* Modal to view popup folders */}
@@ -118,28 +122,31 @@ const ProverbView : React.FC<IProps> = (props) => {
           swipeToClose={true}
           presentingElement={props.containerPageRef.current}
           onDidDismiss={()=>{setViewFolderModal(null)}}>
-          <div id={"parentmodeldiv"}>
-              <IonList>
-                {
-                folders.map((f, index) => (
-                  <IonItem key= {index} >
-                    <IonLabel onClick={ () => {}}>
-                        <p> {f.name}</p>
-                    </IonLabel>
-                    <IonButton slot="end" color="light" onClick={ () => {
+          <IonHeader>
+              <IonToolbar>
+                  <IonTitle>Folders</IonTitle>
+                  <IonButtons slot="end">
+                      <IonButton onClick={()=>{setViewFolderModal(null)}}>Close</IonButton>
+                  </IonButtons>
+              </IonToolbar>
+          </IonHeader>
+          <IonContent fullscreen>
+              <div id={"parentmodeldiv"}>
+                  <IonList>
+                    {
+                      folders.map((f, index) => {
                         const chapter = (viewFolderModal !== null) ? viewFolderModal.Chapter : 0;
                         const verse = (viewFolderModal !== null) ? viewFolderModal.VerseNumber : 0;
                         const verseSignature = Indexer.GetVerseSignature(Indexer.GetVerseID(chapter, verse));
-                        StorageAssistant.addVerseToFolder(f, verseSignature);
-                        console.log("Added verse: ", verseSignature, " to folder: ", f.name);
-                        setViewFolderModal(null)
-                      }}>Add</IonButton>
-                  </IonItem>
-                ))
-            }
-              </IonList>
-              <IonButton onClick={()=>{setViewFolderModal(null)}}>Close</IonButton>
-          </div>
+
+                        return (
+                          <FolderCheckbox key={index} verseChecked={true} folder={f} verseSignature={verseSignature}></FolderCheckbox>
+                        )
+                      })
+                    }
+                  </IonList>
+              </div>
+          </IonContent>
       </IonModal>
 
       <IonGrid>
