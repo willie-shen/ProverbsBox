@@ -112,7 +112,7 @@ export default class NotificationsAssistant{
 		this.verses = []		
 	}
 
-	async NoNotificationsRemaining() : Promise<Boolean>{
+	async NoNotificationsRemaining() : Promise<boolean>{
 		const pending = await Plugins.LocalNotifications.getPending()
 
 		return pending.notifications.length === 0
