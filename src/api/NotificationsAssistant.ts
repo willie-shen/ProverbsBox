@@ -102,7 +102,7 @@ export default class NotificationsAssistant{
 	async ClearNotifications(){
 
 		const pending = await Plugins.LocalNotifications.getPending()
-		if(pending.notifications.length != 0){
+		if(pending.notifications.length !== 0){
 			Plugins.LocalNotifications.cancel(pending)
 		}
 		 //clear all the pending notifications
@@ -114,10 +114,8 @@ export default class NotificationsAssistant{
 
 	async NoNotificationsRemaining() : Promise<Boolean>{
 		const pending = await Plugins.LocalNotifications.getPending()
-		console.log(pending)
-		console.log(pending.notifications.length)
-		console.log(pending.notifications.length == 0)
-		return pending.notifications.length == 0
+
+		return pending.notifications.length === 0
 	}
 
 	async NotificationSetter(){
@@ -137,21 +135,21 @@ export default class NotificationsAssistant{
 
 		//Get today's date
 		//want to set today's time to 00H00M00S
-		var dateToday = new Date()
+		let dateToday = new Date()
 		dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate()) 
 
 		
 		//convert end and start to millisecond
-		var endHour:number = Math.floor(this.end/100)
-		var endMinute:number = this.end%100
+		let endHour:number = Math.floor(this.end/100)
+		let endMinute:number = this.end%100
 		
-		var startHour:number = Math.floor(this.start/100)
-		var startMinute:number = this.start%100
+		let startHour:number = Math.floor(this.start/100)
+		let startMinute:number = this.start%100
 		
-		var endMillisecond = (endHour*60*60*1000) + (endMinute*60*1000)
-		var startMillisecond = (startHour*60*60*1000) + (startMinute*60*1000)
+		let endMillisecond = (endHour*60*60*1000) + (endMinute*60*1000)
+		let startMillisecond = (startHour*60*60*1000) + (startMinute*60*1000)
 
-		var interval = (endMillisecond - startMillisecond)/this.frequency
+		let interval = (endMillisecond - startMillisecond)/this.frequency
 		
 		let scheduledCount = 0;
 		let day = 0;
@@ -161,10 +159,19 @@ export default class NotificationsAssistant{
 			for(let f=0; f < this.frequency; ++f){
 				console.log(f)
 				// retrieve random verse content
-				var randomVerse = this.verses[this.getRandomIndex(this.verses.length)]
-				var verseTitle = "Proverbs " + randomVerse.Chapter + ":" + randomVerse.VerseNumber
-				var verseContent = randomVerse.Content
+				let randomVerse = this.verses[this.getRandomIndex(this.verses.length)]
+				let verseTitle = "Proverbs " + randomVerse.Chapter + ":" + randomVerse.VerseNumber
+				let verseContent = randomVerse.Content
 
+				var currDate = new Date()
+
+      			var currHour = currDate.getHours()
+      			var currMin = dateToday.getMinutes()
+
+      			var militaryTime:Number = currHour*100 + currMin
+
+      			if(militaryTime < this.end){
+        			
 				//Each day has 24 hours
 				//Each hour has 60 minute
 				//Each minute = 60 seconds
@@ -181,6 +188,8 @@ export default class NotificationsAssistant{
 				});
 				scheduledCount++;
 				if (scheduledCount >= this.MAX_NOTIFICATIONS) { break; }
+      			}
+
 	 
 				console.log(new Date(dateToday.getTime() + (day*24*60*60*1000) + time )) //need to convert our time to Local Time
 

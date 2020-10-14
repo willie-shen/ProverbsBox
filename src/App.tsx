@@ -59,55 +59,53 @@ let cm = new ContentManager();
 const App: React.FC = () => {
 
 
-  // capacitor notifications setup
-  useIonViewWillEnter(() => {
-    // refresh notifications on app enter
-   
-  });
-
   useEffect( () => {
 
-    //console.log("Annyeonghaseyo")
+    console.log("Starting app")
 
     let notificationAssistant = new NotificationsAssistant();
 
-    var remain:Boolean;
-    var starting:Number;
-    var ending:Number;
+    let remain:Boolean;
+    let starting:Number;
+    let ending:Number;
 
     notificationAssistant.NoNotificationsRemaining().then((remaining) => {
       if(!remaining){
         console.log("There are notifications that are already scheduled");
       }else{
         console.log("There are notifications that aren't scheduled")
+         notificationAssistant.NotificationSetter();
+   
       }
       remain = remaining;
-    } ).then(()=>
-      notificationAssistant.GetStart()
-    ).then((start)=>{
-      starting = start
-    }).then(()=>notificationAssistant.GetEnd()).then((end)=>{
-      ending = end
-    }).then(()=>{
+    } ).then(()=>{
 
-      var dateToday = new Date()
-
-      var hour = dateToday.getHours()
-      var minutes = dateToday.getMinutes()
-
-      var militaryTime:Number = hour*100 + minutes
-
-      if(remain && (militaryTime < starting && militaryTime < ending)){
-        notificationAssistant.NotificationSetter();
-      }
+       
 
     })
   })
 
-   console.log("Starting app")
+   
+
+           /*
+        Idea for the implementation
+
+        We need to check if there are any remaining notifications, either those that have not been received
+        Or those that have not been scheduled (if we take that route of allowing unlimited notifications)
+
+        If there are still scheduled notifications that have not been received, return out of the function (do nothing)
+        If there are notifications that need to be scheduled but are not yet scheduled, schedule any of them as long as the time has not been passed
+        
+        If no notifications, check to see if the start and end time has passed already
+          -If it has, do nothing
+          -If it has not passed, call the notification setter
+        */
+        
    //Seems to not be called during startup
    //https://stackoverflow.com/questions/50623279/js-event-handler-async-function/50623441
-   Plugins.App.addListener("appStateChange", async (state: AppState) => {
+   
+
+   /*Plugins.App.addListener("appStateChange", async (state: AppState) => {
       if (state.isActive) {
         // call the notification setup
         console.log("App is now active")
@@ -138,23 +136,10 @@ const App: React.FC = () => {
              return
            }
          }
-        /*
-        Idea for the implementation
 
-        We need to check if there are any remaining notifications, either those that have not been received
-        Or those that have not been scheduled (if we take that route of allowing unlimited notifications)
-
-        If there are still scheduled notifications that have not been received, return out of the function (do nothing)
-        If there are notifications that need to be scheduled but are not yet scheduled, schedule any of them as long as the time has not been passed
-        
-        If no notifications, check to see if the start and end time has passed already
-          -If it has, do nothing
-          -If it has not passed, call the notification setter
-        */
-        
         notificationAssistant.NotificationSetter();
       }
-    });
+    });*/
 
    /*
     Plugins.LocalNotifications.addListener('localNotificationReceived', (notification) =>{
