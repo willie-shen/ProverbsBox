@@ -163,14 +163,16 @@ export default class NotificationsAssistant{
 				let verseTitle = "Proverbs " + randomVerse.Chapter + ":" + randomVerse.VerseNumber
 				let verseContent = randomVerse.Content
 
-				var currDate = new Date()
+				let currTime = new Date()
 
-      			var currHour = currDate.getHours()
-      			var currMin = dateToday.getMinutes()
+      			//let currHour = currDate.getHours()
+      			//let currMin = dateToday.getMinutes()
 
-      			var militaryTime:Number = currHour*100 + currMin
+      			//let militaryTime:number = currHour*100 + currMin
 
-      			if(militaryTime < this.end){
+      			let scheduleTime = new Date(dateToday.getTime() + (day*24*60*60*1000) + time)
+
+      			if(currTime < scheduleTime){
         			
 				//Each day has 24 hours
 				//Each hour has 60 minute
@@ -182,7 +184,7 @@ export default class NotificationsAssistant{
 							title:verseTitle,
 							body:verseContent,
 							id:(day*24*60*60*1000) + time,
-							schedule:{at: new Date(dateToday.getTime() + (day*24*60*60*1000) + time )}
+							schedule:{at: new Date(dateToday.getTime() + (day*24*60*60*1000) + time)}
 						}
 					]
 				});
