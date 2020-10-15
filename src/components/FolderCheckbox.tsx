@@ -38,7 +38,7 @@ export const FolderCheckbox: React.FC<props> = ({folder, verseSignature}) => {
             <IonLabel onClick={ () => {}}>
                 <h2>{folder.name}</h2>
             </IonLabel>
-            <IonCheckbox color="dark" slot="end" checked={verseCheckedState} //checked should be true or false if verse is in folder 
+            <IonCheckbox color="dark" slot="start" checked={verseCheckedState} //checked should be true or false if verse is in folder 
             onClick={toggleVerseCheckedState}></IonCheckbox>
         </IonItem>
     )
