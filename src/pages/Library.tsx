@@ -725,10 +725,8 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     {/*/!* DevNote: this is the code for making it work w/o animations : style={this.state.showArrows ? {} : { display: 'none' }}*!/*/}
                     
                     <Slide right when={this.state.showArrows}>
-                        <div id="right-arrow" className="nav-arrow" onClick={()=>{
-                            this.nextChapter(); 
-                            }}>
-                                <IonIcon id="chev-right" className="chev-nav-buttons" style={this.state.last ? {display:"none"} : {}} icon={chevronForwardOutline}></IonIcon>
+                        <div id="right-arrow" className="nav-arrow" onClick={()=>{this.nextChapter(); }}>
+                            <IonIcon id="chev-right" className="chev-nav-buttons" style={this.state.last ? {display:"none"} : {}} icon={chevronForwardOutline}></IonIcon>
                         </div>
                     </Slide>
                     <Slide left when={this.state.showArrows}>

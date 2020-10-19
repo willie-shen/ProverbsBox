@@ -104,9 +104,11 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                     <IonContent className={"discover-content"}>
                         <IonGrid>
                             <IonRow justify-content-center align-items-center>
+                                
                                 <IonCol size={"1"} className={"button-col"}>
-                                    <IonButton expand="full" size={"small"} disabled={this.state.head === 0} fill={"clear"} className={"back-button"} onClick={this.back}
-                                    ><IonIcon icon={chevronBackOutline}/></IonButton>
+                                    <IonButton class="arrowButton" expand="full" disabled={this.state.head === 0} fill={"clear"} onClick={this.back}>
+                                        <IonIcon className="chev-nav-buttons" icon={chevronBackOutline}/>
+                                    </IonButton>
                                 </IonCol>
                                 <IonCol size={"10"} align-self-center>
                                     { /*<CreateAnimation
@@ -136,8 +138,8 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
                                 </IonCol>
                                 <IonCol size={"1"} className={"button-col"}>
-                                    <IonButton size={"small"} fill={"clear"} className={"forward-button"} onClick={this.foward}>
-                                        <IonIcon icon={chevronForwardOutline}/>
+                                    <IonButton  class="arrowButton" expand="full" fill={"clear"} onClick={this.foward}>
+                                        <IonIcon  className="chev-nav-buttons" icon={chevronForwardOutline}/>
                                     </IonButton>
                                 </IonCol>
                             </IonRow>

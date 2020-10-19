@@ -1,7 +1,26 @@
-.forward-button {
-    margin-left: auto;
+.nav-arrow{
+    
+    top:65%;
+}
+#right-arrow {
+    right:0;
+    
+}
+#left-arrow {
+    left:0;
 }
 
+.chev-nav-buttons{
+    border-radius:3px;
+    margin-left:5px;
+}
+.arrowButton{
+    height:100px;
+}
+.forward-button {
+    margin-right: auto;
+
+}
 .back-button {
     margin-right: auto;
 }
@@ -9,8 +28,8 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    justify-content: center;
     overflow: hidden;
+   
 }
 .button-col ion-button {
     --padding-start: 0;
