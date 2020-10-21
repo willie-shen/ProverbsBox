@@ -1,0 +1,8 @@
+.button-holder {
+  display: flex;
+  justify-content: center;
+  width: 75%;
+}
+.set-notification-button {
+  --box-shadow: 0 0 5px 5px #fff;
+}
