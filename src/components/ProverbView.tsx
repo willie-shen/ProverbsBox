@@ -21,6 +21,12 @@ type IProps = {
 
 const ProverbView : React.FC<IProps> = (props) => {
 
+  //states (init viewFolder to null)  
+    //Iprops: checks types. 
+    //strongly typed = put a dot 
+    //types can be objects or primitives. 
+    //const numArray: number[] = {1,2,3,4}; or Array<number> or Array<number | string> <---"union"
+
   const [viewFolderModal, setViewFolderModal] = useState<IVerse | null>(null); // null for closed, IFolder for open
   const [folders, setFolders] = useState<Array<IFolder>>([]);
 
@@ -30,6 +36,7 @@ const ProverbView : React.FC<IProps> = (props) => {
   }, [props.context, props.componentModels])
 
   const refreshFolders = () => {
+    console.log('folders refreshed: ' + StorageAssistant.getFolders())
     StorageAssistant.getFolders()
     .then(folders => folders.sort((folder1, folder2) => folder1.order - folder2.order))
     .then(sortedFolders => setFolders(sortedFolders));
@@ -54,7 +61,6 @@ const ProverbView : React.FC<IProps> = (props) => {
             }
         );
     }
-
     props.refreshComponentModels();
   }
 
@@ -81,7 +87,7 @@ const ProverbView : React.FC<IProps> = (props) => {
         });
     }
 
-    // Statement
+    // Statement                                                                  // This is what's important!
     else if (c.Type === "Statement")
     {
         const statementModel = (c.Model as IStatement);
