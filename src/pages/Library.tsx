@@ -195,8 +195,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
     }
 
     dropScrollDirectionAnchor = (e: any) => {
-
-        console.log("Start scroll", e)
         this.getContentPosition()
         .then(({p,s}) => {
             this.setState({
@@ -233,8 +231,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 return;
             } // wait till we sail in a direction
 
-            console.log("Getting bearings. Current Pos: ", p, " Anchor pos: ", this.state.scrollDirectionAnchor)
-
             // check offset for scroll direction
             if (p > this.state.scrollDirectionAnchor) {
                 // we're saling down
@@ -243,8 +239,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                     isScrollDirectionUp: false,
                     showArrows: false,
                 });
-
-                console.log("We're Scrolling down!")
             }
 
             else {
@@ -255,9 +249,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                         isScrollDirectionUp: true,
                         showArrows: (!cur.showFab) // show arrows if the fab is not shown
                     }
-                });
-                
-                console.log("We're Scrolling up! showFab: ", this.state.showFab)
+                });                
             }
         });
 
@@ -278,7 +270,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
         var thisChapterNumber = this.state.context.Chapter.statement
 
         if( typeof thisChapterNumber === 'string'){thisChapterNumber = parseInt(thisChapterNumber)}
-        if(thisChapterNumber === 29 && this.state.context.Mode === "statement" || (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode != "statement")){
+        if((thisChapterNumber === 29 && this.state.context.Mode === "statement") || (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode !== "statement")){
             return {
                 __html: '~ The End ~'    };
         }else{
@@ -302,7 +294,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             return {
                 __html: "Proverbs " + nextChapterNumber    };
         }
-        else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode != "statement"){
+        else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode !== "statement"){
             return {
                 __html: "Back to The Beginning of Knowledge"    };
         }else{
@@ -424,41 +416,41 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
             
             //Sec 0-13: Parts:0
-            if(sec == 0){
+            if(sec === 0){
                 sec = 20
             }else if(sec < 14){
                 sec--
-            }else if(sec == 14){
+            }else if(sec === 14){
                 console.log("is 14!")
-                if(pt == 0){
+                if(pt === 0){
                     sec--
                     pt = 0
                 }else{
                     console.log("regular case")
                     pt--
                 }
-            }else if(sec == 15){
-                if(pt == 0){
+            }else if(sec === 15){
+                if(pt === 0){
                     sec-- 
                     pt = 12; 
                 }else{
                     pt--
                 }
-            }else if (sec == 16){
-                if(pt == 0){
+            }else if (sec === 16){
+                if(pt === 0){
                     sec-- 
                     pt = 2;
                 }else{
                     pt--
                 }
-            }else if(sec == 17){
-                if(pt == 0){
+            }else if(sec === 17){
+                if(pt === 0){
                     sec-- 
                     pt = 0;
                 }else{
                     pt--
                 }
-            }else if(sec == 18){
+            }else if(sec === 18){
                 sec = 17
                 pt = 4
             }else{//20
@@ -535,7 +527,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             }
         }else if(sec === 18){
             sec = 20
-        }else if(sec == 20){
+        }else if(sec === 20){
             sec = 0;
         }
 
