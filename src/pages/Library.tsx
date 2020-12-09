@@ -221,7 +221,6 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
 
     // if scroll direction anchor is undefined, then this optimize out this function for scrolling efficiency
     detectScrollDirection = (e: any) => {
-        
         if (this.state.scrollDirectionAnchor === undefined) { return; }
         this.getContentPosition()
         .then(({p, s}) => {
@@ -235,7 +234,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
             if (p > this.state.scrollDirectionAnchor) {
                 // we're saling down
                 this.setState({
-                    scrollDirectionAnchor: undefined,
+                    scrollDirectionAnchor: p,
                     isScrollDirectionUp: false,
                     showArrows: false,
                 });
@@ -245,7 +244,7 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                 // we're sailing up!
                 this.setState(cur => {
                     return {
-                        scrollDirectionAnchor: undefined,
+                        scrollDirectionAnchor: p,
                         isScrollDirectionUp: true,
                         showArrows: (!cur.showFab) // show arrows if the fab is not shown
                     }
@@ -674,19 +673,22 @@ class Library extends React.Component<ILibraryProps, ILibraryState>
                             <IonIcon id="chev-left" className="chev-nav-buttons" style={this.state.last ? {display:"none"} : {}} icon={chevronBackOutline}></IonIcon>
                         </div>
                     </Slide>
-                    
-                    <div style={this.state.showFab ? translucent : translucentGone}>                   {/*/!* Div needed to allow opacity <1; Fade overrides it to 1 :(. Must be completely "gone" to not block elements beneath*!/*/}
+
+                        <div style={this.state.showFab ? translucent : translucentGone}>                   {/*/!* Div needed to allow opacity <1; Fade overrides it to 1 :(. Must be completely "gone" to not block elements beneath*!/*/}
                         <Fade when={this.state.showFab}>
-                            <div id="fab" style={this.state.last ? beginning : {}} onClick={()=>{
-                                this.nextChapter();
-                            }}>
-                                <div id="div-next-text" dangerouslySetInnerHTML={this.getNextText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"12px"}}></div>
-                                <div id="div-proverbs-text" dangerouslySetInnerHTML={this.getProverbsText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"16px"}}></div>
-                                <IonIcon id="chev" style={this.state.last || this.state.context.Mode !== "statement" ? {display:"none"} : {}} icon={chevronForwardSharp}></IonIcon>
-                                <IonIcon></IonIcon>
-                            </div>
+
+                                <div id="fab" style={this.state.last ? beginning : {}} onClick={()=>{
+                                    this.nextChapter();
+                                }}>
+                                    <div id="div-next-text" dangerouslySetInnerHTML={this.getNextText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"12px"}}></div>
+                                    <div id="div-proverbs-text" dangerouslySetInnerHTML={this.getProverbsText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"16px"}}></div>
+                                    <IonIcon id="chev" style={this.state.last || this.state.context.Mode !== "statement" ? {display:"none"} : {}} icon={chevronForwardSharp}></IonIcon>
+                                    <IonIcon></IonIcon>
+                                </div>
+                            
                         </Fade>
-                    </div>
+                        </div>
+                    
                     <div className="bottom-padding-container"></div>
                 </IonContent>
             </IonPage>
