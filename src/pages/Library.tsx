@@ -36,6 +36,7 @@
     import {
         chevronForwardSharp
       } from 'ionicons/icons';
+import { NONAME } from 'dns';
     
     type ILibraryProps = {
       contentManager: ContentManager
@@ -59,6 +60,7 @@
         animateArrows: boolean,
         animateFab: boolean,
         last: boolean,
+        inBottomZone: boolean
     }
     
     class Library extends React.Component<ILibraryProps, ILibraryState>
@@ -110,6 +112,7 @@
                 animateArrows : false,
                 animateFab : false,
                 last : false,
+                inBottomZone : false,
             };
     
             // Non-persistant translation for now.
@@ -211,25 +214,38 @@
                 const distFromBottom = s - p;
                 if (distFromBottom < bottomZone) {
                     console.log("In bottom zone!!! Dist from bottom: ", distFromBottom, ", s: ", s, ", p: ", p);
-                    this.setState({showArrows: false, showFab: true});
+                    this.setState({showArrows: false, showFab: true, inBottomZone: true});
                 }
                 else {
-                    this.setState(cur => {return {showArrows: (cur.isScrollDirectionUp), showFab: false}});
+                    this.setState(cur => {return {showArrows: (cur.isScrollDirectionUp), showFab: false, inBottomZone: false}});
                 }
+                console.log(this.state.inBottomZone)
             })
         }
     
         // if scroll direction anchor is undefined, then this optimize out this function for scrolling efficiency
         detectScrollDirection = (e: any) => {
-            if (this.state.scrollDirectionAnchor === undefined) { return; }
+            this.fabSmartToggle()
+            console.log("scroll detect? ")
+            console.log(this.state.showFab)
+            if (this.state.scrollDirectionAnchor === undefined) { 
+                console.log(" undefined1...why?")
+                return; 
+            }else{
+                console.log("scrolldiranchor: " + this.state.scrollDirectionAnchor)
+            
+            
             this.getContentPosition()
             .then(({p, s}) => {
-                if (this.state.scrollDirectionAnchor === undefined) { return; }
+                if (this.state.scrollDirectionAnchor === undefined) { 
+                    console.log(" undefined2...why?")
+                    return; 
+                }
                 if (this.state.scrollDirectionAnchor === p) { 
                     // the ship is paused
+                    console.log(" paused...why?")
                     return;
                 } // wait till we sail in a direction
-    
                 // check offset for scroll direction
                 if (p > this.state.scrollDirectionAnchor) {
                     // we're saling down
@@ -238,22 +254,32 @@
                         isScrollDirectionUp: false,
                         showArrows: false,
                     });
+                    console.log(" going down")
                 }
     
                 else {
                     // we're sailing up!
+                    
+                    if(this.state.showFab == true && this.state.inBottomZone == false){ //must also not be in bottom zone
+                        console.log("let's hide that fab")
+                        this.setState(cur => {
+                            return {
+                                showFab: false // show arrows if the fab is not shown
+                            }
+                        });
+                    }
                     this.setState(cur => {
                         return {
                             scrollDirectionAnchor: p,
                             isScrollDirectionUp: true,
                             showArrows: (!cur.showFab) // show arrows if the fab is not shown
                         }
-                    });                
+                    });
+                    console.log(" going up")                
                 }
+                
             });
-    
-            // Some application specific script to determine what arrows are shown
-            //this.toggleArrowButtons();
+        }
         }
     
         // get scroll direction
@@ -588,12 +614,82 @@
             }
             this.setState({model: this.cm.GetModel()});
         }
+
+        //returns special 100%-width style for the fab at the very last chapter.  
+        getFabStyle = () => {
+
+            var isLast = false
+
+            var prov = document.getElementById("div-proverbs-text")
+            var nextText = document.getElementById("div-next-text")
+            var thisChapterNumber = this.state.context.Chapter.statement
+    
+            //Control flow for what to show on the fab. 
+            if(prov != null && nextText != null){
+                
+                //Popover somehow converts this number to a string, so let's account for that 
+                if( typeof thisChapterNumber === 'string'){
+                    thisChapterNumber = parseInt(thisChapterNumber)
+                }
+                console.log(" this chap num: " + thisChapterNumber)
+                console.log(" this Mode: " + this.state.context.Mode)
+    
+                if(thisChapterNumber === 29  && this.state.context.Mode === "statement"){
+                    isLast = true 
+                    console.log("  last1")
+                }else if (this.state.context.Mode === "statement"){
+                    isLast = false
+                    console.log("  xlast1")
+                }else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode !== "statement"){
+                    isLast = true
+                    console.log("  last2")
+                }else{
+                    isLast = false
+                    console.log("  xlast2")
+                }
+            }
+            console.log(" is last? " + isLast)
+            
+            // The two possible styles to be applied to the fab 
+            var expandedRaw = {
+                borderRadius: "0px 0px 0px 0px",
+                width:"100%",
+            }
+            var defaultRaw = {} //returning nothing results in use of the default style specified in the css.
+
+            var visibilityComponent = {} //default to visible + interactable. See if-block below.
+            if(this.state.showFab == false){ 
+                visibilityComponent = {display: "none"} //prevents your fab from being clickable while invisible
+            }
+
+            
+            if(isLast === true){
+                var expandedStyle = Object.assign({},expandedRaw,visibilityComponent)
+                return expandedStyle
+            }else{
+                var defaultStyle = Object.assign({},defaultRaw,visibilityComponent)
+                return defaultStyle
+            }
+        }
     
         render() {
             console.log("Render page");
             let pageRef = React.createRef<any>();
-    
-            //For the grey chapter buttons below.
+            
+            //1/2
+            // Are we at the last chapter? If so, set ourselves up to show the 100%-width bottom banner. 
+            //this.updateIsLast()  TODO: CHANGE THIS TO A VALIEABLE then USE THAT INSTEAD OF STATE.LAST
+            console.log(" IS LAST?? " + this.state.last)
+
+            //2/2
+            // 100%-width style to be applied conditionally (see sec. "1/2" above)
+            var beginning = {
+                borderRadius: "0px 0px 0px 0px",
+                width:"100%",
+            };
+
+
+            // Style options for the grey chapter buttons
             var translucent = {
                 opacity:0.8
             };
@@ -601,11 +697,7 @@
                 opacity:0.8,
                 display:"none"
             };
-            //For formatting end-button all the way across screen
-            var beginning = {
-                borderRadius: "0px 0px 0px 0px",
-                width:"100%",
-            };
+            
     
             return (
                 
@@ -674,20 +766,20 @@
                             </div>
                         </Slide>
     
-                            <div style={this.state.showFab ? translucent : translucentGone}>                   {/*/!* Div needed to allow opacity <1; Fade overrides it to 1 :(. Must be completely "gone" to not block elements beneath*!/*/}
-                            <Fade when={this.state.showFab}>
-    
-                                    <div id="fab" style={this.state.last ? beginning : {}} onClick={()=>{
-                                        this.nextChapter();
-                                    }}>
-                                        <div id="div-next-text" dangerouslySetInnerHTML={this.getNextText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"12px"}}></div>
-                                        <div id="div-proverbs-text" dangerouslySetInnerHTML={this.getProverbsText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"16px"}}></div>
-                                        <IonIcon id="chev" style={this.state.last || this.state.context.Mode !== "statement" ? {display:"none"} : {}} icon={chevronForwardSharp}></IonIcon>
-                                        <IonIcon></IonIcon>
-                                    </div>
+                            {/*/!*<div style={this.state.showFab ? translucent : translucentGone}>                    Div needed to allow opacity <1; Fade overrides it to 1 :(. Must be completely "gone" to not block elements beneath*!/*/}
+                            <Fade when={this.state.showFab} >
+                                
+                                <div id="fab" style={this.getFabStyle()} onClick={()=>{
+                                    this.nextChapter();
+                                }}>
+                                    <div id="div-next-text" dangerouslySetInnerHTML={this.getNextText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"12px"}}></div>
+                                    <div id="div-proverbs-text" dangerouslySetInnerHTML={this.getProverbsText()} style={this.state.context.Mode === "statement" || this.state.last ? {} : {fontSize:"16px"}}></div>
+                                    <IonIcon id="chev" style={this.state.last || this.state.context.Mode !== "statement" ? {display:"none"} : {}} icon={chevronForwardSharp}></IonIcon>
+                                    <IonIcon></IonIcon>
+                                </div>
                                 
                             </Fade>
-                            </div>
+                            {/*/!*</div>*!/*/}
                         
                         <div className="bottom-padding-container"></div>
                     </IonContent>

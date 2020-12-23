@@ -174,9 +174,9 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
     back = () => {
 
         let proverbCenterAnimation = this.proverbCenterRef.current!.animation;
-        proverbCenterAnimation.play();
-
+        
         if (this.state.head > 0) {
+            proverbCenterAnimation.play(); //only animate if you actually went back
             this.setState(cur => {
                 return {
                     head: (cur.head) - 1,
@@ -190,7 +190,14 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
         this.setState({model: this.cm.GetModel()});
     }
 
-    
+    //Manually create the "disabled" appearance when we're on the first card
+    getBackButtonStyle = () => {
+        if (this.state.head === 0) { //then "disabled"
+            return {opacity:0.6}
+        }else{
+            return{opacity:1.0}
+        }
+    }
 
     render() {
         let pageRef = React.createRef<any>();
@@ -249,7 +256,7 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                                     <IonButton class="arrowButton" expand="full" disabled={true} fill={"clear"} onClick={this.back}>
                                     </IonButton>
                                 </IonCol>
-                            <div id="left-arrow" className="nav-arrow-d" onClick={this.back}>
+                            <div id="left-arrow" className="nav-arrow-d" style={this.getBackButtonStyle()} onClick={this.back}>
                                 <IonIcon id="chev-left" className="chev-nav-buttons" icon={chevronBackOutline}></IonIcon>
                             </div>
                                 
