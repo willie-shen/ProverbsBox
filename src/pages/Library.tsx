@@ -130,7 +130,6 @@ import { NONAME } from 'dns';
         setContext = (ctx: ILibraryContext) =>
         {
             console.log("setting context: ", ctx);
-            console.log(this.state.showArrows)
             
             //Reset necessary things for appearance of a fresh page.
             this.setState({showFab : false});
@@ -213,13 +212,11 @@ import { NONAME } from 'dns';
                 const bottomZone = 800;
                 const distFromBottom = s - p;
                 if (distFromBottom < bottomZone) {
-                    console.log("In bottom zone!!! Dist from bottom: ", distFromBottom, ", s: ", s, ", p: ", p);
                     this.setState({showArrows: false, showFab: true, inBottomZone: true});
                 }
                 else {
                     this.setState(cur => {return {showArrows: (cur.isScrollDirectionUp), showFab: false, inBottomZone: false}});
                 }
-                console.log(this.state.inBottomZone)
             })
         }
     
@@ -229,21 +226,17 @@ import { NONAME } from 'dns';
             console.log("scroll detect? ")
             console.log(this.state.showFab)
             if (this.state.scrollDirectionAnchor === undefined) { 
-                console.log(" undefined1...why?")
                 return; 
             }else{
-                console.log("scrolldiranchor: " + this.state.scrollDirectionAnchor)
             
             
             this.getContentPosition()
             .then(({p, s}) => {
                 if (this.state.scrollDirectionAnchor === undefined) { 
-                    console.log(" undefined2...why?")
                     return; 
                 }
                 if (this.state.scrollDirectionAnchor === p) { 
                     // the ship is paused
-                    console.log(" paused...why?")
                     return;
                 } // wait till we sail in a direction
                 // check offset for scroll direction
@@ -254,14 +247,12 @@ import { NONAME } from 'dns';
                         isScrollDirectionUp: false,
                         showArrows: false,
                     });
-                    console.log(" going down")
                 }
     
                 else {
                     // we're sailing up!
                     
                     if(this.state.showFab == true && this.state.inBottomZone == false){ //must also not be in bottom zone
-                        console.log("let's hide that fab")
                         this.setState(cur => {
                             return {
                                 showFab: false // show arrows if the fab is not shown
@@ -275,7 +266,6 @@ import { NONAME } from 'dns';
                             showArrows: (!cur.showFab) // show arrows if the fab is not shown
                         }
                     });
-                    console.log(" going up")                
                 }
                 
             });
@@ -336,34 +326,7 @@ import { NONAME } from 'dns';
             }
     
         }
-        //Correctly (React-ly) set the innerhtml on the fab
-        updateIsLast(){
-            var prov = document.getElementById("div-proverbs-text")
-            var nextText = document.getElementById("div-next-text")
-            var thisChapterNumber = this.state.context.Chapter.statement
-    
-            //Control flow for what to show on the fab. 
-            if(prov != null && nextText != null){
-                
-                //Popover somehow converts this number to a string, so let's account for that
-                if( typeof thisChapterNumber === 'string'){
-                    thisChapterNumber = parseInt(thisChapterNumber)
-                }
-                console.log(thisChapterNumber)
-                console.log(this.state.context.Mode)
-    
-                if(thisChapterNumber === 29  && this.state.context.Mode === "statement"){
-                    this.setState({last:true}) //for grey expanded button view
-                }else if (this.state.context.Mode === "statement"){
-                    this.setState({last:false}) 
-                }else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode !== "statement"){
-                    this.setState({last:true}) //for grey expanded button view
-                }else{
-                    this.setState({last:false}) //for grey expanded button view
-                }
-            }
-            console.log("is last? " + this.state.last)
-        } 
+        
         
         //Scroll to top of current chapter.
         toTop(){
@@ -446,12 +409,10 @@ import { NONAME } from 'dns';
                 }else if(sec < 14){
                     sec--
                 }else if(sec === 14){
-                    console.log("is 14!")
                     if(pt === 0){
                         sec--
                         pt = 0
                     }else{
-                        console.log("regular case")
                         pt--
                     }
                 }else if(sec === 15){
@@ -631,24 +592,17 @@ import { NONAME } from 'dns';
                 if( typeof thisChapterNumber === 'string'){
                     thisChapterNumber = parseInt(thisChapterNumber)
                 }
-                console.log(" this chap num: " + thisChapterNumber)
-                console.log(" this Mode: " + this.state.context.Mode)
-    
+                
                 if(thisChapterNumber === 29  && this.state.context.Mode === "statement"){
                     isLast = true 
-                    console.log("  last1")
                 }else if (this.state.context.Mode === "statement"){
                     isLast = false
-                    console.log("  xlast1")
                 }else if (this.state.context.Section.all.SectionNumber === 20 && this.state.context.Mode !== "statement"){
                     isLast = true
-                    console.log("  last2")
                 }else{
                     isLast = false
-                    console.log("  xlast2")
                 }
             }
-            console.log(" is last? " + isLast)
             
             // The two possible styles to be applied to the fab 
             var expandedRaw = {
@@ -676,11 +630,6 @@ import { NONAME } from 'dns';
             console.log("Render page");
             let pageRef = React.createRef<any>();
             
-            //1/2
-            // Are we at the last chapter? If so, set ourselves up to show the 100%-width bottom banner. 
-            //this.updateIsLast()  TODO: CHANGE THIS TO A VALIEABLE then USE THAT INSTEAD OF STATE.LAST
-            console.log(" IS LAST?? " + this.state.last)
-
             //2/2
             // 100%-width style to be applied conditionally (see sec. "1/2" above)
             var beginning = {

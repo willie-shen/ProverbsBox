@@ -253,13 +253,10 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                         <IonGrid>
                             <IonRow justify-content-center align-items-center>
                             <IonCol size={"1"} className={"button-col"}>
-                                    <IonButton class="arrowButton" expand="full" disabled={true} fill={"clear"} onClick={this.back}>
-                                    </IonButton>
-                                </IonCol>
-                            <div id="left-arrow" className="nav-arrow-d" style={this.getBackButtonStyle()} onClick={this.back}>
-                                <IonIcon id="chev-left" className="chev-nav-buttons" icon={chevronBackOutline}></IonIcon>
-                            </div>
-                                
+                                <div id="left-arrow" className="nav-arrow-d" style={this.getBackButtonStyle()} onClick={this.back}>
+                                    <IonIcon id="chev-left" className="chev-nav-buttons" icon={chevronBackOutline}></IonIcon>
+                                </div>
+                            </IonCol>
                                 <IonCol size={"10"} align-self-center>
                                     <CreateAnimation
                                         ref={this.proverbCenterRef}
