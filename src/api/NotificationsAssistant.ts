@@ -6,7 +6,7 @@ const { Storage } = Plugins;
 
 export default class NotificationsAssistant{
 
-	MAX_NOTIFICATIONS:number = 2;//64;
+	MAX_NOTIFICATIONS:number = 64;//64;
 	id:number = 0
 	frequency:number = 0
 	start:number = -1
@@ -149,13 +149,25 @@ export default class NotificationsAssistant{
 		let endMillisecond = (endHour*60*60*1000) + (endMinute*60*1000)
 		let startMillisecond = (startHour*60*60*1000) + (startMinute*60*1000)
 
-		let interval = (endMillisecond - startMillisecond)/this.frequency
+		let interval:number = 0;
+
+
+		if(this.frequency !== 1){
+			interval = (endMillisecond - startMillisecond)/(this.frequency-1)
+		}
+		
 		
 		let scheduledCount = 0;
 		let day = 0;
+
+		let middleTime = (startMillisecond + endMillisecond) / 2
+
+		//represents all days
+		//uncomment
 		while(scheduledCount < this.MAX_NOTIFICATIONS){
 			var time = startMillisecond
 
+			//Represent 1 day of notifications
 			for(let f=0; f < this.frequency; ++f){
 				console.log(f)
 				// retrieve random verse content
@@ -172,6 +184,10 @@ export default class NotificationsAssistant{
 
       			let scheduleTime = new Date(dateToday.getTime() + (day*24*60*60*1000) + time)
 
+      			if(interval === 0 ){
+      				scheduleTime = new Date(dateToday.getTime() + (day*24*60*60*1000) + middleTime)
+      				time = middleTime
+      			}
       			if(currTime < scheduleTime){
         			
 				//Each day has 24 hours
