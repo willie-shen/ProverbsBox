@@ -174,9 +174,9 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
     back = () => {
 
         let proverbCenterAnimation = this.proverbCenterRef.current!.animation;
-        proverbCenterAnimation.play();
-
+        
         if (this.state.head > 0) {
+            proverbCenterAnimation.play(); //only animate if you actually went back
             this.setState(cur => {
                 return {
                     head: (cur.head) - 1,
@@ -190,7 +190,14 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
         this.setState({model: this.cm.GetModel()});
     }
 
-    
+    //Manually create the "disabled" appearance when we're on the first card
+    getBackButtonStyle = () => {
+        if (this.state.head === 0) { //then "disabled"
+            return {opacity:0.6}
+        }else{
+            return{opacity:1.0}
+        }
+    }
 
     render() {
         let pageRef = React.createRef<any>();
@@ -245,12 +252,11 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
 
                         <IonGrid>
                             <IonRow justify-content-center align-items-center>
-                                
-                                <IonCol size={"1"} className={"button-col"}>
-                                    <IonButton class="arrowButton" expand="full" disabled={this.state.head === 0} fill={"clear"} onClick={this.back}>
-                                        <IonIcon className="chev-nav-buttons" icon={chevronBackOutline}/>
-                                    </IonButton>
-                                </IonCol>
+                            <IonCol size={"1"} className={"button-col"}>
+                                <div id="left-arrow" className="nav-arrow-d" style={this.getBackButtonStyle()} onClick={this.back}>
+                                    <IonIcon id="chev-left" className="chev-nav-buttons" icon={chevronBackOutline}></IonIcon>
+                                </div>
+                            </IonCol>
                                 <IonCol size={"10"} align-self-center>
                                     <CreateAnimation
                                         ref={this.proverbCenterRef}
@@ -276,10 +282,11 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
                                     </CreateAnimation>
                                 </IonCol>
                                 <IonCol size={"1"} className={"button-col"}>
-                                    <IonButton  class="arrowButton" expand="full" fill={"clear"} onClick={this.forward}>
-                                        <IonIcon  className="chev-nav-buttons" icon={chevronForwardOutline}/>
-                                    </IonButton>
+                                <div id="right-arrow" className="nav-arrow-d" onClick={this.forward}>
+                                    <IonIcon id="chev-right" className="chev-nav-buttons" icon={chevronForwardOutline}></IonIcon>
+                                </div>
                                 </IonCol>
+                                
                             </IonRow>
                         </IonGrid>
                     </IonContent>

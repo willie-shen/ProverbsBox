@@ -13,6 +13,23 @@
 #left-arrow {
     left:0;
 }
+/*For page nav buttons on side*/
+.chev-nav-buttons{
+    color: white;
+    font-size:30px;
+    background-color:#c4c4c4;
+    opacity:0.5;
+    height:80px;
+}
+#chev-right-l{
+    margin-right:0;
+    border-radius: 5px 0px 0px 5px;
+}
+#chev-left-l{
+    margin-left:0;
+    border-radius: 0px 5px 5px 0px;
+}
+
 
 /*Button for "Next" (Fab), which shows up at end*/
 #fab {
@@ -45,22 +62,6 @@
     color: #444444;
 }
 
-/*For page nav buttons on side*/
-.chev-nav-buttons{
-    color: white;
-    font-size:30px;
-    background-color:#c4c4c4;
-    opacity:0.5;
-    height:80px;
-}
-#chev-right{
-    margin-right:0;
-    border-radius: 5px 0px 0px 5px;
-}
-#chev-left{
-    margin-left:0;
-    border-radius: 0px 5px 5px 0px;
-}
 
 #div-proverbs-text{
     font-size: 23px;

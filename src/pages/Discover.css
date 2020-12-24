@@ -1,6 +1,7 @@
-.nav-arrow{
-    
-    top:65%;
+.nav-arrow-d{
+    position:fixed;
+    top:50%;
+    height:10%;
 }
 #right-arrow {
     right:0;
@@ -10,10 +11,15 @@
     left:0;
 }
 
-.chev-nav-buttons{
+#chev-right{
+    margin-right:5px;
     border-radius:3px;
-    margin-left:5px;
 }
+#chev-left{
+    margin-left:5px;
+    border-radius:3px;
+}
+
 .arrowButton{
     height:100px;
 }

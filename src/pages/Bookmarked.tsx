@@ -11,7 +11,7 @@ import {
     IonToolbar,
     IonButtons,
     IonTitle,
-    IonMenuToggle, IonReorder, IonReorderGroup, useIonViewWillEnter, IonAlert
+    IonMenuToggle, IonReorder, IonReorderGroup, useIonViewWillEnter, IonAlert, withIonLifeCycle
 } from '@ionic/react';
 
 import {folder, notifications, notificationsOutline, notificationsCircleOutline, trashOutline, notificationsCircle} from 'ionicons/icons';
@@ -95,10 +95,13 @@ const Bookmarked: React.FC<IProps> = (props) => {
         }
     }, [folderContext, props.contentManager]);
 
+    
     // update folder list
     useIonViewWillEnter(() => {
-        console.log("folder context: ", folderContext);
+        console.log("----folder context: ", folderContext);
+        refreshComponentModels();
         refreshFolders();
+
     });
 
     useEffect(() => {
