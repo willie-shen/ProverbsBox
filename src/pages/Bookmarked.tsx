@@ -146,7 +146,11 @@ const Bookmarked: React.FC<IProps> = (props) => {
             if (!found) throw new Error("Folder not found in re-order");
             return found;
         })
-        .then(folder => StorageAssistant.reorderFolders(folder, event.detail.to))
+        .then(folder => {
+            const maxOrder = Math.max(...folders.map(f => f.order));
+            const cappedTo = Math.min(maxOrder,event.detail.to);  // At times "to" is one greater than max order. cap at max order 
+            return StorageAssistant.reorderFolders(folder, cappedTo);
+        })
         .then(() => {
             refreshFolders();
             event.detail.complete();
@@ -323,10 +327,9 @@ const Bookmarked: React.FC<IProps> = (props) => {
             </IonHeader>
             <IonContent id="folders-menu-content" onClick={()=>{console.log("clicked!!!")}}>
                 <div className="category-list-container ion-activateable" style={{pointerEvents: "auto"}}>
-                    <IonReorderGroup disabled={folderMode !== FolderMode.edit} onIonItemReorder={reorderFolders} className="folder-list">
-                        
-                        {/* Heart folder */}
-                        <IonItem
+
+                    {/* Heart folder */}
+                    <IonItem
                             button
                             detail={(folderMode === FolderMode.browse)}
                             disabled={(folderMode !== FolderMode.browse)}
@@ -341,6 +344,8 @@ const Bookmarked: React.FC<IProps> = (props) => {
                                 Favorites
                             </IonLabel>
                         </IonItem>
+                    <IonReorderGroup disabled={folderMode !== FolderMode.edit} onIonItemReorder={reorderFolders} className="folder-list">
+                        
                         {
                             
                             folders.map(folder => {
