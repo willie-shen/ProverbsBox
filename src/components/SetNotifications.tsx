@@ -94,8 +94,15 @@ const SetNotifications: React.FC<IProps> = (props: IProps) => {
       const verses = verseSignatures.flat().map((v) => props.contentManager.GetVerse(v));
       const na = new NotificationsAssistant();
       console.log("Setting notification for verses: ", verses);
-      na.BakeNotification(frequencyNum, fromMil, toMil, verses);
+      na.BakeNotification(frequencyNum, fromMil, toMil, verses); 
     });
+  }
+
+  // onclick of Modal > Set Notifications, sets new times + closes the modal
+  const setNotificationsAndClose = () => {
+    setNotifications();
+    props.setIsModalShown(false)
+    console.log(props.isModalShown) //?why doesnt this change? 
   }
 
   // effects hook used for validation
@@ -172,7 +179,7 @@ const SetNotifications: React.FC<IProps> = (props: IProps) => {
         </IonItem>
       </IonList>
       <div style={notificationsButtonStyle}>
-        <NotificationsButton onClick={setNotifications} active={valid}></NotificationsButton>
+        <NotificationsButton onClick={setNotificationsAndClose} active={valid}></NotificationsButton>
         <p style={errorStyle}>{errorMessage}</p>
       </div>
     </IonContent>
