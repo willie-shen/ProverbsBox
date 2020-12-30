@@ -142,7 +142,6 @@ const Bookmarked: React.FC<IProps> = (props) => {
         console.log("reorder event: ", event);
         StorageAssistant.getFolders()
         .then(folders => {
-            console.log("before reorder - folders: ", folders.map(f => f.order));
             const found = folders.find(folder => folder.order === event.detail.from);
             if (!found) throw new Error("Folder not found in re-order");
             return found;
@@ -155,9 +154,6 @@ const Bookmarked: React.FC<IProps> = (props) => {
         .then(() => {
             refreshFolders();
             event.detail.complete();
-            StorageAssistant.getFolders().then(folders => {
-                console.log("after reorder - folders: ", folders.map(f => f.order));
-            })
         })
     }
 
