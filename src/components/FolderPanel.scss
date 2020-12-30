@@ -1,0 +1,17 @@
+.folder-panel {
+    
+    .default {
+        overflow: hidden;
+        transition-duration: 0.5s;
+        transition-property: max-height, opacity;
+        transition-timing-function: ease-in-out;
+        max-height: 500px;
+        opacity: 1;
+    }
+    .collapse {
+        max-height: 0 !important;
+        opacity: 0;
+    }
+}
+
+

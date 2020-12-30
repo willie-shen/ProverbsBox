@@ -111,6 +111,10 @@ export default class ContentManager {
         console.log("Saved verse: ", verseID, " -- Bookmarked?: ", this.storageAssistant.isBookmarked(verseID));
     }
 
+    GetVerse(v: IVerseSignature): IVerse {
+        return this.translator.GetContent(Indexer.GetVerseID(v.Chapter, v.VerseNumber));
+    };
+
     private ToggleSaved(verse:IVerseSignature, toggleSaved:boolean) {
         [this.componentModels, this.refinedModels].forEach(models => {
             const target = models.filter(m => {
@@ -128,6 +132,10 @@ export default class ContentManager {
             })[0];
             (target.Model as (IStatement | ISaying)).Saved = toggleSaved;
         });
+    }
+
+    IsBookmarked = (verse: IVerseSignature) => {
+        return this.storageAssistant.isBookmarked(Indexer.GetVerseID(verse.Chapter, verse.VerseNumber));
     }
 
     RemoveBookmark(verse: IVerseSignature) {
@@ -348,9 +356,7 @@ export default class ContentManager {
 
         // map bundles to models
         const componentModels: Array<IComponentModel> = Object.values(bundles).map(bundle => {
-            const verses: Array<IVerse> = bundle.map(v => {
-                return this.translator.GetContent(Indexer.GetVerseID(v.Chapter, v.VerseNumber));
-            });
+            const verses: Array<IVerse> = bundle.map(v => this.GetVerse(v));
 
             // Discard titles :( [fix later] (not turned into title component models)
             if (bundle[0].TitlePrefix) {

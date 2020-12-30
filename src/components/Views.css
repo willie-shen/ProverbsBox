@@ -44,6 +44,49 @@
     margin-bottom: .2em;
 }
 .info-bar .save-icon {
-    font-size: 1.7em;
+    font-size: 1.25em;
     margin-right: 0.5em;
+}
+.bubble-animation {
+    animation-name: bubble;
+    animation-duration: 0.5s;
+    animation-direction: alternate;
+    animation-iteration-count: 2;
+}
+@keyframes bubble {
+  0% {
+      transform: scale(1);
+	}
+  50% {
+      transform: scale(0.5);
+	}
+  75% {
+      transform: scale(1.25);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+.vanish-animation {
+    animation-name: cardVanish;
+    animation-duration: 0.5s;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+}
+@keyframes cardVanish {
+    0% {
+        opacity: 1;
+        max-height: 15em;
+    }
+    50% {
+        opacity: 0;
+        max-height: 15em;
+    }
+    100% {
+        opacity: 0;
+        max-height: 0 !important;
+        padding: 0;
+        margin: 0;
+    }
 }
