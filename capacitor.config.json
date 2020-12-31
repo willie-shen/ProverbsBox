@@ -1,12 +1,7 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "proverbBox",
+  "appId": "com.code4christ.proverbsbox",
+  "appName": "Proverbs Box",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "build",
-  "cordova": {},
-  "server": {
-    "url": "http://192.168.56.1:8101",
-    "cleartext": true
-  }
+  "webDir": "build"
 }

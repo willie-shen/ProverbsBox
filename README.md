@@ -1,5 +1,5 @@
 # ProverbsBox
-- An elegant app for reading/studying/memorizing the biblical book of Proverbs
+- An elegant app for reading, studying, and memorizing the biblical book of Proverbs
 - Christian alternative to the Motivation App 
 
 <div>
@@ -11,20 +11,16 @@
 </div>
 
 
-Dev Notes
-------
-# First navigate to the folder in terminal: ProverbsBox/proverb-box-master
-Before Work:
-`git pull`
-
-After Work:
-- `git add -A`
-- `git commit -m "put a short description of the work you did here"`
-- `git push`
- 
 Run:
 `
 ionic serve
+`
+
+Deploy Android:
+`
+ionic capacitor add android
+ionic capacitor copy android
+Build in Android Studio
 `
 
 Setup Environment:

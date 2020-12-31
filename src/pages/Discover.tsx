@@ -200,7 +200,6 @@ class Discover extends React.Component<IDiscoverProps, IDiscoverState> {
     }
 
     render() {
-        let pageRef = React.createRef<any>();
         return (
             <>
             {/* Modal to view popup folders */}
