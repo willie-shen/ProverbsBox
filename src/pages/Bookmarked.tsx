@@ -1,3 +1,4 @@
+//SIDE BAR THAT SLIDES IN FROM THE LEFT (AFTER CLICKING ON FOLDER FROM LIBRARY TAB)
 import React, {useCallback, useEffect, useState} from 'react';
 import {
     IonMenu,
@@ -49,7 +50,6 @@ const Bookmarked: React.FC<IProps> = (props) => {
     // Notifications modal and settings
     const [isNotificationsModalShown, setIsNotificationsModalShown] = useState(false);
     const [notificationSettings, setNotificationSettings] = useState<NotificationSettings | undefined>(undefined);
-    const [notificationText, setNotificationText] = useState<String | undefined>(undefined);
 
 
     // turn on edit folder mode
@@ -254,17 +254,11 @@ const Bookmarked: React.FC<IProps> = (props) => {
 
     // convert from military time to standard am/pm time string
     const computeTimeString = (time: number) => {
-        console.log("CTS()")
-        console.log( " raw input, time: " + time)
-
         // calculate from time
         const timeHourMilitary = Math.floor(time/100);
         const [timeHour, fromPeriod] = ((timeHourMilitary <= 12) ? [(timeHourMilitary === 0) ? 12 : timeHourMilitary, "am"]
             : [timeHourMilitary-12, "pm"]);
         const timeMinute = ("0000000" + Math.floor(time%100)).substr(-2); // leading 0s, 2 digits
-        console.log( " raw output: " + `${timeHour}:${timeMinute}${fromPeriod}`)
-
-        
         return `${timeHour}:${timeMinute}${fromPeriod}`;
     }
 
@@ -273,25 +267,14 @@ const Bookmarked: React.FC<IProps> = (props) => {
     if (notificationSettings) {
 
         const {fromTime, toTime, frequency} = notificationSettings;
-        console.log("in notif settings. ")
         // compute time strings
         fromTimeString = computeTimeString(fromTime);
         toTimeString = computeTimeString(toTime);
         frequencyString = frequency.toString();
-
-        let newNotificationText = "Proverb notifications are set from " + fromTimeString + " to " +  toTimeString + "," + frequencyString + " times daily."
-        console.log(" old: " + notificationText)
-        console.log(" new: " + newNotificationText)
-
-        //TODO: set state here
-        if(notificationText !== newNotificationText){
-            setNotificationText(newNotificationText)
-            console.log("N TEXT:::: " + notificationText)
-        }
     }
     
     // displays info on current notification settings & the set notification button
-    // THIS IS WHERE THE NOTIF TEXT IS DETERMINED!
+    // THIS IS WHERE THE NOTIF TEXT IS DETERMINED.
     const setNotificationsInfo = (
         <div style={{
             display: "flex",
@@ -313,13 +296,13 @@ const Bookmarked: React.FC<IProps> = (props) => {
                         textAlign: "center",
                         fontStyle: "italic",
                         color: "#777"
-                    }}>{notificationText}</p>
+                    }}>Proverb notifications are set from {fromTimeString} to {toTimeString}, {frequencyString} times daily.</p>
                 ) : (null)
             }
             <NotificationsButton onClick={() => setIsNotificationsModalShown(true)}/>
         </div>
     )
-    //Proverb notifications are set from {fromTimeString} to {toTimeString}, {frequencyString} times daily.
+    
     
     const folderSideMenu = (
         <IonMenu side="start" contentId="folders-menu-content">
