@@ -11,7 +11,11 @@ import {
     IonToolbar,
     IonButtons,
     IonTitle,
-    IonMenuToggle, IonReorder, IonReorderGroup, useIonViewWillEnter, IonAlert, withIonLifeCycle
+    IonMenuToggle,
+    IonReorder,
+    IonReorderGroup,
+    useIonViewWillEnter,
+    IonAlert
 } from '@ionic/react';
 
 import {folder, notifications, notificationsOutline, notificationsCircleOutline, trashOutline, notificationsCircle} from 'ionicons/icons';
