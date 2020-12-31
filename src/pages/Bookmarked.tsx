@@ -49,6 +49,7 @@ const Bookmarked: React.FC<IProps> = (props) => {
     // Notifications modal and settings
     const [isNotificationsModalShown, setIsNotificationsModalShown] = useState(false);
     const [notificationSettings, setNotificationSettings] = useState<NotificationSettings | undefined>(undefined);
+    const [notificationText, setNotificationText] = useState<String | undefined>(undefined);
 
 
     // turn on edit folder mode
@@ -116,7 +117,7 @@ const Bookmarked: React.FC<IProps> = (props) => {
         // retrieve end, start, and frequency
         (async () => ({toTime: await na.GetEnd(), fromTime: await na.GetStart(), frequency: await na.GetFrequency()}))()
         .then((settings) => {
-            // console.log("SETTING SETTINGS!") - wrong
+            console.log("SETTING SETTINGS!") //- wrong
             setNotificationSettings(settings);
         })
         .catch(() => {
@@ -249,6 +250,8 @@ const Bookmarked: React.FC<IProps> = (props) => {
         />
     );
     
+    var [fromTimeString, toTimeString, frequencyString] = ["","",""];
+
     // convert from military time to standard am/pm time string
     const computeTimeString = (time: number) => {
         console.log("CTS()")
@@ -260,18 +263,31 @@ const Bookmarked: React.FC<IProps> = (props) => {
             : [timeHourMilitary-12, "pm"]);
         const timeMinute = ("0000000" + Math.floor(time%100)).substr(-2); // leading 0s, 2 digits
         console.log( " raw output: " + `${timeHour}:${timeMinute}${fromPeriod}`)
+
+        
         return `${timeHour}:${timeMinute}${fromPeriod}`;
     }
 
     // get notification info
-    var [fromTimeString, toTimeString, frequencyString] = ["","",""];
+    
     if (notificationSettings) {
-        const {fromTime, toTime, frequency} = notificationSettings;
 
+        const {fromTime, toTime, frequency} = notificationSettings;
+        console.log("in notif settings. ")
         // compute time strings
         fromTimeString = computeTimeString(fromTime);
         toTimeString = computeTimeString(toTime);
         frequencyString = frequency.toString();
+
+        let newNotificationText = "Proverb notifications are set from " + fromTimeString + " to " +  toTimeString + "," + frequencyString + " times daily."
+        console.log(" old: " + notificationText)
+        console.log(" new: " + newNotificationText)
+
+        //TODO: set state here
+        if(notificationText !== newNotificationText){
+            setNotificationText(newNotificationText)
+            console.log("N TEXT:::: " + notificationText)
+        }
     }
     
     // displays info on current notification settings & the set notification button
@@ -297,12 +313,13 @@ const Bookmarked: React.FC<IProps> = (props) => {
                         textAlign: "center",
                         fontStyle: "italic",
                         color: "#777"
-                    }}>Proverb notifications are set from {fromTimeString} to {toTimeString}, {frequencyString} times daily.</p>
+                    }}>{notificationText}</p>
                 ) : (null)
             }
             <NotificationsButton onClick={() => setIsNotificationsModalShown(true)}/>
         </div>
     )
+    //Proverb notifications are set from {fromTimeString} to {toTimeString}, {frequencyString} times daily.
     
     const folderSideMenu = (
         <IonMenu side="start" contentId="folders-menu-content">

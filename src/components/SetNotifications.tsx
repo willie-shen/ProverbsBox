@@ -1,4 +1,4 @@
-/*
+/* THE MODAL THAT POPS UP
 
 <IonAlert
                     isOpen={isNotificationsAlertShown}
@@ -56,7 +56,7 @@ import NotificationsButton from "./NotificationsButton";
 type IProps = {
   isModalShown: boolean,
   setIsModalShown: (isModalShown: boolean) => void;
-  setNotificationSettings: (ns: NotificationSettings) => void;
+  setNotificationSettings: (ns: NotificationSettings) => void; 
   contentManager: ContentManager;
 }
 
@@ -79,6 +79,10 @@ const SetNotifications: React.FC<IProps> = (props: IProps) => {
     const toMil = toDate.getHours() * 100 + toDate.getMinutes();
     const frequencyNum = parseInt(frequency);
 
+    // Setting notificationSettings for Bookmarked.tsx
+    const newSettings : NotificationSettings = {fromTime : fromMil, toTime : toMil, frequency : frequencyNum}
+    props.setNotificationSettings(newSettings)
+
     // get noitification verses
     StorageAssistant.getFolders()
     .then(async folders =>
@@ -96,6 +100,8 @@ const SetNotifications: React.FC<IProps> = (props: IProps) => {
       console.log("Setting notification for verses: ", verses);
       na.BakeNotification(frequencyNum, fromMil, toMil, verses); 
     });
+
+
   }
 
   // onclick of Modal > Set Notifications, sets new times + closes the modal
