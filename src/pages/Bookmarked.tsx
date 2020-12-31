@@ -258,7 +258,7 @@ const Bookmarked: React.FC<IProps> = (props) => {
         />
     );
     
-    var [fromTimeString, toTimeString, frequencyString] = ["","",""];
+    let [fromTimeString, toTimeString, frequencyString] = ["","",""];
 
     // convert from military time to standard am/pm time string
     const computeTimeString = (time: number) => {
