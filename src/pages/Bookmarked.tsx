@@ -1,3 +1,4 @@
+//SIDE BAR THAT SLIDES IN FROM THE LEFT (AFTER CLICKING ON FOLDER FROM LIBRARY TAB)
 import React, {useCallback, useEffect, useState} from 'react';
 import {
     IonMenu,
@@ -11,7 +12,11 @@ import {
     IonToolbar,
     IonButtons,
     IonTitle,
-    IonMenuToggle, IonReorder, IonReorderGroup, useIonViewWillEnter, IonAlert, withIonLifeCycle
+    IonMenuToggle,
+    IonReorder,
+    IonReorderGroup,
+    useIonViewWillEnter,
+    IonAlert
 } from '@ionic/react';
 
 import {folder, notifications, notificationsOutline, notificationsCircleOutline, trashOutline, notificationsCircle} from 'ionicons/icons';
@@ -39,16 +44,17 @@ export type NotificationSettings = {
 
 const Bookmarked: React.FC<IProps> = (props) => {
 
+// State hooks
     const [folderMode, setFolderMode] = useState(FolderMode.browse); // "browse", "edit", "set-notifications"
     const [folderContext, setFolderContext] = useState<IFolder | null>(null); // let null = favorites folder
     const [model, setModel] = useState<IModel | undefined>(undefined);
     const [folders, setFolders] = useState<Array<IFolder>>([]);
     const [newFolderPromptActivated, setNewFolderPromptActivated] = useState(false);
     const [deleteActivated, setDeleteActivated] = useState<IFolder | undefined>(undefined);
-
     // Notifications modal and settings
     const [isNotificationsModalShown, setIsNotificationsModalShown] = useState(false);
     const [notificationSettings, setNotificationSettings] = useState<NotificationSettings | undefined>(undefined);
+
 
     // turn on edit folder mode
     const toggleEditMode = () => {
@@ -115,6 +121,7 @@ const Bookmarked: React.FC<IProps> = (props) => {
         // retrieve end, start, and frequency
         (async () => ({toTime: await na.GetEnd(), fromTime: await na.GetStart(), frequency: await na.GetFrequency()}))()
         .then((settings) => {
+            console.log("SETTING SETTINGS!") //- wrong
             setNotificationSettings(settings);
         })
         .catch(() => {
@@ -251,21 +258,23 @@ const Bookmarked: React.FC<IProps> = (props) => {
         />
     );
     
+    let [fromTimeString, toTimeString, frequencyString] = ["","",""];
+
     // convert from military time to standard am/pm time string
     const computeTimeString = (time: number) => {
         // calculate from time
-        const timeHourMilitary = Math.floor(time/10);
+        const timeHourMilitary = Math.floor(time/100);
         const [timeHour, fromPeriod] = ((timeHourMilitary <= 12) ? [(timeHourMilitary === 0) ? 12 : timeHourMilitary, "am"]
             : [timeHourMilitary-12, "pm"]);
-        const timeMinute = ("0000000" + Math.floor(time%10)).substr(-2); // leading 0s, 2 digits
+        const timeMinute = ("0000000" + Math.floor(time%100)).substr(-2); // leading 0s, 2 digits
         return `${timeHour}:${timeMinute}${fromPeriod}`;
     }
 
     // get notification info
-    let [fromTimeString, toTimeString, frequencyString] = ["","",""];
+    
     if (notificationSettings) {
-        const {fromTime, toTime, frequency} = notificationSettings;
 
+        const {fromTime, toTime, frequency} = notificationSettings;
         // compute time strings
         fromTimeString = computeTimeString(fromTime);
         toTimeString = computeTimeString(toTime);
@@ -273,6 +282,7 @@ const Bookmarked: React.FC<IProps> = (props) => {
     }
     
     // displays info on current notification settings & the set notification button
+    // THIS IS WHERE THE NOTIF TEXT IS DETERMINED.
     const setNotificationsInfo = (
         <div style={{
             display: "flex",
@@ -300,7 +310,8 @@ const Bookmarked: React.FC<IProps> = (props) => {
             <NotificationsButton onClick={() => setIsNotificationsModalShown(true)}/>
         </div>
     )
-
+    
+    
     const folderSideMenu = (
         <IonMenu side="start" contentId="folders-menu-content">
             <IonHeader mode={"md"}>
