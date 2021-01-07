@@ -11,7 +11,9 @@ import {
   IonTabButton,
   IonTabs,
   useIonViewDidEnter, 
-  useIonViewWillEnter
+  useIonViewWillEnter,
+  useIonViewDidLeave,
+  useIonViewWillLeave
 } from '@ionic/react';
 
 import {
@@ -51,102 +53,42 @@ import ContentManager from "./api/ContentManager"
 import { Plugins, AppState } from '@capacitor/core';
 import NotificationsAssistant from "./api/NotificationsAssistant"
 
+//write a function that is called for useEffect and the app state change callback function
 
+function setNotifications(){
+
+  console.log("Setting the notifications")
+  let notificationAssistant = new NotificationsAssistant();
+
+  notificationAssistant.NotificationSetter();
+
+}
 
 // init content manager
 let cm = new ContentManager();
 
+
 const App: React.FC = () => {
 
 
+  //Set the notifications on startup
   useEffect( () => {
 
-    console.log("Starting app")
-
-    let notificationAssistant = new NotificationsAssistant();
-
-    let remain:Boolean;
-    let starting:Number;
-    let ending:Number;
-
-    notificationAssistant.NoNotificationsRemaining().then((remaining) => {
-      if(!remaining){
-        console.log("There are notifications that are already scheduled");
-      }else{
-        console.log("There are notifications that aren't scheduled")
-         notificationAssistant.NotificationSetter();
-   
-      }
-      remain = remaining;
-    } ).then(()=>{
-
-       
-
-    })
+    setNotifications()
   })
 
-   
 
-           /*
-        Idea for the implementation
 
-        We need to check if there are any remaining notifications, either those that have not been received
-        Or those that have not been scheduled (if we take that route of allowing unlimited notifications)
-
-        If there are still scheduled notifications that have not been received, return out of the function (do nothing)
-        If there are notifications that need to be scheduled but are not yet scheduled, schedule any of them as long as the time has not been passed
-        
-        If no notifications, check to see if the start and end time has passed already
-          -If it has, do nothing
-          -If it has not passed, call the notification setter
-        */
-        
-   //Seems to not be called during startup
-   //https://stackoverflow.com/questions/50623279/js-event-handler-async-function/50623441
-   
-
-   /*Plugins.App.addListener("appStateChange", async (state: AppState) => {
+  //Set the notifications when we go from foreground to background
+  Plugins.App.addListener("appStateChange", async (state: AppState) => {
       if (state.isActive) {
-        // call the notification setup
-        console.log("App is now active")
-
-         let notificationAssistant = new NotificationsAssistant();
-
-         var remaining = await notificationAssistant.NoNotificationsRemaining()
-         console.log(remaining)
-         if(!remaining){
-           console.log("There are notifications that are already scheduled");
-           return;
-         }else{
-
-           //check to see time 
-           var dateToday = new Date()
-
-           var hour = dateToday.getHours()
-           var minutes = dateToday.getMinutes()
-
-           var militaryTime:Number = hour*100 + minutes
-
-           var start = await notificationAssistant.GetStart()
-           var end = await notificationAssistant.GetEnd()
-
-            //probably only do it for the end
-           if(militaryTime >= start || militaryTime >= end){
-             console.log("Time has already passed")
-             return
-           }
-         }
-
-        notificationAssistant.NotificationSetter();
+        setNotifications()
       }
-    });*/
 
-   /*
-    Plugins.LocalNotifications.addListener('localNotificationReceived', (notification) =>{
-      console.log("received a Local Notification")
     })
-  */
-  //Looks like this notification callback function would not work unless we are in the foreground
+
+   
+
  
   // root of the proverbs box app
   return (
