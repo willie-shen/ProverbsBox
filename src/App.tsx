@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonReactRouter } from '@ionic/react-router';
 
@@ -10,7 +10,10 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  useIonViewDidEnter
+  useIonViewDidEnter, 
+  useIonViewWillEnter,
+  useIonViewDidLeave,
+  useIonViewWillLeave
 } from '@ionic/react';
 
 import {
@@ -49,22 +52,42 @@ import ContentManager from "./api/ContentManager"
 import { Plugins, AppState } from '@capacitor/core';
 import NotificationsAssistant from "./api/NotificationsAssistant"
 
+//write a function that is called for useEffect and the app state change callback function
+
+function setNotifications(){
+
+  console.log("Setting the notifications")
+  let notificationAssistant = new NotificationsAssistant();
+
+  notificationAssistant.NotificationSetter();
+
+}
+
 // init content manager
 let cm = new ContentManager();
 
+
 const App: React.FC = () => {
 
-  // capacitor notifications setup
-  useIonViewDidEnter(() => {
-    // refresh notifications on app enter
-    Plugins.App.addListener("appStateChange", (state: AppState) => {
+
+  //Set the notifications on startup
+  useEffect( () => {
+
+    setNotifications()
+  })
+
+
+
+  //Set the notifications when we go from foreground to background
+  Plugins.App.addListener("appStateChange", async (state: AppState) => {
       if (state.isActive) {
-        // call the notification setup
-        let notificationAssistant = new NotificationsAssistant();
-        notificationAssistant.NotificationSetter();
+        setNotifications()
       }
-    });
-  });
+
+    })
+
+   
+
  
   // root of the proverbs box app
   return (

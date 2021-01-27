@@ -1,0 +1,7 @@
+Notification problems
+
+Scheduled Notifications not showing
+
+Rerun app and the scheduled notifications pop up (scheduled notification has to be before the current time)
+
+Limit of 64 notifications, looks like the latest ones replace earlier ones 
